@@ -1,0 +1,143 @@
+{
+  "hero": {
+    "title": "Transformando la Salud con Innovación y Tecnología.",
+    "subtitle": "Emmitec Health conecta pacientes, clínicas y profesionales de la salud a través de monitoreo remoto inteligente con datos en tiempo real e IA de última generación.",
+    "badge": "Nuevo",
+    "button": {
+      "demo": "Agendar demostración",
+      "solutions": "Conocer soluciones"
+    },
+    "stats": {
+      "accuracy": "Precisión diagnóstica",
+      "clinics": "Clínicas asociadas",
+      "support": "Soporte continuo"
+    },
+    "imageAlt": "Monitoreo médico"
+  },
+  "intro": {
+    "badge": "Nuestra misión",
+    "title": "Descubre cómo Emmitec Health está transformando la salud a través de la innovación y la tecnología",
+    "description": "Unimos dispositivos inteligentes, plataformas digitales e inteligencia artificial para ofrecer cuidados de salud más eficientes, accesibles y humanos."
+  },
+  "cards": {
+    "rpm": {
+      "label": "RPM DEVICES",
+      "title": "Monitoreo RPM",
+      "description": "Seguimiento en tiempo real de los signos vitales de los pacientes con dispositivos conectados y alertas automáticas para el equipo clínico."
+    },
+    "ai": {
+      "label": "IA PLATFORM",
+      "title": "Plataforma de IA",
+      "description": "Algoritmos de aprendizaje automático que analizan patrones clínicos y sugieren intervenciones preventivas con alta precisión."
+    },
+    "dashboard": {
+      "label": "TELEHEALTH DASHBOARD",
+      "title": "Dashboard Clínico",
+      "description": "Panel centralizado para médicos y equipos de salud para gestionar pacientes, consultas e informes clínicos en un solo lugar."
+    },
+    "cta": "Saber más"
+  },
+  "features": {
+    "monitoring": {
+      "tag": "Cuidado inteligente",
+      "title": "Monitoreo continuo que salva vidas en tiempo real",
+      "body": "Nuestra plataforma RPM recopila datos de wearables y dispositivos médicos, los procesa con IA y alerta a los médicos antes de que las situaciones críticas empeoren.",
+      "items": [
+        "Integración con +200 dispositivos médicos certificados",
+        "Alertas predictivas con IA para reducir internaciones",
+        "Informes automáticos para historial médico electrónico"
+      ],
+      "button": "Ver cómo funciona",
+      "imageAlt": "Médico consultando plataforma"
+    },
+    "services": {
+      "tag": "SERVICIOS",
+      "title": "Revolucionando la Asistencia Médica con RPM",
+      "body": "En EmmiTec, ayudamos a clínicas, hospitales y aseguradoras de salud a evolucionar sus servicios con el Monitoreo Remoto de Pacientes (RPM). Nuestra plataforma fue diseñada para hacer el cuidado más eficiente, humano y sostenible — incluso ante la escasez de profesionales de la salud.",
+      "items": [
+        "Monitorear signos vitales e indicadores clínicos en tiempo real",
+        "Anticipar complicaciones antes de que se conviertan en emergencias",
+        "Reducir costos administrativos y operativos",
+        "Mejorar la experiencia y el compromiso de los pacientes"
+      ],
+      "button": "Conocer las apps",
+      "imageAlt": "Paciente en casa con dispositivo"
+    }
+  },
+  "benefits": {
+    "title": "Monitoreo en Tiempo Real: Cuidados Hospitalarios en la Comodidad del Hogar",
+    "subtitle": "Más autonomía para los pacientes. Más eficiencia para los profesionales. Todo en una única plataforma.",
+    "items": {
+      "home": {
+        "title": "Cuidados en Casa con Calidad Hospitalaria",
+        "desc": "Con el RPM de EmmiTec, los pacientes son monitoreados en tiempo real en la comodidad de casa, recibiendo atención continua y humanizada."
+      },
+      "flexible": {
+        "title": "Solución Flexible y Personalizable",
+        "desc": "Adaptamos la interfaz al visual de su institución y somos compatibles con diversos dispositivos médicos y flujos de trabajo."
+      },
+      "access": {
+        "title": "Acceso a la Salud en Cualquier Lugar",
+        "desc": "Nuestra plataforma rompe barreras geográficas, haciendo la asistencia médica accesible dondequiera que el paciente esté."
+      },
+      "partnership": {
+        "title": "Alianza para una Nueva Era en la Salud",
+        "desc": "Ofrecemos soporte completo y funcionalidades a medida para garantizar mayor eficiencia y mejores resultados clínicos."
+      }
+    }
+  },
+  "cta": {
+    "badge": "Próximo paso",
+    "title": "Agenda tu demostración personalizada",
+    "subtitle": "Muestra a tu equipo cómo Emmitec Health puede transformar la gestión de pacientes y la calidad del cuidado en tu clínica.",
+    "button": {
+      "specialist": "Hablar con especialista",
+      "cases": "Ver casos de éxito"
+    }
+  },
+  "aria": {
+    "goToCard": "Ir al card {index}"
+  },
+  "header": {
+    "nav": {
+      "about": "Sobre nosotros",
+      "ourHistory": "Nuestra historia",
+      "whatIsRpm": "Qué es RPM",
+      "benefits": "Beneficios del RPM",
+      "successStories": "Historias de éxito",
+      "apps": "Aplicaciones",
+      "blog": "Blog",
+      "equipment": "Equipos integrados",
+      "login": "Iniciar sesión",
+      "language": "Idioma"
+    }
+  },
+  "footer": {
+    "links": {
+      "title": "Enlaces",
+      "ourHistory": "Nuestra Historia",
+      "whatIsRpm": "Qué es RPM",
+      "benefits": "Beneficios",
+      "blog": "Blog",
+      "contact": "Contacto",
+      "certificates": "Certificados",
+      "privacyTerms": "Términos de Privacidad"
+    },
+    "blogCol": {
+      "title": "Blog",
+      "rpmToday": "RPM hoy",
+      "facilities": "Facilidades",
+      "challenges": "Desafíos",
+      "laws": "Leyes",
+      "reviews": "Reviews"
+    },
+    "newsletter": {
+      "title": "Suscríbete a nuestro Newsletter",
+      "description": "Recibe semanalmente todas nuestras actualizaciones sobre",
+      "highlight": "Innovaciones en Monitoreo Remoto de Pacientes",
+      "placeholder": "Ingresar email",
+      "submit": "Enviar"
+    },
+    "copyright": "Todos los derechos reservados."
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "hero": {
+    "title": "Transforming Healthcare with Innovation and Technology.",
+    "subtitle": "Emmitec Health connects patients, clinics, and healthcare professionals through intelligent remote monitoring with real-time data and cutting-edge AI.",
+    "badge": "New",
+    "button": {
+      "demo": "Schedule demo",
+      "solutions": "Explore solutions"
+    },
+    "stats": {
+      "accuracy": "Diagnostic accuracy",
+      "clinics": "Partner clinics",
+      "support": "Continuous support"
+    },
+    "imageAlt": "Medical monitoring"
+  },
+  "intro": {
+    "badge": "Our mission",
+    "title": "Discover how Emmitec Health is transforming healthcare through innovation and technology",
+    "description": "We combine smart devices, digital platforms, and artificial intelligence to deliver more efficient, accessible, and human healthcare."
+  },
+  "cards": {
+    "rpm": {
+      "label": "RPM DEVICES",
+      "title": "RPM Monitoring",
+      "description": "Real-time tracking of patient vital signs with connected devices and automatic alerts for the clinical team."
+    },
+    "ai": {
+      "label": "AI PLATFORM",
+      "title": "AI Platform",
+      "description": "Machine learning algorithms that analyze clinical patterns and suggest preventive interventions with high accuracy."
+    },
+    "dashboard": {
+      "label": "TELEHEALTH DASHBOARD",
+      "title": "Clinical Dashboard",
+      "description": "Centralized panel for doctors and healthcare teams to manage patients, appointments, and clinical reports in one place."
+    },
+    "cta": "Learn more"
+  },
+  "features": {
+    "monitoring": {
+      "tag": "Smart care",
+      "title": "Continuous monitoring that saves lives in real time",
+      "body": "Our RPM platform collects data from wearables and medical devices, processes it with AI, and alerts doctors before critical situations worsen.",
+      "items": [
+        "Integration with +200 certified medical devices",
+        "AI predictive alerts to reduce hospitalizations",
+        "Automatic reports for electronic medical records"
+      ],
+      "button": "See how it works",
+      "imageAlt": "Doctor consulting platform"
+    },
+    "services": {
+      "tag": "SERVICES",
+      "title": "Revolutionizing Medical Care with RPM",
+      "body": "At EmmiTec, we help clinics, hospitals, and health insurers evolve their services with Remote Patient Monitoring (RPM). Our platform was designed to make care more efficient, humane, and sustainable — even amid healthcare professional shortages.",
+      "items": [
+        "Monitor vital signs and clinical indicators in real time",
+        "Anticipate complications before they become emergencies",
+        "Reduce administrative and operational costs",
+        "Improve patient experience and engagement"
+      ],
+      "button": "Discover our apps",
+      "imageAlt": "Patient at home with device"
+    }
+  },
+  "benefits": {
+    "title": "Real-Time Monitoring: Hospital Care in the Comfort of Home",
+    "subtitle": "More autonomy for patients. More efficiency for professionals. All in a single platform.",
+    "items": {
+      "home": {
+        "title": "Home Care with Hospital Quality",
+        "desc": "With EmmiTec's RPM, patients are monitored in real time in the comfort of home, receiving continuous and humanized care."
+      },
+      "flexible": {
+        "title": "Flexible and Customizable Solution",
+        "desc": "We adapt the interface to your institution's look and are compatible with various medical devices and workflows."
+      },
+      "access": {
+        "title": "Healthcare Access Anywhere",
+        "desc": "Our platform breaks geographical barriers, making medical care accessible wherever the patient is."
+      },
+      "partnership": {
+        "title": "Partnership for a New Era in Healthcare",
+        "desc": "We offer complete support and tailored features to ensure greater efficiency and better clinical outcomes."
+      }
+    }
+  },
+  "cta": {
+    "badge": "Next step",
+    "title": "Schedule your personalized demonstration",
+    "subtitle": "Show your team how Emmitec Health can transform patient management and the quality of care in your clinic.",
+    "button": {
+      "specialist": "Talk to a specialist",
+      "cases": "See success stories"
+    }
+  },
+  "aria": {
+    "goToCard": "Go to card {index}"
+  },
+  "header": {
+    "nav": {
+      "about": "About us",
+      "ourHistory": "Our history",
+      "whatIsRpm": "What is RPM",
+      "benefits": "RPM benefits",
+      "successStories": "Success stories",
+      "apps": "Apps",
+      "blog": "Blog",
+      "equipment": "Integrated equipment",
+      "login": "Login",
+      "language": "Language"
+    }
+  },
+  "footer": {
+    "links": {
+      "title": "Links",
+      "ourHistory": "Our History",
+      "whatIsRpm": "What is RPM",
+      "benefits": "Benefits",
+      "blog": "Blog",
+      "contact": "Contact",
+      "certificates": "Certificates",
+      "privacyTerms": "Privacy Terms"
+    },
+    "blogCol": {
+      "title": "Blog",
+      "rpmToday": "RPM today",
+      "facilities": "Facilities",
+      "challenges": "Challenges",
+      "laws": "Laws",
+      "reviews": "Reviews"
+    },
+    "newsletter": {
+      "title": "Subscribe to our Newsletter",
+      "description": "Receive weekly all our updates on",
+      "highlight": "Innovations in Remote Patient Monitoring",
+      "placeholder": "Enter email",
+      "submit": "Send"
+    },
+    "copyright": "All rights reserved."
+  }
+}

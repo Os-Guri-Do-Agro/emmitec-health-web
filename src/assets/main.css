@@ -1,0 +1,74 @@
+@import './base.css';
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  --color-primary: #11d3d3;
+  --color-secondary: #4c666d;
+  --color-background: #ffffff;
+  --color-black: #202220;
+  --color-dark: #0e1117;
+  --color-dark-2: #161c26;
+  --color-mid: #f4f6f7;
+  --color-muted: #7a9099;
+}
+
+/* Reset #app to allow full-width landing page */
+#app {
+  font-weight: normal;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Global font: Plus Jakarta Sans */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+}
+
+/* Color utility fallbacks (garantia caso Tailwind v4 não processe @theme) */
+.bg-primary {
+  background-color: #11d3d3;
+}
+.text-primary {
+  color: #11d3d3;
+}
+.border-primary {
+  border-color: #11d3d3;
+}
+.bg-dark {
+  background-color: #0e1117;
+}
+.bg-dark-2 {
+  background-color: #161c26;
+}
+.bg-mid {
+  background-color: #f4f6f7;
+}
+.text-muted {
+  color: #7a9099;
+}
+.text-black {
+  color: #202220;
+}
+.font-display {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.font-display.font-medium {
+  font-weight: 500;
+}
+.font-display.font-semibold {
+  font-weight: 600;
+}
+.font-display.font-bold {
+  font-weight: 700;
+}
+.font-display.font-extrabold {
+  font-weight: 800;
+}
+.font-body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
