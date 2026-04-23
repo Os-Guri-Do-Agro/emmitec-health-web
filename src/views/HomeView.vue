@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -53,6 +53,35 @@ function animateCounter(element: HTMLElement, targetValue: number, duration: num
     onUpdate: () => {
       element.textContent = Math.round(counter.value).toString()
     },
+  })
+}
+
+// ── MARQUEE ──
+const marquee = ref<HTMLElement | null>(null)
+let marqueeTween: gsap.core.Tween | null = null
+
+const marqueeItems = computed(() => [
+  t('hero.stats.accuracy'),
+  t('hero.stats.clinics'),
+  t('hero.stats.support'),
+  t('cards.rpm.label'),
+  t('cards.ai.label'),
+  t('cards.dashboard.label'),
+])
+
+function startMarquee() {
+  if (!marquee.value) return
+  const track = marquee.value.querySelector('.marquee-track') as HTMLElement | null
+  if (!track) return
+  marqueeTween?.kill()
+  gsap.set(track, { x: 0 })
+  const half = track.scrollWidth / 2
+  if (half <= 0) return
+  marqueeTween = gsap.to(track, {
+    x: -half,
+    duration: Math.max(24, half / 55),
+    ease: 'none',
+    repeat: -1,
   })
 }
 
@@ -192,6 +221,8 @@ const ctaSection = ref<HTMLElement | null>(null)
 const ctaInner = ref<HTMLElement | null>(null)
 
 onMounted(() => {
+  startMarquee()
+
   // Hero entrance
   gsap
     .timeline({ defaults: { ease: 'power3.out' } })
@@ -272,10 +303,11 @@ onMounted(() => {
 
 onUnmounted(() => {
   ScrollTrigger.getAll().forEach((t) => t.kill())
+  marqueeTween?.kill()
 })
 
 // Re-animar números quando o idioma mudar
-watch(locale, () => {
+watch(locale, async () => {
   heroStatNumbers.value.forEach((el, index) => {
     const targetValue = heroStatsData.value[index]?.num
     if (el && targetValue !== undefined) {
@@ -284,6 +316,8 @@ watch(locale, () => {
       animateCounter(el, targetValue, 1.5)
     }
   })
+  await nextTick()
+  startMarquee()
 })
 </script>
 
@@ -370,6 +404,26 @@ watch(locale, () => {
       </div>
     </section>
 
+    <!-- ── MARQUEE ── -->
+    <div
+      ref="marquee"
+      class="marquee bg-dark border-t border-white/10 py-4 overflow-hidden w-full"
+      aria-hidden="true"
+    >
+      <div class="marquee-track flex whitespace-nowrap will-change-transform">
+        <template v-for="n in 2" :key="n">
+          <div
+            v-for="item in marqueeItems"
+            :key="item + n"
+            class="marquee-item flex items-center font-display font-bold uppercase tracking-[3px] text-white/35 text-[12px] sm:text-[13px] px-8"
+          >
+            <span>{{ item }}</span>
+            <span class="text-primary ml-8">◆</span>
+          </div>
+        </template>
+      </div>
+    </div>
+
     <!-- ── INTRO ── -->
     <section
       ref="introSection"
@@ -397,41 +451,62 @@ watch(locale, () => {
         class="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-7xl mx-auto px-4 sm:px-6"
       >
         <article
-          v-for="c in cardsData"
+          v-for="(c, i) in cardsData"
           :key="c.title"
-          class="service-card rounded-2xl border border-gray-200 bg-white overflow-hidden"
+          class="service-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
         >
-          <!-- Header com imagem -->
-          <div class="h-40 relative overflow-hidden">
+          <!-- Imagem -->
+          <div class="relative overflow-hidden aspect-16/10">
             <img
               :src="c.image"
               :alt="c.title"
-              class="absolute inset-0 w-full h-full object-cover"
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-900 ease-out group-hover:scale-[1.06]"
             />
-            <div class="absolute inset-0 bg-linear-to-t from-[#162633]/90 to-[#0d1a23]/40" />
+            <div class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent" />
+
+            <!-- Index chip -->
             <span
-              class="absolute bottom-3 left-4 font-mono text-[10px] text-teal-300/90 tracking-[3px] uppercase font-medium z-10"
-              >{{ c.headerLabel }}</span
+              class="absolute top-4 right-4 font-mono text-[10px] tracking-[3px] text-white/80 bg-white/5 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1"
             >
-          </div>
-          <!-- Corpo do card -->
-          <div class="p-6 flex flex-col gap-3">
+              0{{ i + 1 }} / 0{{ cardsData.length }}
+            </span>
+
+            <!-- Label -->
+            <span
+              class="absolute bottom-4 left-4 font-mono text-[10px] text-primary tracking-[3px] uppercase font-semibold"
+            >
+              {{ c.headerLabel }}
+            </span>
+
+            <!-- Icon flutuante -->
             <div
-              class="icon-box w-10 h-10 p-2 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center mb-4 text-teal-500"
+              class="absolute -bottom-5 right-5 w-12 h-12 rounded-xl bg-primary text-dark flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)] transition-all duration-500 group-hover:-translate-y-1 group-hover:rotate-[-4deg]"
             >
-              <component :is="c.icon" :size="20" />
+              <component :is="c.icon" :size="20" stroke-width="2.2" />
             </div>
-            <h3 class="font-display font-bold text-gray-900 text-[16px] mb-2 tracking-tight">
+          </div>
+
+          <!-- Corpo -->
+          <div class="p-6 pt-8 flex flex-col gap-3">
+            <h3
+              class="font-display font-bold text-gray-900 text-[17px] leading-snug tracking-tight"
+            >
               {{ c.title }}
             </h3>
-            <p class="text-gray-500 text-[13px] leading-relaxed mb-4">{{ c.description }}</p>
-            <a
-              href="#"
-              class="inline-flex items-center gap-1.5 text-teal-500 text-[12px] font-display font-semibold no-underline"
-            >
-              {{ t('cards.cta') }}
-              <ArrowRight :size="14" />
-            </a>
+            <p class="text-gray-500 text-[13px] leading-[1.7]">{{ c.description }}</p>
+
+            <div class="mt-4 pt-5 border-t border-gray-100 flex items-center justify-between">
+              <a
+                href="#"
+                class="card-cta relative inline-flex items-center gap-2 text-primary text-[12px] font-display font-semibold tracking-wide no-underline"
+              >
+                <span>{{ t('cards.cta') }}</span>
+                <ArrowRight :size="14" class="arrow-slide" />
+              </a>
+              <span class="font-mono text-[10px] text-gray-300 tracking-[2px]">
+                {{ c.headerLabel.split(' ')[0] }}
+              </span>
+            </div>
           </div>
         </article>
       </div>
@@ -448,41 +523,59 @@ watch(locale, () => {
             :style="{ transform: `translateX(-${currentCardIndex * 100}%)` }"
           >
             <article
-              v-for="c in cardsData"
+              v-for="(c, i) in cardsData"
               :key="c.title"
-              class="service-card w-full shrink-0 rounded-2xl border border-gray-200 bg-white overflow-hidden"
+              class="service-card group w-full shrink-0 rounded-2xl border border-gray-200/80 bg-white overflow-hidden"
             >
-              <!-- Header com imagem -->
-              <div class="h-40 relative overflow-hidden">
+              <!-- Imagem -->
+              <div class="relative overflow-hidden aspect-16/10">
                 <img
                   :src="c.image"
                   :alt="c.title"
                   class="absolute inset-0 w-full h-full object-cover"
                 />
-                <div class="absolute inset-0 bg-linear-to-t from-[#162633]/90 to-[#0d1a23]/40" />
+                <div class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent" />
+
                 <span
-                  class="absolute bottom-3 left-4 font-mono text-[10px] text-teal-300/90 tracking-[3px] uppercase font-medium z-10"
-                  >{{ c.headerLabel }}</span
+                  class="absolute top-4 right-4 font-mono text-[10px] tracking-[3px] text-white/80 bg-white/5 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1"
                 >
-              </div>
-              <!-- Corpo do card -->
-              <div class="p-6 flex flex-col gap-3">
+                  0{{ i + 1 }} / 0{{ cardsData.length }}
+                </span>
+
+                <span
+                  class="absolute bottom-4 left-4 font-mono text-[10px] text-primary tracking-[3px] uppercase font-semibold"
+                >
+                  {{ c.headerLabel }}
+                </span>
+
                 <div
-                  class="icon-box w-10 h-10 p-2 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center mb-4 text-teal-500"
+                  class="absolute -bottom-5 right-5 w-12 h-12 rounded-xl bg-primary text-dark flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)]"
                 >
-                  <component :is="c.icon" :size="20" />
+                  <component :is="c.icon" :size="20" stroke-width="2.2" />
                 </div>
-                <h3 class="font-display font-bold text-gray-900 text-[16px] mb-2 tracking-tight">
+              </div>
+
+              <!-- Corpo -->
+              <div class="p-6 pt-8 flex flex-col gap-3">
+                <h3
+                  class="font-display font-bold text-gray-900 text-[17px] leading-snug tracking-tight"
+                >
                   {{ c.title }}
                 </h3>
-                <p class="text-gray-500 text-[13px] leading-relaxed mb-4">{{ c.description }}</p>
-                <a
-                  href="#"
-                  class="inline-flex items-center gap-1.5 text-teal-500 text-[12px] font-semibold no-underline"
-                >
-                  {{ t('cards.cta') }}
-                  <ArrowRight :size="14" />
-                </a>
+                <p class="text-gray-500 text-[13px] leading-[1.7]">{{ c.description }}</p>
+
+                <div class="mt-4 pt-5 border-t border-gray-100 flex items-center justify-between">
+                  <a
+                    href="#"
+                    class="card-cta relative inline-flex items-center gap-2 text-primary text-[12px] font-display font-semibold tracking-wide no-underline"
+                  >
+                    <span>{{ t('cards.cta') }}</span>
+                    <ArrowRight :size="14" class="arrow-slide" />
+                  </a>
+                  <span class="font-mono text-[10px] text-gray-300 tracking-[2px]">
+                    {{ c.headerLabel.split(' ')[0] }}
+                  </span>
+                </div>
               </div>
             </article>
           </div>
@@ -611,6 +704,19 @@ watch(locale, () => {
       <div
         class="absolute -top-48 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full pointer-events-none cta-glow"
       />
+
+      <!-- Ghost brand type -->
+      <div
+        class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+        aria-hidden="true"
+      >
+        <span
+          class="cta-ghost font-display font-extrabold tracking-[-0.05em] whitespace-nowrap leading-[0.8]"
+        >
+          EMMITEC&nbsp;HEALTH
+        </span>
+      </div>
+
       <div
         ref="ctaInner"
         class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10 flex flex-col gap-5"
@@ -655,6 +761,38 @@ watch(locale, () => {
 }
 .cta-glow {
   background: radial-gradient(circle, rgba(17, 211, 211, 0.08) 0%, transparent 70%);
+}
+
+/* CTA ghost headline */
+.cta-ghost {
+  font-size: clamp(120px, 20vw, 340px);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+  letter-spacing: -0.05em;
+}
+
+/* Service card CTA — underline animado + seta desliza */
+.card-cta {
+  position: relative;
+}
+.card-cta::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.35s ease;
+}
+.service-card:hover .card-cta::after {
+  width: 100%;
+}
+.arrow-slide {
+  transition: transform 0.35s ease;
+}
+.service-card:hover .arrow-slide {
+  transform: translateX(4px);
 }
 
 /* Split visual placeholder */
