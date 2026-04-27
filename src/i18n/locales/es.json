@@ -95,6 +95,96 @@
       "cases": "Ver casos de éxito"
     }
   },
+  "about": {
+    "hero": {
+      "badge": "Quiénes somos",
+      "title": "Conoce EmmiTec: Transformando Vidas con Salud",
+      "subtitle": "Emilio Machado fundó EmmiTec inspirado por el viaje de su madre contra el cáncer en 2017. Enfrentando desafíos como visitas médicas constantes y registros dispersos, creó un registro digital para centralizar información y mejorar la atención, incluso a distancia. Esta innovación dio origen a la plataforma de monitoreo remoto de pacientes (RPM), que recolecta datos en tiempo real, ayuda en la intervención temprana y mejora los resultados clínicos y la calidad del cuidado al paciente, transformando la atención médica globalmente.",
+      "imageAlt": "Equipo Emmitec Health",
+      "button": {
+        "contact": "Ponte en contacto",
+        "careers": "Trabaja con nosotros"
+      }
+    },
+    "story": {
+      "badge": "Nuestra historia",
+      "title": "El Viaje de EmmiTec",
+      "paragraph1": "El viaje de EmmiTec comenzó en 2006, desarrollando tecnología de punta para sectores como finanzas y retail, en asociación con grandes innovadores como Apple. Sin embargo, en 2017, nuestra historia cambió hacia algo más personal y profundo. Ese año, Emilio Machado, nuestro fundador, enfrentó la dura batalla de su madre contra el cáncer.",
+      "paragraph2": "Más allá del impacto emocional, gestionar su atención fue un desafío inmenso: visitas médicas constantes, horarios de medicamentos y registros de salud dispersos. La distancia geográfica lo hacía todo aún más difícil—mientras su madre estaba en Brasil, Emilio vivía en Estados Unidos. Determinado a marcar la diferencia, desarrolló una plataforma de monitoreo remoto que permitía seguir los datos de salud a distancia. Esta solución no solo mejoró la calidad de vida de su madre, sino que dio a Emilio la oportunidad de apoyarla incluso desde lejos. En 2018, EmmiTec decidió enfocarse exclusivamente en la salud, vendiendo sus otras divisiones para transformar la atención médica y ayudar a más familias a enfrentar desafíos similares.",
+      "quote": "La tecnología más poderosa es aquella que cuida a las personas que amamos."
+    },
+    "mission": {
+      "badge": "Nuestra misión y visión",
+      "title": "Nuestra Misión y Visión en EmmiTec",
+      "description": "En EmmiTec, creemos que la salud va más allá de un servicio: es un derecho esencial, perteneciente a todos, independientemente de dónde estén. Soñamos con un mundo donde la distancia, las circunstancias o los recursos no definan la calidad del cuidado recibido. Esta visión nos motiva a desarrollar soluciones innovadoras que empoderan a las personas para asumir el control de su salud. EmmiTec Health es más que una plataforma; es un compromiso de ofrecer cuidados integrados, centrados en el paciente, que sean accesibles y profundamente humanos. Nuestra misión es derribar barreras en la atención, garantizando que cada paciente sea valorizado, apoyado y cuidado según sus necesidades. Porque cuando se trata de salud, no hay 'otros' u 'otro momento'. El cambio comienza ahora, y estamos listos para liderarlo.",
+      "item1": "Democratizar el acceso a la salud de calidad",
+      "item2": "Reducir barreras geográficas en la atención médica",
+      "item3": "Empoderar pacientes con tecnología inteligente"
+    },
+    "vision": {
+      "badge": "Reconocimientos",
+      "title": "Reconocimientos que Inspiran Confianza",
+      "description": "En EmmiTec, nuestro compromiso con la innovación y la excelencia en la atención de la salud se refleja en los testimonios de nuestros socios y en los premios que recibimos. Cada logro refuerza nuestra misión de transformar vidas a través del Monitoreo Remoto de Pacientes (RPM). Explore las historias de éxito y los reconocimientos que demuestran el impacto positivo de nuestras soluciones en el sector de la salud.",
+      "button1": "Saber Más",
+      "button2": "Solicitar demo"
+    },
+    "values": {
+      "badge": "Principios",
+      "title": "Cómo el Monitoreo Remoto de Pacientes Mejora la Salud y la Eficiencia",
+      "subtitle": "El Monitoreo Remoto de Pacientes (RPM) es una solución innovadora que transforma la atención médica, permitiendo el seguimiento continuo y personalizado de los pacientes. Este enfoque proactivo mejora la salud, reduce complicaciones y aumenta la eficiencia hospitalaria, promoviendo mayor seguridad y satisfacción.",
+      "card1": {
+        "title": "Salud Cardiovascular",
+        "description": "El RPM permite el monitoreo remoto de la presión arterial y otros signos vitales importantes para el cuidado de pacientes con enfermedades cardiovasculares. La tecnología ayuda a detectar cambios precoces, promoviendo intervenciones más rápidas y reduciendo las admisiones hospitalarias evitables."
+      },
+      "card2": {
+        "title": "Cuidados Post-Operatorios",
+        "description": "Monitorear los signos vitales después de cirugías ayuda a prevenir complicaciones y readmisiones. Los pacientes reportan menos dolor, mayor seguridad y una recuperación más tranquila durante el período crítico post-operatorio."
+      },
+      "card3": {
+        "title": "Monitoreo de Diabetes",
+        "description": "Los dispositivos conectados rastrean los niveles de glucosa y presión arterial, alertando sobre cambios y ofreciendo orientación personalizada. Esto garantiza un control efectivo y mejora la calidad de vida."
+      },
+      "card4": {
+        "title": "Tratamiento del Cáncer",
+        "description": "El RPM permite el seguimiento cercano del progreso del tratamiento y signos vitales, promoviendo apoyo continuo. Este enfoque mejora la atención y proporciona más comodidad a los pacientes con cáncer."
+      }
+    },
+    "timeline": {
+      "badge": "Nuestro viaje",
+      "title": "Evolución Emmitec",
+      "2018": {
+        "title": "Fundación",
+        "desc": "Nacimiento de Emmitec con la misión de conectar salud y tecnología"
+      },
+      "2020": {
+        "title": "Primera plataforma",
+        "desc": "Lanzamiento del primer MVP de monitoreo remoto"
+      },
+      "2022": {
+        "title": "Expansión nacional",
+        "desc": "Crecimiento a 500+ clínicas asociadas en todo Brasil"
+      },
+      "2024": {
+        "title": "Inteligencia Artificial",
+        "desc": "Integración de IA predictiva para diagnósticos preventivos"
+      }
+    },
+    "stats": {
+      "founded": "Fundación",
+      "clinics": "Clínicas asociadas",
+      "patients": "Pacientes atendidos",
+      "team": "Colaboradores"
+    },
+    "cta": {
+      "badge": "Sé parte",
+      "title": "Únete a la revolución de la salud digital",
+      "subtitle": "Ya seas paciente, profesional de la salud o clínica, hay un lugar para ti en este viaje de transformación.",
+      "button": {
+        "contact": "Habla con nosotros",
+        "learn": "Conocer soluciones"
+      }
+    }
+  },
   "aria": {
     "goToCard": "Ir al card {index}"
   },

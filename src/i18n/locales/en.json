@@ -95,6 +95,96 @@
       "cases": "See success stories"
     }
   },
+  "about": {
+    "hero": {
+      "badge": "Who we are",
+      "title": "Meet EmmiTec: Transforming Lives with Healthcare",
+      "subtitle": "Emilio Machado founded EmmiTec inspired by his mother's journey against cancer in 2017. Facing challenges such as constant medical visits and scattered records, he created a digital registry to centralize information and improve care, even from a distance. This innovation gave rise to the Remote Patient Monitoring (RPM) platform, which collects real-time data, aids early intervention, and improves clinical outcomes and quality of patient care, transforming healthcare globally.",
+      "imageAlt": "Emmitec Health team",
+      "button": {
+        "contact": "Get in touch",
+        "careers": "Join our team"
+      }
+    },
+    "story": {
+      "badge": "Our story",
+      "title": "The EmmiTec Journey",
+      "paragraph1": "EmmiTec's journey began in 2006, developing cutting-edge technology for sectors like finance and retail, in partnership with major innovators like Apple. However, in 2017, our story shifted to something more personal and profound. That year, Emilio Machado, our founder, faced his mother's difficult battle against cancer.",
+      "paragraph2": "Beyond the emotional impact, managing her care was an immense challenge: constant medical visits, medication schedules, and scattered health records. The geographical distance made everything even harder—while his mother was in Brazil, Emilio lived in the United States. Determined to make a difference, he developed a remote monitoring platform that allowed tracking health data from afar. This solution not only improved his mother's quality of life but gave Emilio the chance to support her even from a distance. In 2018, EmmiTec decided to focus exclusively on healthcare, selling its other divisions to transform medical care and help more families face similar challenges.",
+      "quote": "The most powerful technology is that which cares for the people we love."
+    },
+    "mission": {
+      "badge": "Our mission & vision",
+      "title": "Our Mission and Vision at EmmiTec",
+      "description": "At EmmiTec, we believe that health goes beyond a service—it is an essential right, belonging to everyone, regardless of where they are. We dream of a world where distance, circumstances, or resources do not define the quality of care received. This vision drives us to develop innovative solutions that empower people to take control of their health. EmmiTec Health is more than a platform; it is a commitment to delivering integrated, patient-centered care that is accessible and deeply human. Our mission is to break down barriers in healthcare, ensuring that every patient is valued, supported, and cared for according to their needs. Because when it comes to health, there are no 'others' or 'another time'. Change starts now, and we are ready to lead it.",
+      "item1": "Democratize access to quality healthcare",
+      "item2": "Reduce geographical barriers in medical care",
+      "item3": "Empower patients with intelligent technology"
+    },
+    "vision": {
+      "badge": "Awards",
+      "title": "Awards that Inspire Confidence",
+      "description": "At EmmiTec, our commitment to innovation and excellence in healthcare is reflected in the testimonials of our partners and the awards we receive. Each achievement reinforces our mission to transform lives through Remote Patient Monitoring (RPM). Explore the success stories and recognitions that prove the positive impact of our solutions in the healthcare sector.",
+      "button1": "Learn More",
+      "button2": "Request a demo"
+    },
+    "values": {
+      "badge": "Principles",
+      "title": "How Remote Patient Monitoring Improves Health and Efficiency",
+      "subtitle": "Remote Patient Monitoring (RPM) is an innovative solution that transforms medical care, enabling continuous and personalized patient monitoring. This proactive approach improves health, reduces complications, and increases hospital efficiency, promoting greater safety and satisfaction.",
+      "card1": {
+        "title": "Cardiovascular Health",
+        "description": "RPM enables remote monitoring of blood pressure and other vital signs important for the care of patients with cardiovascular diseases. The technology helps detect early changes, promoting faster interventions and reducing avoidable hospital admissions."
+      },
+      "card2": {
+        "title": "Post-Operative Care",
+        "description": "Monitoring vital signs after surgery helps prevent complications and readmissions. Patients report less pain, greater security, and a smoother recovery during the critical post-operative period."
+      },
+      "card3": {
+        "title": "Diabetes Monitoring",
+        "description": "Connected devices track glucose levels and blood pressure, alerting about changes and offering personalized guidance. This ensures effective control and improves quality of life."
+      },
+      "card4": {
+        "title": "Cancer Treatment",
+        "description": "RPM enables close monitoring of treatment progress and vital signs, promoting continuous support. This approach improves care and provides more comfort to cancer patients."
+      }
+    },
+    "timeline": {
+      "badge": "Our journey",
+      "title": "Emmitec Evolution",
+      "2018": {
+        "title": "Foundation",
+        "desc": "Birth of Emmitec with the mission to connect health and technology"
+      },
+      "2020": {
+        "title": "First platform",
+        "desc": "Launch of the first remote monitoring MVP"
+      },
+      "2022": {
+        "title": "National expansion",
+        "desc": "Growth to 500+ partner clinics across Brazil"
+      },
+      "2024": {
+        "title": "Artificial Intelligence",
+        "desc": "Integration of predictive AI for preventive diagnostics"
+      }
+    },
+    "stats": {
+      "founded": "Founded",
+      "clinics": "Partner clinics",
+      "patients": "Patients served",
+      "team": "Team members"
+    },
+    "cta": {
+      "badge": "Join us",
+      "title": "Join the digital health revolution",
+      "subtitle": "Whether you're a patient, healthcare professional, or clinic, there's a place for you in this transformation journey.",
+      "button": {
+        "contact": "Contact us",
+        "learn": "Explore solutions"
+      }
+    }
+  },
   "aria": {
     "goToCard": "Go to card {index}"
   },

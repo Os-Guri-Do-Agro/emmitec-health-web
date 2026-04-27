@@ -39,7 +39,7 @@ const navItems = computed(() => [
     label: t('header.nav.about'),
     href: '#',
     children: [
-      { label: t('header.nav.ourHistory'), href: '#' },
+      { label: t('header.nav.ourHistory'), href: '/about' },
       { label: t('header.nav.whatIsRpm'), href: '#' },
       { label: t('header.nav.benefits'), href: '#' },
       { label: t('header.nav.successStories'), href: '#' },
@@ -88,7 +88,7 @@ onUnmounted(() => {
         : 'h-16 bg-transparent',
     ]"
   >
-    <a href="#" class="flex items-center no-underline">
+    <a href="/" class="flex items-center no-underline">
       <img
         src="/Logo Emmitec Horizontal.png"
         alt="Emmitec Health"
