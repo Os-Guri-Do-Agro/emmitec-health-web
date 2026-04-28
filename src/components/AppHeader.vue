@@ -40,14 +40,13 @@ const navItems = computed(() => [
     href: '#',
     children: [
       { label: t('header.nav.ourHistory'), href: '/about' },
-      { label: t('header.nav.whatIsRpm'), href: '#' },
-      { label: t('header.nav.benefits'), href: '#' },
-      { label: t('header.nav.successStories'), href: '#' },
-      { label: t('header.nav.apps'), href: '#' },
+      { label: t('header.nav.whatIsRpm'), href: '/what-is-rpm' },
+      { label: t('header.nav.benefits'), href: '/benefits' },
+      { label: t('header.nav.apps'), href: '/apps' },
     ],
   },
-  { label: t('header.nav.blog'), href: '#', children: null },
-  { label: t('header.nav.equipment'), href: '#', children: null },
+  { label: t('header.nav.blog'), href: '/blog', children: null },
+  { label: t('header.nav.equipment'), href: '/equipment', children: null },
 ])
 
 function toggleSobreDropdown() {

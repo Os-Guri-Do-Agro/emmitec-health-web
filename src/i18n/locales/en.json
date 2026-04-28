@@ -185,6 +185,366 @@
       }
     }
   },
+  "whatIsRpm": {
+    "hero": {
+      "badge": "What is RPM",
+      "title": "Real-time Remote Patient Monitoring",
+      "subtitle": "RPM is the technology that collects clinical data from patients outside the hospital and sends it, in real time, to the healthcare team — enabling faster interventions and continuous care.",
+      "button": {
+        "primary": "Request demo",
+        "secondary": "Talk to a specialist"
+      }
+    },
+    "definition": {
+      "badge": "Definition",
+      "title": "Health monitored beyond the clinic walls",
+      "paragraph1": "Remote Patient Monitoring (RPM) uses connected medical devices to track vital signs and clinical indicators directly from the patient's home. Data is transmitted in real time to the platform, where AI algorithms identify trends and alert the team about relevant events.",
+      "paragraph2": "With RPM, chronic conditions, post-op care, and preventive health gain continuous follow-up — without the patient having to leave home. More autonomy, fewer unnecessary visits, and clinical decisions based on real data.",
+      "cardLabel": "Real-time heart rate"
+    },
+    "process": {
+      "badge": "How it works",
+      "title": "Four steps to truly connected care",
+      "subtitle": "From the device on the patient to clinical decision-making, every step is designed to deliver reliable data and timely actions.",
+      "step1": {
+        "title": "Collect",
+        "desc": "Certified medical devices capture vital signs like blood pressure, oximetry, glucose, and ECG."
+      },
+      "step2": {
+        "title": "Transmit",
+        "desc": "Data is sent via Bluetooth or Wi-Fi to the platform with end-to-end encryption."
+      },
+      "step3": {
+        "title": "AI analysis",
+        "desc": "Algorithms identify abnormal patterns, trends, and flag potential clinical risks."
+      },
+      "step4": {
+        "title": "Alert and act",
+        "desc": "Clinical teams receive prioritized notifications and act before situations escalate."
+      }
+    },
+    "components": {
+      "badge": "Components",
+      "title": "The pillars of a complete RPM solution",
+      "card1": {
+        "title": "Connected medical devices",
+        "desc": "Certified equipment that measures vital signs with clinical accuracy and sends data automatically."
+      },
+      "card2": {
+        "title": "Patient and clinical apps",
+        "desc": "Simple interfaces for patients to track their health and for teams to manage care."
+      },
+      "card3": {
+        "title": "AI-powered platform",
+        "desc": "Intelligent layer that processes millions of data points and generates actionable clinical insights."
+      },
+      "card4": {
+        "title": "Security and compliance",
+        "desc": "HIPAA, LGPD, and HL7/FHIR standards ensure data privacy and interoperability."
+      }
+    },
+    "who": {
+      "badge": "Who it's for",
+      "title": "RPM serves a wide range of care profiles",
+      "item1": "Cardiac",
+      "item2": "Post-op",
+      "item3": "Diabetic",
+      "item4": "Elderly"
+    },
+    "cta": {
+      "badge": "Next step",
+      "title": "Ready to deploy RPM at your institution?",
+      "subtitle": "Our team helps you design a tailored pilot for your clinical and operational reality.",
+      "button": {
+        "primary": "Schedule demo",
+        "secondary": "Discover apps"
+      }
+    }
+  },
+  "benefitsPage": {
+    "hero": {
+      "badge": "RPM Benefits",
+      "title": "Results that transform patients, teams, and operations",
+      "subtitle": "More quality of life for patients, faster clinical decisions for doctors, and efficiency for the institution. Discover the proven gains of RPM.",
+      "button": {
+        "primary": "Request demo",
+        "secondary": "View cases"
+      }
+    },
+    "patient": {
+      "badge": "For the patient",
+      "title": "Continuous care, without leaving home",
+      "subtitle": "More autonomy, fewer trips, and the peace of mind of knowing your health is being closely monitored every day.",
+      "card1": {
+        "title": "Comfort of home",
+        "desc": "Continuous follow-up in a familiar environment, with hospital quality and less stress."
+      },
+      "card2": {
+        "title": "24/7 access",
+        "desc": "Your health monitored at all times, with alerts that reach the clinical team in seconds."
+      },
+      "card3": {
+        "title": "Better quality of life",
+        "desc": "Fewer in-person visits, more time with what matters, and greater daily wellbeing."
+      },
+      "card4": {
+        "title": "Humanized care",
+        "desc": "Technology connects patient and team, strengthening the therapeutic bond."
+      }
+    },
+    "clinic": {
+      "badge": "For the institution",
+      "title": "More efficiency, fewer readmissions, better outcomes",
+      "description": "Clinical teams gain productivity, managers reduce operational costs, and the institution gains a competitive edge in the healthcare market.",
+      "item1": "Up to 38% reduction in hospital readmissions",
+      "item2": "62% increase in treatment adherence",
+      "item3": "Optimized medical schedule with focus on critical cases",
+      "item4": "Clinical decisions based on real, up-to-date data",
+      "item5": "Competitive edge in the healthcare market",
+      "button": "Request proposal"
+    },
+    "stats": {
+      "badge": "Proven impact",
+      "title": "Numbers that speak for themselves",
+      "readmissions": "Fewer readmissions",
+      "adherence": "More adherence",
+      "satisfaction": "Satisfaction",
+      "monitoring": "Monitoring"
+    },
+    "comparison": {
+      "badge": "Comparison",
+      "title": "Traditional care vs. RPM-enabled care",
+      "feature": "Feature",
+      "traditional": "Traditional",
+      "row1": "Continuous monitoring",
+      "row2": "Automatic alerts",
+      "row3": "Real-time data",
+      "row4": "Medical care",
+      "row5": "Early intervention"
+    },
+    "cta": {
+      "badge": "Next step",
+      "title": "Ready to reap these results?",
+      "subtitle": "Schedule a conversation and see how Emmitec's RPM can adapt to your institution's reality.",
+      "button": {
+        "primary": "Talk to a specialist",
+        "secondary": "View cases"
+      }
+    }
+  },
+  "appsPage": {
+    "hero": {
+      "badge": "Apps",
+      "title": "Apps that connect patient, team, and care",
+      "subtitle": "Two apps designed for different audiences, integrated on the same platform. For patients, simplicity. For clinical teams, full control.",
+      "button": {
+        "primary": "Download now",
+        "secondary": "See features"
+      }
+    },
+    "patient": {
+      "badge": "Patient app",
+      "title": "Your health in your pocket, every day",
+      "description": "Track your vital signs, get medication reminders, chat with your team, and see your progress — all in a simple, friendly interface.",
+      "feature1": "Clear visualization of vital signs and trends",
+      "feature2": "Medication and exam reminders",
+      "feature3": "Direct chat with your healthcare team",
+      "feature4": "Complete history and shareable reports"
+    },
+    "clinical": {
+      "badge": "Clinical app",
+      "title": "Your entire patient roster in one place",
+      "description": "Smart dashboard with risk-based prioritization, real-time alerts, and access to each patient's complete history. Decide with confidence, anywhere.",
+      "feature1": "Patient list prioritized by clinical risk",
+      "feature2": "Real-time alerts with full context",
+      "feature3": "Notes, prescriptions, and integrated teleconsultation",
+      "feature4": "Automatic reports for the medical record",
+      "button": "Request access"
+    },
+    "features": {
+      "badge": "Features",
+      "title": "Everything you need in both apps",
+      "subtitle": "Features designed to be useful day-to-day, without unnecessary complexity.",
+      "card1": {
+        "title": "Smart notifications",
+        "desc": "Alerts prioritized by relevance, no spam, always at the right moment."
+      },
+      "card2": {
+        "title": "HIPAA security",
+        "desc": "End-to-end encryption and full compliance with data legislation."
+      },
+      "card3": {
+        "title": "Instant sync",
+        "desc": "Data updated in real time across all devices and the web platform."
+      },
+      "card4": {
+        "title": "Integrated messaging",
+        "desc": "Secure chat between patient and clinical team, with full history."
+      },
+      "card5": {
+        "title": "Schedule and reminders",
+        "desc": "Appointments, exams, and medications organized in a single calendar."
+      },
+      "card6": {
+        "title": "Medication control",
+        "desc": "Reminders, adherence tracking, and drug interaction alerts."
+      }
+    },
+    "cta": {
+      "badge": "Available now",
+      "title": "Download and get started in minutes",
+      "subtitle": "Available for iOS and Android. Quick setup and dedicated support to get you started right.",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    }
+  },
+  "blogPage": {
+    "hero": {
+      "badge": "Blog",
+      "title": "Content on digital health, RPM, and clinical innovation",
+      "subtitle": "Articles, cases, and analyses produced by the Emmitec team and guest experts. Everything about the present and future of connected healthcare.",
+      "searchPlaceholder": "Search articles..."
+    },
+    "categories": {
+      "all": "All",
+      "rpm": "RPM",
+      "tech": "Technology",
+      "cases": "Cases",
+      "laws": "Regulation"
+    },
+    "featured": {
+      "badge": "Featured",
+      "title": "How RPM is redefining chronic disease care in Brazil",
+      "excerpt": "A deep analysis of the first results from hospital networks that adopted remote monitoring at scale — and what we've learned along the way.",
+      "author": "Dr. Ana Souza",
+      "role": "Medical director",
+      "date": "Apr 12, 2026"
+    },
+    "articles": {
+      "badge": "Latest publications",
+      "title": "More for you to read",
+      "empty": "No articles found for this filter.",
+      "a1": {
+        "title": "5 medical devices transforming RPM in 2026",
+        "excerpt": "Discover the most promising equipment and how to integrate it into clinical workflows.",
+        "date": "Apr 8, 2026"
+      },
+      "a2": {
+        "title": "Best practices for deploying RPM in public hospitals",
+        "excerpt": "Lessons learned from pilot projects and recommendations for managers.",
+        "date": "Apr 2, 2026"
+      },
+      "a3": {
+        "title": "Case: how a clinic cut readmissions by 40% in 6 months",
+        "excerpt": "A cardiology network shares its journey with the Emmitec platform.",
+        "date": "Mar 28, 2026"
+      },
+      "a4": {
+        "title": "HIPAA and health data: what changes for clinics in 2026",
+        "excerpt": "Regulatory updates and how to align your operation with security.",
+        "date": "Mar 20, 2026"
+      },
+      "a5": {
+        "title": "Predictive AI: separating hype from real clinical application",
+        "excerpt": "Where artificial intelligence actually adds value in monitoring.",
+        "date": "Mar 15, 2026"
+      },
+      "a6": {
+        "title": "Patient engagement: the factor that defines RPM success",
+        "excerpt": "Practical strategies to increase adherence and clinical outcomes.",
+        "date": "Mar 10, 2026"
+      }
+    },
+    "cta": {
+      "badge": "Newsletter",
+      "title": "Get our best content in your inbox",
+      "subtitle": "Once a week, no spam. Trends, cases, and analyses on digital health straight to your inbox.",
+      "placeholder": "Enter your email",
+      "button": "Subscribe"
+    }
+  },
+  "equipmentPage": {
+    "hero": {
+      "badge": "Integrated equipment",
+      "title": "Over 200 medical devices connected to the platform",
+      "subtitle": "We work with the leading manufacturers in the market to ensure flexibility, clinical accuracy, and native integration with the Emmitec platform.",
+      "button": {
+        "primary": "View full catalog",
+        "secondary": "Talk to a specialist"
+      }
+    },
+    "categories": {
+      "badge": "Categories",
+      "title": "Equipment for every clinical need",
+      "all": "All",
+      "cardio": "Cardiovascular",
+      "metabolic": "Metabolic",
+      "respiratory": "Respiratory",
+      "wearables": "Wearables"
+    },
+    "devices": {
+      "d1": {
+        "name": "Blood Pressure Monitor",
+        "desc": "Automatic readings with Bluetooth transmission and continuous record on the platform."
+      },
+      "d2": {
+        "name": "Portable ECG",
+        "desc": "12-lead ECG with direct submission for real-time clinical analysis."
+      },
+      "d3": {
+        "name": "Connected Glucose Meter",
+        "desc": "Quick glucose readings with automatic sync and intelligent alerts."
+      },
+      "d4": {
+        "name": "Bioimpedance Scale",
+        "desc": "Full body composition with Wi-Fi integration and longitudinal reports."
+      },
+      "d5": {
+        "name": "Pulse Oximeter",
+        "desc": "SpO₂ and heart rate monitoring with high accuracy."
+      },
+      "d6": {
+        "name": "Clinical Smartwatch",
+        "desc": "Wearable with integrated ECG, oximetry, sleep, and physical activity."
+      },
+      "d7": {
+        "name": "Smart Thermometer",
+        "desc": "Contactless temperature measurement with continuous history on the platform."
+      },
+      "d8": {
+        "name": "24h Holter",
+        "desc": "Continuous cardiac monitoring with automatic upload after the exam."
+      }
+    },
+    "compatibility": {
+      "badge": "Compatibility",
+      "title": "Native integration with industry standards",
+      "description": "Our platform is built on open industry standards, ensuring interoperability with hospital systems, EHRs, and new devices.",
+      "item1": "Bluetooth Low Energy 5.0+ for low power consumption",
+      "item2": "Wi-Fi 2.4 GHz and 5 GHz for clinics and home environments",
+      "item3": "HL7 and FHIR for integration with electronic health records",
+      "item4": "REST APIs and webhooks to connect custom systems",
+      "button": "View technical docs",
+      "devices": "Devices"
+    },
+    "cert": {
+      "badge": "Certifications",
+      "title": "Certified and compliant equipment",
+      "c1": "Brazil",
+      "c2": "United States",
+      "c3": "European Union",
+      "c4": "Medical quality"
+    },
+    "cta": {
+      "badge": "Next step",
+      "title": "Didn't find the device you're looking for?",
+      "subtitle": "We continuously evaluate new equipment. Talk to our team and explore the options available for your operation.",
+      "button": {
+        "primary": "Talk to a specialist",
+        "secondary": "Request catalog"
+      }
+    }
+  },
   "aria": {
     "goToCard": "Go to card {index}"
   },
