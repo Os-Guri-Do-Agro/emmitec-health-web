@@ -27,6 +27,13 @@ import headerIMG from '@/assets/home/header_img.png'
 
 const { t, locale } = useI18n()
 
+const calendlyUrl = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
+})
+
 gsap.registerPlugin(ScrollTrigger)
 
 // ── HERO ──
@@ -354,11 +361,13 @@ watch(locale, async () => {
             </p>
 
             <div ref="heroActions" class="flex gap-4 flex-wrap justify-start">
-              <Button
-                :label="t('hero.button.demo')"
-                unstyled
-                class="btn-primary font-display font-bold"
-              />
+              <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+                <Button
+                  label="Solicitar Demonstração"
+                  unstyled
+                  class="btn-primary font-display font-bold"
+                />
+              </a>
               <Button
                 :label="t('hero.button.solutions') + ' →'"
                 unstyled
@@ -453,16 +462,18 @@ watch(locale, async () => {
         <article
           v-for="(c, i) in cardsData"
           :key="c.title"
-          class="service-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
+          class="service-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
         >
           <!-- Imagem -->
           <div class="relative overflow-hidden aspect-16/10">
             <img
               :src="c.image"
               :alt="c.title"
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-900 ease-out group-hover:scale-[1.06]"
+              class="absolute inset-0 w-full h-full object-cover"
             />
-            <div class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent" />
+            <div
+              class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent"
+            />
 
             <!-- Index chip -->
             <span
@@ -480,7 +491,7 @@ watch(locale, async () => {
 
             <!-- Icon flutuante -->
             <div
-              class="absolute -bottom-5 right-5 w-12 h-12 rounded-xl bg-primary text-dark flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)] transition-all duration-500 group-hover:-translate-y-1 group-hover:rotate-[-4deg]"
+              class="absolute -bottom-5 right-5 w-12 h-12 rounded-xl bg-primary text-dark flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)] group-hover:-translate-y-1 group-hover:rotate-[-4deg]"
             >
               <component :is="c.icon" :size="20" stroke-width="2.2" />
             </div>
@@ -534,7 +545,9 @@ watch(locale, async () => {
                   :alt="c.title"
                   class="absolute inset-0 w-full h-full object-cover"
                 />
-                <div class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent" />
+                <div
+                  class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent"
+                />
 
                 <span
                   class="absolute top-4 right-4 font-mono text-[10px] tracking-[3px] text-white/80 bg-white/5 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1"

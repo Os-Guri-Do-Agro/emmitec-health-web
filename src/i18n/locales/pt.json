@@ -99,8 +99,12 @@
     "hero": {
       "badge": "Quem somos",
       "title": "Conheça a EmmiTec: Transformando Vidas com Saúde",
-      "subtitle": "Emilio Machado fundou a EmmiTec inspirado pela jornada de sua mãe contra o câncer em 2017. Enfrentando desafios como visitas médicas constantes e registros dispersos, ele criou um registro digital para centralizar informações e melhorar os cuidados, mesmo à distância. Essa inovação deu origem à plataforma de monitoramento remoto de pacientes (RPM), que coleta dados em tempo real, auxilia na intervenção precoce e melhora os desfechos clínicos e a qualidade do cuidado ao paciente, transformando o cuidado médico globalmente.",
+      "subtitle": "Conheça a história e as pessoas por trás da plataforma que está transformando o monitoramento remoto de pacientes no Brasil e no mundo.",
       "imageAlt": "Equipe Emmitec Health",
+      "bio": {
+        "more": "Ler mais",
+        "less": "Ver menos"
+      },
       "button": {
         "contact": "Entre em contato",
         "careers": "Trabalhe conosco"
@@ -109,6 +113,7 @@
     "story": {
       "badge": "Nossa história",
       "title": "A Jornada da EmmiTec",
+      "intro": "Emilio Machado fundou a EmmiTec inspirado pela jornada de sua mãe contra o câncer em 2017. Enfrentando desafios como visitas médicas constantes e registros dispersos, ele criou um registro digital para centralizar informações e melhorar os cuidados, mesmo à distância. Essa inovação deu origem à plataforma de monitoramento remoto de pacientes (RPM), que coleta dados em tempo real, auxilia na intervenção precoce e melhora os desfechos clínicos e a qualidade do cuidado ao paciente, transformando o cuidado médico globalmente.",
       "paragraph1": "A jornada da EmmiTec começou em 2006, desenvolvendo tecnologia de ponta para setores como finanças e varejo, em parceria com grandes inovadores como a Apple. Porém, em 2017, nossa história mudou para algo mais pessoal e profundo. Naquele ano, Emilio Machado, nosso fundador, enfrentou a dura batalha de sua mãe contra o câncer.",
       "paragraph2": "Além do impacto emocional, o desafio de gerenciar seu atendimento era imenso: visitas médicas constantes, horários de medicamentos e registros de saúde dispersos. A distância geográfica tornava tudo ainda mais difícil – enquanto sua mãe estava no Brasil, Emilio vivia nos Estados Unidos. Determinado a fazer a diferença, ele desenvolveu uma plataforma de monitoramento remoto que permitia acompanhar os dados de saúde à distância. Essa solução não apenas melhorou a qualidade de vida de sua mãe, mas deu a Emilio a chance de apoiá-la mesmo de longe. Em 2018, a EmmiTec decidiu focar exclusivamente na saúde, vendendo suas outras divisões para transformar o cuidado médico e ajudar mais famílias a enfrentarem desafios semelhantes.",
       "quote": "A tecnologia mais poderosa é aquela que cuida das pessoas que amamos."
@@ -173,7 +178,8 @@
       "founded": "Fundação",
       "clinics": "Clínicas parceiras",
       "patients": "Pacientes atendidos",
-      "team": "Colaboradores"
+      "team": "Colaboradores",
+      "founder": "Fundador"
     },
     "cta": {
       "badge": "Faça parte",
@@ -246,6 +252,7 @@
     "who": {
       "badge": "Para quem",
       "title": "RPM atende perfis variados de cuidado",
+      "subtitle": "Solução adaptável para diferentes perfis de saúde, do paciente crônico ao pós-operatório.",
       "item1": "Cardíacos",
       "item2": "Pós-operatório",
       "item3": "Diabéticos",
@@ -333,67 +340,72 @@
     }
   },
   "appsPage": {
+    "suite": {
+      "badge": "Nossa suite",
+      "title": "Conheça os aplicativos EmmiTec",
+      "subtitle": "Desenvolvidos para diferentes cenários de cuidado, todos sob os mesmos padrões internacionais de qualidade, segurança e interoperabilidade."
+    },
     "hero": {
       "badge": "Aplicativos",
-      "title": "Apps que conectam paciente, equipe e cuidado",
-      "subtitle": "Dois aplicativos pensados para públicos diferentes, integrados na mesma plataforma. Para o paciente, simplicidade. Para a equipe clínica, controle total.",
+      "title": "Apps que definem novos padrões para a saúde digital",
+      "subtitle": "Na EmmiTec.Health, desenvolvemos aplicativos que seguem os mais altos padrões internacionais de qualidade, segurança e interoperabilidade — certificados pelas principais autoridades regulatórias do mundo.",
       "button": {
-        "primary": "Baixar agora",
-        "secondary": "Ver funcionalidades"
+        "primary": "Solicitar Demonstração",
+        "secondary": "Conhecer a plataforma"
       }
     },
     "patient": {
-      "badge": "App do paciente",
-      "title": "Sua saúde no bolso, todos os dias",
-      "description": "Acompanhe seus sinais vitais, receba lembretes de medicação, converse com sua equipe e veja sua evolução — tudo em uma interface simples e amigável.",
-      "feature1": "Visualização clara de sinais vitais e tendências",
-      "feature2": "Lembretes de medicação e exames",
-      "feature3": "Chat direto com sua equipe de saúde",
-      "feature4": "Histórico completo e relatórios para compartilhar"
+      "badge": "Padrão internacional",
+      "title": "Desenvolvidos sob os mais rígidos padrões do mercado de saúde",
+      "description": "Na EmmiTec.Health, desenvolvemos aplicativos que seguem os mais altos padrões internacionais de qualidade, segurança e interoperabilidade. Nossos apps são compatíveis com dispositivos médicos certificados por autoridades como FDA (EUA), ANVISA (Brasil), CE (Europa) e MHRA (Reino Unido), permitindo o monitoramento remoto de pacientes com precisão, segurança e total integração à rotina clínica.",
+      "feature1": "Compatível com dispositivos certificados FDA, ANVISA, CE e MHRA",
+      "feature2": "Conformidade com LGPD, HIPAA e padrões internacionais de privacidade",
+      "feature3": "Interoperabilidade nativa com padrões HL7 e FHIR",
+      "feature4": "Criptografia ponta a ponta e autenticação segura de acesso"
     },
     "clinical": {
-      "badge": "App clínico",
-      "title": "Toda a sua carteira de pacientes em um só lugar",
-      "description": "Painel inteligente com priorização por risco, alertas em tempo real e acesso ao histórico completo de cada paciente. Decida com confiança, em qualquer lugar.",
-      "feature1": "Lista de pacientes priorizada por risco clínico",
-      "feature2": "Alertas em tempo real com contexto completo",
-      "feature3": "Anotações, prescrições e teleconsulta integradas",
-      "feature4": "Relatórios automáticos para o prontuário",
+      "badge": "Plataforma modular",
+      "title": "Agnóstica em hardware, adaptável a qualquer cenário de cuidado",
+      "description": "Como nossa plataforma é modular e agnóstica em relação a hardware, trabalhamos com uma ampla variedade de dispositivos integrados — permitindo que o profissional de saúde escolha as melhores soluções para cada cenário de cuidado.",
+      "feature1": "Compatível com mais de 200 dispositivos médicos do mercado",
+      "feature2": "Integração com os principais sistemas de prontuário eletrônico",
+      "feature3": "Arquitetura modular para escalar conforme a necessidade",
+      "feature4": "APIs abertas para conectar soluções customizadas",
       "button": "Solicitar acesso"
     },
     "features": {
-      "badge": "Funcionalidades",
-      "title": "Tudo que você precisa em ambos os apps",
-      "subtitle": "Recursos pensados para serem úteis no dia a dia, sem complexidade desnecessária.",
+      "badge": "Diferenciais",
+      "title": "O que torna nossos aplicativos únicos",
+      "subtitle": "Uma plataforma construída para atender os requisitos mais rigorosos do mercado de saúde, com flexibilidade para cada realidade clínica.",
       "card1": {
-        "title": "Notificações inteligentes",
-        "desc": "Alertas priorizados por relevância, sem spam, sempre no momento certo."
+        "title": "Certificação internacional",
+        "desc": "Conformidade com FDA, ANVISA, CE e MHRA — os principais órgãos regulatórios de saúde do mundo."
       },
       "card2": {
-        "title": "Segurança LGPD",
-        "desc": "Criptografia ponta a ponta e total conformidade com a legislação de dados."
+        "title": "Segurança de dados",
+        "desc": "LGPD, HIPAA e GDPR com criptografia de ponta a ponta e controle de acesso granular."
       },
       "card3": {
-        "title": "Sincronização instantânea",
-        "desc": "Dados atualizados em tempo real entre todos os dispositivos e a plataforma web."
+        "title": "Interoperabilidade",
+        "desc": "Integração nativa com padrões HL7 e FHIR para conectar com qualquer sistema hospitalar."
       },
       "card4": {
-        "title": "Mensagens integradas",
-        "desc": "Chat seguro entre paciente e equipe clínica, com histórico completo."
+        "title": "Plataforma modular",
+        "desc": "Arquitetura flexível que cresce com sua operação sem precisar trocar sistemas."
       },
       "card5": {
-        "title": "Agenda e lembretes",
-        "desc": "Consultas, exames e medicamentos organizados em um único calendário."
+        "title": "Agnóstico em hardware",
+        "desc": "Compatível com uma ampla variedade de dispositivos médicos certificados do mercado."
       },
       "card6": {
-        "title": "Controle de medicação",
-        "desc": "Lembretes, registro de adesão e alertas de interações medicamentosas."
+        "title": "Suporte especializado",
+        "desc": "Equipe técnica dedicada para garantir implantação segura e operação contínua."
       }
     },
     "cta": {
       "badge": "Disponível agora",
-      "title": "Baixe e comece em minutos",
-      "subtitle": "Disponível para iOS e Android. Configuração rápida e suporte dedicado para você começar com o pé direito.",
+      "title": "Pronto para elevar o padrão de cuidado na sua instituição?",
+      "subtitle": "Nossa plataforma é modular, compatível com os principais dispositivos médicos certificados e adaptável à realidade da sua clínica ou hospital.",
       "appStore": "App Store",
       "googlePlay": "Google Play"
     }
@@ -461,6 +473,13 @@
       "subtitle": "Uma vez por semana, sem spam. Tendências, cases e análises sobre saúde digital direto na sua caixa de entrada.",
       "placeholder": "Digite seu e-mail",
       "button": "Assinar"
+    },
+    "detail": {
+      "backToBlog": "Voltar para o Blog",
+      "relatedBadge": "Continue Lendo",
+      "relatedTitle": "Artigos Relacionados",
+      "share": "Compartilhar",
+      "requestDemo": "Solicitar Demonstração"
     }
   },
   "equipmentPage": {
@@ -543,6 +562,19 @@
         "primary": "Falar com especialista",
         "secondary": "Solicitar catálogo"
       }
+    },
+    "detail": {
+      "backToEquipment": "Voltar para Equipamentos",
+      "features": "Recursos",
+      "about": "Sobre este dispositivo",
+      "allFeatures": "Todos os recursos",
+      "ctaTitle": "Quer saber mais?",
+      "ctaDesc": "Fale com nossa equipe e descubra como este dispositivo pode ajudar no seu tratamento.",
+      "contactButton": "Entrar em Contato",
+      "share": "Compartilhar",
+      "relatedBadge": "Continue Explorando",
+      "relatedTitle": "Outros Equipamentos",
+      "searchPlaceholder": "Buscar equipamentos..."
     }
   },
   "aria": {
@@ -563,6 +595,7 @@
     }
   },
   "footer": {
+    "tagline": "Transformando vidas com tecnologia em saúde. Monitoramento remoto inteligente para um cuidado mais humano e eficiente.",
     "links": {
       "title": "Links",
       "ourHistory": "Nossa História",
@@ -586,8 +619,10 @@
       "description": "Receba semanalmente, todas as nossas atualizações sobre",
       "highlight": "Inovações em Monitoramento Remoto de Pacientes",
       "placeholder": "Digitar Email",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "privacy": "Seus dados estão seguros. Não enviamos spam."
     },
+    "backToTop": "Voltar ao topo",
     "copyright": "Todos os direitos reservados."
   }
 }

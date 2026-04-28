@@ -5,6 +5,18 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
 
+import emmitecHealthImg from '@/assets/apps/emmitec-health.png'
+import emmitecJudicemedImg from '@/assets/apps/emmitec-judicemed.png'
+import emmitecHealthBlueImg from '@/assets/apps/emmitec-health-blue.png'
+import emmitecCuidemeCareImg from '@/assets/apps/emmitec-cuideme-care.png'
+import emmitecLongTermCareImg from '@/assets/apps/emmitec-long-term-care.png'
+import emmitecGuardianHealthImg from '@/assets/apps/emmitec-guardian-health.png'
+
+import appStoreWhiteImg from '@/assets/apps/app-store-white.png'
+import appStoreBlackImg from '@/assets/apps/app-store-black.png'
+import googlePlayWhiteImg from '@/assets/apps/google-play-white.png'
+import googlePlayBlackImg from '@/assets/apps/google-play-black.png'
+
 import {
   Smartphone,
   Stethoscope,
@@ -13,8 +25,6 @@ import {
   MessageSquare,
   HeartPulse,
   Pill,
-  Apple,
-  Play,
   Check,
   ShieldCheck,
   Zap,
@@ -22,16 +32,33 @@ import {
 
 const { t } = useI18n()
 
+const calendlyUrl = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
+})
+
 gsap.registerPlugin(ScrollTrigger)
 
 const heroTitle = ref<HTMLElement | null>(null)
 const heroSub = ref<HTMLElement | null>(null)
 const heroActions = ref<HTMLElement | null>(null)
 
+const appsListSection = ref<HTMLElement | null>(null)
 const patientAppSection = ref<HTMLElement | null>(null)
 const clinicalAppSection = ref<HTMLElement | null>(null)
 const featuresSection = ref<HTMLElement | null>(null)
 const downloadSection = ref<HTMLElement | null>(null)
+
+const apps = [
+  { img: emmitecHealthImg, name: 'Emmitec Health' },
+  { img: emmitecJudicemedImg, name: 'Emmitec Judicemed' },
+  { img: emmitecHealthBlueImg, name: 'Emmitec Health' },
+  { img: emmitecCuidemeCareImg, name: 'Emmitec Cuideme Care' },
+  { img: emmitecLongTermCareImg, name: 'Emmitec Long Term Care' },
+  { img: emmitecGuardianHealthImg, name: 'Emmitec Guardian Health' },
+]
 
 const patientFeatures = computed(() => [
   t('appsPage.patient.feature1'),
@@ -97,6 +124,7 @@ onMounted(() => {
     })
   }
 
+  animate(appsListSection.value, '.app-card', { stagger: 0.1 })
   animate(patientAppSection.value, '.animate-in')
   animate(clinicalAppSection.value, '.animate-in')
   animate(featuresSection.value, '.feature-card', { stagger: 0.08 })
@@ -137,11 +165,13 @@ onUnmounted(() => {
               {{ t('appsPage.hero.subtitle') }}
             </p>
             <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
-              <Button
-                :label="t('appsPage.hero.button.primary')"
-                unstyled
-                class="btn-primary font-display font-bold"
-              />
+              <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+                <Button
+                  label="Solicitar Demonstração"
+                  unstyled
+                  class="btn-primary font-display font-bold"
+                />
+              </a>
               <Button
                 :label="t('appsPage.hero.button.secondary') + ' →'"
                 unstyled
@@ -197,281 +227,57 @@ onUnmounted(() => {
       </div>
     </section>
 
-    <!-- ── PATIENT APP ── -->
+    <!-- ── APPS SUITE ── -->
     <section
-      ref="patientAppSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
+      ref="appsListSection"
+      class="py-16 sm:py-20 bg-mid relative overflow-hidden w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
-          <!-- Phone mockup -->
-          <div class="animate-in flex justify-center">
-            <div
-              class="relative w-64 h-[520px] rounded-[36px] bg-dark border-10 border-dark-2 shadow-[0_28px_72px_rgba(0,0,0,.25)]"
-            >
-              <!-- Notch -->
-              <div
-                class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-dark rounded-b-2xl z-10"
-              />
-              <div
-                class="w-full h-full rounded-[26px] bg-linear-to-br from-dark to-dark-2 overflow-hidden p-4 pt-10 flex flex-col gap-3"
-              >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <div class="text-white/50 text-[10px]">Bom dia</div>
-                    <div class="text-white font-display font-bold text-sm">Maria</div>
-                  </div>
-                  <div
-                    class="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center"
-                  >
-                    <Smartphone :size="16" class="text-primary" />
-                  </div>
-                </div>
-
-                <div
-                  class="rounded-2xl bg-primary/10 border border-primary/20 p-4 flex flex-col gap-2"
-                >
-                  <div class="flex items-center gap-2">
-                    <HeartPulse :size="16" class="text-primary" />
-                    <span class="text-white/70 text-[10px] uppercase tracking-wider">Now</span>
-                  </div>
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-white font-display font-extrabold text-3xl">72</span>
-                    <span class="text-white/50 text-xs">bpm</span>
-                  </div>
-                  <div class="text-emerald-400 text-[10px] font-bold">Normal range ✓</div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <div class="rounded-xl bg-white/5 border border-white/10 p-3">
-                    <div class="text-white/40 text-[9px] uppercase">BP</div>
-                    <div class="text-white font-display font-bold text-sm">120/80</div>
-                  </div>
-                  <div class="rounded-xl bg-white/5 border border-white/10 p-3">
-                    <div class="text-white/40 text-[9px] uppercase">SpO₂</div>
-                    <div class="text-white font-display font-bold text-sm">98%</div>
-                  </div>
-                </div>
-
-                <div
-                  class="rounded-xl bg-white/5 border border-white/10 p-3 flex items-center gap-2"
-                >
-                  <Pill :size="14" class="text-primary" />
-                  <div class="flex-1">
-                    <div class="text-white text-[11px] font-semibold">Atenolol</div>
-                    <div class="text-white/40 text-[9px]">14:00 · 25mg</div>
-                  </div>
-                  <div
-                    class="w-5 h-5 rounded-full bg-emerald-500/20 border border-emerald-500/40"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Content -->
-          <div class="animate-in flex flex-col gap-5">
-            <span
-              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-            >
-              {{ t('appsPage.patient.badge') }}
-            </span>
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(24px,3vw,36px)] tracking-tight leading-tight"
-            >
-              {{ t('appsPage.patient.title') }}
-            </h2>
-            <p class="text-gray-500 text-[14px] sm:text-[16px] leading-relaxed">
-              {{ t('appsPage.patient.description') }}
-            </p>
-            <ul class="flex flex-col gap-3 mt-2">
-              <li
-                v-for="f in patientFeatures"
-                :key="f"
-                class="flex items-start gap-3 text-[14px] text-gray-600"
-              >
-                <span
-                  class="w-5 h-5 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0 mt-0.5 text-primary"
-                >
-                  <Check :size="12" stroke-width="3" />
-                </span>
-                {{ f }}
-              </li>
-            </ul>
-            <div class="flex gap-3 flex-wrap mt-4">
-              <a
-                href="#"
-                class="store-badge flex items-center gap-3 px-5 py-3 rounded-xl bg-black text-white"
-              >
-                <Apple :size="22" />
-                <div class="flex flex-col leading-none">
-                  <span class="text-[10px] opacity-70">Download on the</span>
-                  <span class="font-display font-bold text-sm">App Store</span>
-                </div>
-              </a>
-              <a
-                href="#"
-                class="store-badge flex items-center gap-3 px-5 py-3 rounded-xl bg-black text-white"
-              >
-                <Play :size="22" />
-                <div class="flex flex-col leading-none">
-                  <span class="text-[10px] opacity-70">GET IT ON</span>
-                  <span class="font-display font-bold text-sm">Google Play</span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── CLINICAL APP ── -->
-    <section
-      ref="clinicalAppSection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center"
-    >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
-          <!-- Content -->
-          <div class="animate-in flex flex-col gap-5 order-2 lg:order-1">
-            <span
-              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-            >
-              {{ t('appsPage.clinical.badge') }}
-            </span>
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(24px,3vw,36px)] tracking-tight leading-tight"
-            >
-              {{ t('appsPage.clinical.title') }}
-            </h2>
-            <p class="text-gray-500 text-[14px] sm:text-[16px] leading-relaxed">
-              {{ t('appsPage.clinical.description') }}
-            </p>
-            <ul class="flex flex-col gap-3 mt-2">
-              <li
-                v-for="f in clinicalFeatures"
-                :key="f"
-                class="flex items-start gap-3 text-[14px] text-gray-600"
-              >
-                <span
-                  class="w-5 h-5 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0 mt-0.5 text-primary"
-                >
-                  <Check :size="12" stroke-width="3" />
-                </span>
-                {{ f }}
-              </li>
-            </ul>
-            <Button
-              :label="t('appsPage.clinical.button')"
-              unstyled
-              class="btn-primary font-display font-bold mt-4 self-start"
-            />
-          </div>
-
-          <!-- Dashboard mockup -->
-          <div class="animate-in order-1 lg:order-2">
-            <div
-              class="relative rounded-2xl bg-dark border border-white/10 p-5 shadow-[0_28px_72px_rgba(0,0,0,.25)]"
-            >
-              <div class="hero-grid absolute inset-0 pointer-events-none opacity-50 rounded-2xl" />
-              <div class="relative z-10 flex flex-col gap-4">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-3">
-                    <div
-                      class="w-9 h-9 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"
-                    >
-                      <Stethoscope :size="16" class="text-primary" />
-                    </div>
-                    <div>
-                      <div class="text-white font-display font-bold text-sm">Clinical Suite</div>
-                      <div class="text-white/40 text-[10px]">Dashboard</div>
-                    </div>
-                  </div>
-                  <div class="flex gap-1">
-                    <span class="w-2 h-2 rounded-full bg-rose-400" />
-                    <span class="w-2 h-2 rounded-full bg-amber-400" />
-                    <span class="w-2 h-2 rounded-full bg-emerald-400" />
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-3">
-                  <div class="rounded-lg bg-white/5 border border-white/10 p-3">
-                    <div class="text-white/40 text-[9px] uppercase">Active</div>
-                    <div class="text-white font-display font-extrabold text-lg">128</div>
-                  </div>
-                  <div class="rounded-lg bg-white/5 border border-white/10 p-3">
-                    <div class="text-white/40 text-[9px] uppercase">Alerts</div>
-                    <div class="text-rose-400 font-display font-extrabold text-lg">3</div>
-                  </div>
-                  <div class="rounded-lg bg-white/5 border border-white/10 p-3">
-                    <div class="text-white/40 text-[9px] uppercase">OK</div>
-                    <div class="text-emerald-400 font-display font-extrabold text-lg">125</div>
-                  </div>
-                </div>
-
-                <div class="rounded-lg bg-white/5 border border-white/10 overflow-hidden">
-                  <div
-                    v-for="i in 3"
-                    :key="i"
-                    class="flex items-center gap-3 px-3 py-2.5 border-b border-white/5 last:border-b-0"
-                  >
-                    <div
-                      class="w-8 h-8 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary text-[10px] font-bold"
-                    >
-                      P{{ i }}
-                    </div>
-                    <div class="flex-1">
-                      <div class="text-white text-[11px] font-semibold">Patient {{ i }}</div>
-                      <div class="text-white/40 text-[9px]">Last reading {{ i }}m ago</div>
-                    </div>
-                    <span
-                      class="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[9px] font-bold"
-                      >OK</span
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── FEATURES GRID ── -->
-    <section
-      ref="featuresSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
-    >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 flex flex-col items-center gap-5 pb-10">
+      <div class="hero-grid absolute inset-0 pointer-events-none opacity-40" />
+      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-12 flex flex-col items-center gap-4 pb-5">
           <span
             class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
           >
-            {{ t('appsPage.features.badge') }}
+            {{ t('appsPage.suite.badge') }}
           </span>
           <h2
-            class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight"
+            class="font-display font-extrabold text-dark text-[clamp(24px,3vw,38px)] tracking-tight leading-tight"
           >
-            {{ t('appsPage.features.title') }}
+            {{ t('appsPage.suite.title') }}
           </h2>
-          <p class="text-gray-500 text-[14px] sm:text-[16px] leading-relaxed max-w-2xl">
-            {{ t('appsPage.features.subtitle') }}
+          <p class="text-dark/50 text-[14px] sm:text-[16px] leading-relaxed max-w-2xl">
+            {{ t('appsPage.suite.subtitle') }}
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <article
-            v-for="f in featureGrid"
-            :key="f.title"
-            class="feature-card group rounded-2xl border border-gray-200/80 bg-white p-6 flex flex-col gap-3 transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
+            v-for="app in apps"
+            :key="app.name"
+            class="app-card group rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_20px_60px_-16px_rgba(17,211,211,0.2)]"
           >
-            <div
-              class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-2"
-            >
-              <component :is="f.icon" :size="22" />
+            <div class="relative overflow-hidden">
+              <img
+                :src="app.img"
+                :alt="app.name"
+                class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                loading="lazy"
+              />
+              <div
+                class="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-dark-2 to-transparent pointer-events-none"
+              />
             </div>
-            <h3 class="font-display font-bold text-black text-[16px]">{{ f.title }}</h3>
-            <p class="text-gray-500 text-[13px] leading-relaxed">{{ f.desc }}</p>
+            <div class="px-5 py-4 flex items-center justify-between gap-4 flex-wrap bg-dark">
+              <span class="font-display font-bold text-white text-[15px]">{{ app.name }}</span>
+              <div class="flex gap-2 flex-wrap">
+                <a href="#" class="store-badge">
+                  <img :src="appStoreWhiteImg" alt="Download on the App Store" class="h-9" />
+                </a>
+                <a href="#" class="store-badge">
+                  <img :src="googlePlayWhiteImg" alt="Get it on Google Play" class="h-9" />
+                </a>
+              </div>
+            </div>
           </article>
         </div>
       </div>
@@ -513,28 +319,6 @@ onUnmounted(() => {
         >
           {{ t('appsPage.cta.subtitle') }}
         </p>
-        <div class="download-item flex gap-4 justify-center flex-wrap">
-          <a
-            href="#"
-            class="store-badge flex items-center gap-3 px-6 py-3 rounded-xl bg-white text-dark"
-          >
-            <Apple :size="24" />
-            <div class="flex flex-col leading-none text-left">
-              <span class="text-[10px] opacity-70">Download on the</span>
-              <span class="font-display font-bold text-sm">App Store</span>
-            </div>
-          </a>
-          <a
-            href="#"
-            class="store-badge flex items-center gap-3 px-6 py-3 rounded-xl bg-white text-dark"
-          >
-            <Play :size="24" />
-            <div class="flex flex-col leading-none text-left">
-              <span class="text-[10px] opacity-70">GET IT ON</span>
-              <span class="font-display font-bold text-sm">Google Play</span>
-            </div>
-          </a>
-        </div>
       </div>
     </section>
   </div>

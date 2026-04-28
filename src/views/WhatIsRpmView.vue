@@ -18,6 +18,13 @@ import {
 
 const { t } = useI18n()
 
+const calendlyUrl = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
+})
+
 gsap.registerPlugin(ScrollTrigger)
 
 const heroTitle = ref<HTMLElement | null>(null)
@@ -26,7 +33,6 @@ const heroActions = ref<HTMLElement | null>(null)
 
 const definitionSection = ref<HTMLElement | null>(null)
 const processSection = ref<HTMLElement | null>(null)
-const componentsSection = ref<HTMLElement | null>(null)
 const whoSection = ref<HTMLElement | null>(null)
 
 const processSteps = computed(() => [
@@ -49,29 +55,6 @@ const processSteps = computed(() => [
     icon: BellRing,
     title: t('whatIsRpm.process.step4.title'),
     desc: t('whatIsRpm.process.step4.desc'),
-  },
-])
-
-const componentsData = computed(() => [
-  {
-    icon: HeartPulse,
-    title: t('whatIsRpm.components.card1.title'),
-    desc: t('whatIsRpm.components.card1.desc'),
-  },
-  {
-    icon: Smartphone,
-    title: t('whatIsRpm.components.card2.title'),
-    desc: t('whatIsRpm.components.card2.desc'),
-  },
-  {
-    icon: Brain,
-    title: t('whatIsRpm.components.card3.title'),
-    desc: t('whatIsRpm.components.card3.desc'),
-  },
-  {
-    icon: ShieldCheck,
-    title: t('whatIsRpm.components.card4.title'),
-    desc: t('whatIsRpm.components.card4.desc'),
   },
 ])
 
@@ -104,9 +87,8 @@ onMounted(() => {
   }
 
   animate(definitionSection.value, '.animate-in')
-  animate(processSection.value, '.process-step', { stagger: 0.12 })
-  animate(componentsSection.value, '.component-card', { stagger: 0.08 })
-  animate(whoSection.value, '.who-item', { stagger: 0.08, y: 24 })
+  animate(processSection.value, '.process-step', { stagger: 0.15 })
+  animate(whoSection.value, '.who-item', { stagger: 0.1, y: 20 })
 })
 
 onUnmounted(() => {
@@ -143,11 +125,13 @@ onUnmounted(() => {
               {{ t('whatIsRpm.hero.subtitle') }}
             </p>
             <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
-              <Button
-                :label="t('whatIsRpm.hero.button.primary')"
-                unstyled
-                class="btn-primary font-display font-bold"
-              />
+              <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+                <Button
+                  label="Solicitar Demonstração"
+                  unstyled
+                  class="btn-primary font-display font-bold"
+                />
+              </a>
               <Button
                 :label="t('whatIsRpm.hero.button.secondary') + ' →'"
                 unstyled
@@ -256,10 +240,10 @@ onUnmounted(() => {
     <!-- ── PROCESS ── -->
     <section
       ref="processSection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center"
+      class="py-16 sm:py-24 bg-mid w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 flex flex-col items-center gap-5 pb-10">
+      <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 flex flex-col items-center gap-5">
           <span
             class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
           >
@@ -275,100 +259,115 @@ onUnmounted(() => {
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Timeline horizontal -->
+        <div class="relative">
+          <!-- Linha conectora -->
           <div
-            v-for="(step, i) in processSteps"
-            :key="step.title"
-            class="process-step relative rounded-2xl bg-white border border-gray-200/80 p-6 flex flex-col gap-3"
-          >
-            <div class="flex items-center justify-between">
-              <div
-                class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary"
-              >
-                <component :is="step.icon" :size="22" />
+            class="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 bg-linear-to-r from-primary/30 via-primary to-primary/30"
+          />
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 pt-5">
+            <div
+              v-for="(step, i) in processSteps"
+              :key="step.title"
+              class="process-step relative flex flex-col items-center text-center gap-5"
+            >
+              <!-- Número com ícone -->
+              <div class="relative z-10 mb-6">
+                <div
+                  class="w-24 h-24 rounded-full bg-white border-2 border-primary/20 shadow-[0_8px_32px_rgba(17,211,211,0.15)] flex items-center justify-center relative"
+                >
+                  <component :is="step.icon" :size="28" class="text-primary" />
+                  <!-- Badge número -->
+                  <div
+                    class="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-primary text-dark font-display font-bold text-sm flex items-center justify-center shadow-lg"
+                  >
+                    {{ i + 1 }}
+                  </div>
+                </div>
               </div>
-              <span
-                class="font-mono text-[10px] tracking-[3px] text-gray-400 uppercase font-semibold"
-              >
-                0{{ i + 1 }} / 0{{ processSteps.length }}
-              </span>
+
+              <!-- Conteúdo -->
+              <div class="bg-white rounded-2xl border border-gray-200/80 p-5 flex-1 w-full">
+                <h3 class="font-display font-bold text-black text-[15px] mb-2">
+                  {{ step.title }}
+                </h3>
+                <p class="text-gray-500 text-[12px] leading-relaxed">{{ step.desc }}</p>
+              </div>
             </div>
-            <h3 class="font-display font-bold text-black text-[16px] mt-2">
-              {{ step.title }}
-            </h3>
-            <p class="text-gray-500 text-[13px] leading-relaxed">{{ step.desc }}</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── COMPONENTS ── -->
+    <!-- ── COMO USAR ── -->
     <section
-      ref="componentsSection"
+      ref="whoSection"
       class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12 flex flex-col items-center gap-5">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
-            {{ t('whatIsRpm.components.badge') }}
-          </span>
-          <h2
-            class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight"
-          >
-            {{ t('whatIsRpm.components.title') }}
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <article
-            v-for="c in componentsData"
-            :key="c.title"
-            class="component-card group relative rounded-2xl border border-gray-200/80 bg-white p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
-          >
-            <div class="flex items-start gap-5">
-              <div
-                class="w-14 h-14 rounded-xl bg-primary text-dark flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)] shrink-0 transition-transform duration-500 group-hover:-rotate-6"
-              >
-                <component :is="c.icon" :size="22" stroke-width="2.2" />
-              </div>
-              <div class="flex flex-col gap-2">
-                <h3 class="font-display font-bold text-gray-900 text-[17px]">{{ c.title }}</h3>
-                <p class="text-gray-500 text-[13px] leading-[1.7]">{{ c.desc }}</p>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── COMO USAR ── -->
-    <section ref="whoSection" class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center">
-      <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span
-          class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-        >
-          {{ t('whatIsRpm.who.badge') }}
-        </span>
-        <h2
-          class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight mt-3 mb-10"
-        >
-          {{ t('whatIsRpm.who.title') }}
-        </h2>
-
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-10">
-          <div
-            v-for="w in whoData"
-            :key="w.label"
-            class="who-item rounded-2xl bg-white border border-gray-200/80 p-6 flex flex-col items-center gap-3"
-          >
-            <div
-              class="w-12 h-12 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center text-primary"
+      <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- Esquerda: texto -->
+          <div class="text-left">
+            <span
+              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary mb-4"
             >
-              <component :is="w.icon" :size="22" />
+              {{ t('whatIsRpm.who.badge') }}
+            </span>
+            <h2
+              class="font-display font-extrabold text-black text-[clamp(26px,3vw,36px)] tracking-tight leading-tight mb-4"
+            >
+              {{ t('whatIsRpm.who.title') }}
+            </h2>
+            <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed">
+              {{
+                t('whatIsRpm.who.subtitle') || 'Solução adaptável para diferentes perfis de saúde.'
+              }}
+            </p>
+          </div>
+
+          <!-- Direita: lista horizontal tipo 'pills' -->
+          <div class="flex flex-col gap-3">
+            <div
+              v-for="(w, i) in whoData"
+              :key="w.label"
+              class="who-item group flex items-center gap-4 p-4 rounded-xl bg-mid border border-transparent hover:border-primary/30 hover:shadow-[0_4px_20px_rgba(17,211,211,0.15)] transition-all duration-300"
+              :style="{ animationDelay: `${i * 100}ms` }"
+            >
+              <!-- Ícone com fundo gradiente -->
+              <div
+                class="w-14 h-14 rounded-xl bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform duration-300"
+              >
+                <component :is="w.icon" :size="24" stroke-width="2" />
+              </div>
+              <!-- Label com highlight -->
+              <div class="flex-1">
+                <span class="font-display font-bold text-gray-900 text-[15px] block">
+                  {{ w.label }}
+                </span>
+                <span class="text-gray-400 text-[12px]">Perfil apto para RPM</span>
+              </div>
+              <!-- Setinha -->
+              <div
+                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-300 group-hover:text-primary group-hover:bg-primary/10 transition-all duration-300"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  class="transform group-hover:translate-x-0.5 transition-transform"
+                >
+                  <path
+                    d="M6 12L10 8L6 4"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
             </div>
-            <span class="font-display font-semibold text-gray-700 text-[14px]">{{ w.label }}</span>
           </div>
         </div>
       </div>

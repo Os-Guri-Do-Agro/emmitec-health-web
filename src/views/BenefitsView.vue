@@ -21,6 +21,13 @@ import {
 
 const { t } = useI18n()
 
+const calendlyUrl = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
+})
+
 gsap.registerPlugin(ScrollTrigger)
 
 const heroTitle = ref<HTMLElement | null>(null)
@@ -139,11 +146,13 @@ onUnmounted(() => {
               {{ t('benefitsPage.hero.subtitle') }}
             </p>
             <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
-              <Button
-                :label="t('benefitsPage.hero.button.primary')"
-                unstyled
-                class="btn-primary font-display font-bold"
-              />
+              <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+                <Button
+                  label="Solicitar Demonstração"
+                  unstyled
+                  class="btn-primary font-display font-bold"
+                />
+              </a>
               <Button
                 :label="t('benefitsPage.hero.button.secondary') + ' →'"
                 unstyled

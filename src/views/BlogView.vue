@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
@@ -8,6 +9,14 @@ import Button from 'primevue/button'
 import { Calendar, Clock, ArrowRight, Search, Tag } from 'lucide-vue-next'
 
 const { t } = useI18n()
+const router = useRouter()
+
+const calendlyUrl = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
+})
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -117,6 +126,10 @@ const filteredArticles = computed(() => {
   return list
 })
 
+const goToArticle = (id: number) => {
+  router.push(`/blog/${id}`)
+}
+
 onMounted(() => {
   gsap
     .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
@@ -209,7 +222,8 @@ onUnmounted(() => {
         </div>
 
         <article
-          class="animate-in group grid grid-cols-1 lg:grid-cols-5 gap-8 rounded-2xl border border-gray-200/80 overflow-hidden bg-white transition-all duration-500 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
+          @click="goToArticle(0)"
+          class="animate-in group grid grid-cols-1 lg:grid-cols-5 gap-8 rounded-2xl border border-gray-200/80 overflow-hidden bg-white transition-all duration-500 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
         >
           <div class="lg:col-span-3 relative aspect-16/10 lg:aspect-auto overflow-hidden">
             <div :class="`absolute inset-0 bg-linear-to-br ${featuredArticle.gradient}`" />
@@ -310,7 +324,8 @@ onUnmounted(() => {
           <article
             v-for="(a, i) in filteredArticles"
             :key="a.id"
-            class="article-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
+            @click="goToArticle(a.id)"
+            class="article-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
           >
             <div class="relative overflow-hidden aspect-16/10">
               <div :class="`absolute inset-0 bg-linear-to-br ${a.gradient}`" />

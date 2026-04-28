@@ -184,7 +184,15 @@ onUnmounted(() => {
           </button>
         </div>
       </li>
-      <li><Button :label="t('header.nav.login')" unstyled class="btn-primary font-extrabold" /></li>
+      <li>
+        <a
+          href="https://emmitec.health/pages/auth/index.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button :label="t('header.nav.login')" unstyled class="btn-primary font-extrabold" />
+        </a>
+      </li>
     </ul>
 
     <!-- Mobile hamburger button -->
@@ -267,12 +275,14 @@ onUnmounted(() => {
           </div>
         </li>
         <li class="mt-2">
-          <Button
-            :label="t('header.nav.login')"
-            unstyled
-            class="btn-primary"
+          <a
+            href="https://emmitec.health/pages/auth/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
             @click="closeMobileMenu"
-          />
+          >
+            <Button :label="t('header.nav.login')" unstyled class="btn-primary" />
+          </a>
         </li>
         <li class="w-full border-t border-white/10 pt-4 mt-2">
           <div class="flex flex-col items-center gap-2">

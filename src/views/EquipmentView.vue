@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
@@ -20,6 +21,14 @@ import {
 } from 'lucide-vue-next'
 
 const { t } = useI18n()
+const router = useRouter()
+
+const calendlyUrl = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
+})
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -164,6 +173,10 @@ onMounted(() => {
   animate(certifSection.value, '.cert-badge', { stagger: 0.08, y: 16 })
 })
 
+const goToDevice = (id: number) => {
+  router.push(`/equipment/${id}`)
+}
+
 onUnmounted(() => {
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
@@ -198,11 +211,13 @@ onUnmounted(() => {
               {{ t('equipmentPage.hero.subtitle') }}
             </p>
             <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
-              <Button
-                :label="t('equipmentPage.hero.button.primary')"
-                unstyled
-                class="btn-primary font-display font-bold"
-              />
+              <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+                <Button
+                  label="Solicitar Demonstração"
+                  unstyled
+                  class="btn-primary font-display font-bold"
+                />
+              </a>
               <Button
                 :label="t('equipmentPage.hero.button.secondary') + ' →'"
                 unstyled
@@ -254,10 +269,7 @@ onUnmounted(() => {
     </section>
 
     <!-- ── CATEGORIES ── -->
-    <section
-      ref="categoriesSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
-    >
+    <section ref="categoriesSection" class="py-16 bg-white w-full flex items-center justify-center">
       <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10 flex flex-col items-center gap-5">
           <span
@@ -272,7 +284,7 @@ onUnmounted(() => {
           </h2>
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-3">
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-5">
           <button
             v-for="c in categories"
             :key="c.id"
@@ -301,7 +313,8 @@ onUnmounted(() => {
           <article
             v-for="(d, i) in filteredDevices"
             :key="d.id"
-            class="device-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
+            @click="goToDevice(d.id)"
+            class="device-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
           >
             <!-- Visual -->
             <div class="relative aspect-square overflow-hidden">
@@ -428,37 +441,6 @@ onUnmounted(() => {
       </div>
     </section>
 
-    <!-- ── CERTIFICATIONS ── -->
-    <section
-      ref="certifSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
-    >
-      <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span
-          class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-        >
-          {{ t('equipmentPage.cert.badge') }}
-        </span>
-        <h2
-          class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight mt-3 mb-10"
-        >
-          {{ t('equipmentPage.cert.title') }}
-        </h2>
-
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div
-            v-for="c in certifications"
-            :key="c.code"
-            class="cert-badge rounded-2xl bg-mid border border-gray-200 p-6 flex flex-col items-center gap-2"
-          >
-            <ShieldCheck :size="24" class="text-primary mb-2" />
-            <div class="font-display font-extrabold text-black text-lg">{{ c.code }}</div>
-            <div class="text-gray-500 text-[12px]">{{ c.label }}</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ── CTA ── -->
     <section
       class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full flex items-center justify-center"
@@ -493,11 +475,13 @@ onUnmounted(() => {
           {{ t('equipmentPage.cta.subtitle') }}
         </p>
         <div class="flex gap-4 justify-center flex-wrap">
-          <Button
-            :label="t('equipmentPage.cta.button.primary')"
-            unstyled
-            class="btn-primary font-display px-8 py-3"
-          />
+          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+            <Button
+              :label="t('equipmentPage.cta.button.primary')"
+              unstyled
+              class="btn-primary font-display px-8 py-3"
+            />
+          </a>
           <Button
             :label="t('equipmentPage.cta.button.secondary')"
             unstyled

@@ -99,8 +99,12 @@
     "hero": {
       "badge": "Who we are",
       "title": "Meet EmmiTec: Transforming Lives with Healthcare",
-      "subtitle": "Emilio Machado founded EmmiTec inspired by his mother's journey against cancer in 2017. Facing challenges such as constant medical visits and scattered records, he created a digital registry to centralize information and improve care, even from a distance. This innovation gave rise to the Remote Patient Monitoring (RPM) platform, which collects real-time data, aids early intervention, and improves clinical outcomes and quality of patient care, transforming healthcare globally.",
+      "subtitle": "Meet the story and the people behind the platform transforming remote patient monitoring in Brazil and worldwide.",
       "imageAlt": "Emmitec Health team",
+      "bio": {
+        "more": "Read more",
+        "less": "Show less"
+      },
       "button": {
         "contact": "Get in touch",
         "careers": "Join our team"
@@ -109,6 +113,7 @@
     "story": {
       "badge": "Our story",
       "title": "The EmmiTec Journey",
+      "intro": "Emilio Machado founded EmmiTec inspired by his mother's journey against cancer in 2017. Facing challenges such as constant medical visits and scattered records, he created a digital registry to centralize information and improve care, even from a distance. This innovation gave rise to the Remote Patient Monitoring (RPM) platform, which collects real-time data, aids early intervention, and improves clinical outcomes and quality of patient care, transforming healthcare globally.",
       "paragraph1": "EmmiTec's journey began in 2006, developing cutting-edge technology for sectors like finance and retail, in partnership with major innovators like Apple. However, in 2017, our story shifted to something more personal and profound. That year, Emilio Machado, our founder, faced his mother's difficult battle against cancer.",
       "paragraph2": "Beyond the emotional impact, managing her care was an immense challenge: constant medical visits, medication schedules, and scattered health records. The geographical distance made everything even harder—while his mother was in Brazil, Emilio lived in the United States. Determined to make a difference, he developed a remote monitoring platform that allowed tracking health data from afar. This solution not only improved his mother's quality of life but gave Emilio the chance to support her even from a distance. In 2018, EmmiTec decided to focus exclusively on healthcare, selling its other divisions to transform medical care and help more families face similar challenges.",
       "quote": "The most powerful technology is that which cares for the people we love."
@@ -173,7 +178,8 @@
       "founded": "Founded",
       "clinics": "Partner clinics",
       "patients": "Patients served",
-      "team": "Team members"
+      "team": "Team members",
+      "founder": "Founder"
     },
     "cta": {
       "badge": "Join us",
@@ -244,11 +250,12 @@
       }
     },
     "who": {
-      "badge": "Who it's for",
-      "title": "RPM serves a wide range of care profiles",
-      "item1": "Cardiac",
-      "item2": "Post-op",
-      "item3": "Diabetic",
+      "badge": "For whom",
+      "title": "RPM serves varied care profiles",
+      "subtitle": "Adaptable solution for different health profiles, from chronic patients to post-operative care.",
+      "item1": "Cardiac patients",
+      "item2": "Post-operative",
+      "item3": "Diabetics",
       "item4": "Elderly"
     },
     "cta": {
@@ -333,67 +340,72 @@
     }
   },
   "appsPage": {
+    "suite": {
+      "badge": "Our suite",
+      "title": "Explore the EmmiTec apps",
+      "subtitle": "Built for different care scenarios, all under the same international standards of quality, security, and interoperability."
+    },
     "hero": {
       "badge": "Apps",
-      "title": "Apps that connect patient, team, and care",
-      "subtitle": "Two apps designed for different audiences, integrated on the same platform. For patients, simplicity. For clinical teams, full control.",
+      "title": "Apps that set new standards for digital health",
+      "subtitle": "At EmmiTec.Health, we develop apps built to the highest international standards of quality, security, and interoperability — certified by the world's leading regulatory authorities.",
       "button": {
-        "primary": "Download now",
-        "secondary": "See features"
+        "primary": "Request Demo",
+        "secondary": "Explore the platform"
       }
     },
     "patient": {
-      "badge": "Patient app",
-      "title": "Your health in your pocket, every day",
-      "description": "Track your vital signs, get medication reminders, chat with your team, and see your progress — all in a simple, friendly interface.",
-      "feature1": "Clear visualization of vital signs and trends",
-      "feature2": "Medication and exam reminders",
-      "feature3": "Direct chat with your healthcare team",
-      "feature4": "Complete history and shareable reports"
+      "badge": "International standard",
+      "title": "Built to the most rigorous standards in healthcare",
+      "description": "At EmmiTec.Health, we develop apps that meet the highest international standards of quality, security, and interoperability. Our apps are compatible with medical devices certified by authorities such as the FDA (USA), ANVISA (Brazil), CE (Europe), and MHRA (UK), enabling remote patient monitoring with precision, safety, and full integration into clinical routines.",
+      "feature1": "Compatible with FDA, ANVISA, CE, and MHRA certified devices",
+      "feature2": "Compliant with HIPAA, LGPD, and international privacy standards",
+      "feature3": "Native interoperability with HL7 and FHIR standards",
+      "feature4": "End-to-end encryption and secure access authentication"
     },
     "clinical": {
-      "badge": "Clinical app",
-      "title": "Your entire patient roster in one place",
-      "description": "Smart dashboard with risk-based prioritization, real-time alerts, and access to each patient's complete history. Decide with confidence, anywhere.",
-      "feature1": "Patient list prioritized by clinical risk",
-      "feature2": "Real-time alerts with full context",
-      "feature3": "Notes, prescriptions, and integrated teleconsultation",
-      "feature4": "Automatic reports for the medical record",
+      "badge": "Modular platform",
+      "title": "Hardware-agnostic, adaptable to any care scenario",
+      "description": "As our platform is modular and hardware-agnostic, we work with a wide variety of integrated devices — allowing healthcare professionals to choose the best solutions for each care scenario.",
+      "feature1": "Compatible with over 200 medical devices on the market",
+      "feature2": "Integration with major electronic health record systems",
+      "feature3": "Modular architecture that scales to your needs",
+      "feature4": "Open APIs to connect custom solutions",
       "button": "Request access"
     },
     "features": {
-      "badge": "Features",
-      "title": "Everything you need in both apps",
-      "subtitle": "Features designed to be useful day-to-day, without unnecessary complexity.",
+      "badge": "Differentiators",
+      "title": "What makes our apps unique",
+      "subtitle": "A platform built to meet the most rigorous requirements of the healthcare market, with flexibility for every clinical reality.",
       "card1": {
-        "title": "Smart notifications",
-        "desc": "Alerts prioritized by relevance, no spam, always at the right moment."
+        "title": "International certification",
+        "desc": "Compliance with FDA, ANVISA, CE, and MHRA — the world's leading health regulatory bodies."
       },
       "card2": {
-        "title": "HIPAA security",
-        "desc": "End-to-end encryption and full compliance with data legislation."
+        "title": "Data security",
+        "desc": "HIPAA, LGPD, and GDPR with end-to-end encryption and granular access control."
       },
       "card3": {
-        "title": "Instant sync",
-        "desc": "Data updated in real time across all devices and the web platform."
+        "title": "Interoperability",
+        "desc": "Native integration with HL7 and FHIR standards to connect with any hospital system."
       },
       "card4": {
-        "title": "Integrated messaging",
-        "desc": "Secure chat between patient and clinical team, with full history."
+        "title": "Modular platform",
+        "desc": "Flexible architecture that grows with your operation without replacing systems."
       },
       "card5": {
-        "title": "Schedule and reminders",
-        "desc": "Appointments, exams, and medications organized in a single calendar."
+        "title": "Hardware-agnostic",
+        "desc": "Compatible with a wide variety of certified medical devices on the market."
       },
       "card6": {
-        "title": "Medication control",
-        "desc": "Reminders, adherence tracking, and drug interaction alerts."
+        "title": "Specialized support",
+        "desc": "Dedicated technical team to ensure safe deployment and continuous operation."
       }
     },
     "cta": {
       "badge": "Available now",
-      "title": "Download and get started in minutes",
-      "subtitle": "Available for iOS and Android. Quick setup and dedicated support to get you started right.",
+      "title": "Ready to raise the standard of care at your institution?",
+      "subtitle": "Our platform is modular, compatible with leading certified medical devices, and adaptable to the reality of your clinic or hospital.",
       "appStore": "App Store",
       "googlePlay": "Google Play"
     }
@@ -461,6 +473,13 @@
       "subtitle": "Once a week, no spam. Trends, cases, and analyses on digital health straight to your inbox.",
       "placeholder": "Enter your email",
       "button": "Subscribe"
+    },
+    "detail": {
+      "backToBlog": "Back to Blog",
+      "relatedBadge": "Continue Reading",
+      "relatedTitle": "Related Articles",
+      "share": "Share",
+      "requestDemo": "Request Demo"
     }
   },
   "equipmentPage": {
@@ -543,6 +562,19 @@
         "primary": "Talk to a specialist",
         "secondary": "Request catalog"
       }
+    },
+    "detail": {
+      "backToEquipment": "Back to Equipment",
+      "features": "Features",
+      "about": "About this device",
+      "allFeatures": "All features",
+      "ctaTitle": "Want to know more?",
+      "ctaDesc": "Talk to our team and discover how this device can help in your treatment.",
+      "contactButton": "Contact Us",
+      "share": "Share",
+      "relatedBadge": "Continue Exploring",
+      "relatedTitle": "Other Equipment",
+      "searchPlaceholder": "Search devices..."
     }
   },
   "aria": {
@@ -563,6 +595,7 @@
     }
   },
   "footer": {
+    "tagline": "Transforming lives with health technology. Intelligent remote monitoring for more humane and efficient care.",
     "links": {
       "title": "Links",
       "ourHistory": "Our History",
@@ -586,8 +619,10 @@
       "description": "Receive weekly all our updates on",
       "highlight": "Innovations in Remote Patient Monitoring",
       "placeholder": "Enter email",
-      "submit": "Send"
+      "submit": "Send",
+      "privacy": "Your data is secure. We don't send spam."
     },
+    "backToTop": "Back to top",
     "copyright": "All rights reserved."
   }
 }
