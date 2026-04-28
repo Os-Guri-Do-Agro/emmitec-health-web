@@ -119,7 +119,7 @@ const filteredArticles = computed(() => {
 
 onMounted(() => {
   gsap
-    .timeline({ defaults: { ease: 'power3.out' } })
+    .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
@@ -132,6 +132,7 @@ onMounted(() => {
       stagger: 0.1,
       duration: 0.7,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: el, start: 'top 80%', once: true },
       ...opts,
     })
@@ -401,7 +402,7 @@ onUnmounted(() => {
           <Button
             :label="t('blogPage.cta.button')"
             unstyled
-            class="btn-primary font-display font-bold !rounded-full"
+            class="btn-primary font-display font-bold rounded-full!"
           />
         </form>
       </div>

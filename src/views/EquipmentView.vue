@@ -123,23 +123,23 @@ const filteredDevices = computed(() =>
     : devices.value.filter((d) => d.cat === activeCategory.value),
 )
 
-const compatibilityItems = [
+const compatibilityItems = computed(() => [
   t('equipmentPage.compatibility.item1'),
   t('equipmentPage.compatibility.item2'),
   t('equipmentPage.compatibility.item3'),
   t('equipmentPage.compatibility.item4'),
-]
+])
 
-const certifications = [
+const certifications = computed(() => [
   { code: 'ANVISA', label: t('equipmentPage.cert.c1') },
   { code: 'FDA', label: t('equipmentPage.cert.c2') },
   { code: 'CE', label: t('equipmentPage.cert.c3') },
   { code: 'ISO 13485', label: t('equipmentPage.cert.c4') },
-]
+])
 
 onMounted(() => {
   gsap
-    .timeline({ defaults: { ease: 'power3.out' } })
+    .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
@@ -152,6 +152,7 @@ onMounted(() => {
       stagger: 0.1,
       duration: 0.7,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: el, start: 'top 80%', once: true },
       ...opts,
     })

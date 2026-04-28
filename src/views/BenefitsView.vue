@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -32,7 +32,7 @@ const clinicSection = ref<HTMLElement | null>(null)
 const statsSection = ref<HTMLElement | null>(null)
 const comparisonSection = ref<HTMLElement | null>(null)
 
-const patientBenefits = [
+const patientBenefits = computed(() => [
   {
     icon: Home,
     title: t('benefitsPage.patient.card1.title'),
@@ -53,34 +53,34 @@ const patientBenefits = [
     title: t('benefitsPage.patient.card4.title'),
     desc: t('benefitsPage.patient.card4.desc'),
   },
-]
+])
 
-const clinicItems = [
+const clinicItems = computed(() => [
   t('benefitsPage.clinic.item1'),
   t('benefitsPage.clinic.item2'),
   t('benefitsPage.clinic.item3'),
   t('benefitsPage.clinic.item4'),
   t('benefitsPage.clinic.item5'),
-]
+])
 
-const stats = [
+const stats = computed(() => [
   { num: '-38%', label: t('benefitsPage.stats.readmissions'), icon: TrendingDown },
   { num: '+62%', label: t('benefitsPage.stats.adherence'), icon: Activity },
   { num: '4.8/5', label: t('benefitsPage.stats.satisfaction'), icon: Smile },
   { num: '24/7', label: t('benefitsPage.stats.monitoring'), icon: Clock },
-]
+])
 
-const comparison = [
+const comparison = computed(() => [
   { label: t('benefitsPage.comparison.row1'), traditional: false, rpm: true },
   { label: t('benefitsPage.comparison.row2'), traditional: false, rpm: true },
   { label: t('benefitsPage.comparison.row3'), traditional: false, rpm: true },
   { label: t('benefitsPage.comparison.row4'), traditional: true, rpm: true },
   { label: t('benefitsPage.comparison.row5'), traditional: false, rpm: true },
-]
+])
 
 onMounted(() => {
   gsap
-    .timeline({ defaults: { ease: 'power3.out' } })
+    .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
@@ -93,6 +93,7 @@ onMounted(() => {
       stagger: 0.1,
       duration: 0.7,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: el, start: 'top 80%', once: true },
       ...opts,
     })

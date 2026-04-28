@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -29,7 +29,7 @@ const processSection = ref<HTMLElement | null>(null)
 const componentsSection = ref<HTMLElement | null>(null)
 const whoSection = ref<HTMLElement | null>(null)
 
-const processSteps = [
+const processSteps = computed(() => [
   {
     icon: Activity,
     title: t('whatIsRpm.process.step1.title'),
@@ -50,9 +50,9 @@ const processSteps = [
     title: t('whatIsRpm.process.step4.title'),
     desc: t('whatIsRpm.process.step4.desc'),
   },
-]
+])
 
-const componentsData = [
+const componentsData = computed(() => [
   {
     icon: HeartPulse,
     title: t('whatIsRpm.components.card1.title'),
@@ -73,18 +73,18 @@ const componentsData = [
     title: t('whatIsRpm.components.card4.title'),
     desc: t('whatIsRpm.components.card4.desc'),
   },
-]
+])
 
-const whoData = [
+const whoData = computed(() => [
   { icon: HeartPulse, label: t('whatIsRpm.who.item1') },
   { icon: Stethoscope, label: t('whatIsRpm.who.item2') },
   { icon: ShieldCheck, label: t('whatIsRpm.who.item3') },
   { icon: Activity, label: t('whatIsRpm.who.item4') },
-]
+])
 
 onMounted(() => {
   gsap
-    .timeline({ defaults: { ease: 'power3.out' } })
+    .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
@@ -97,6 +97,7 @@ onMounted(() => {
       stagger: 0.1,
       duration: 0.7,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: el, start: 'top 80%', once: true },
       ...opts,
     })

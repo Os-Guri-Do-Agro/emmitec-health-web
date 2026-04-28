@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Button from 'primevue/button'
 import 'flag-icons/css/flag-icons.min.css'
+import { LOCALE_STORAGE_KEY } from '@/i18n'
 
 const { locale, t } = useI18n()
 
@@ -30,6 +31,11 @@ function closeLangDropdown() {
 function setLanguage(code: string) {
   locale.value = code
   currentLangLabel.value = languages.find((l) => l.code === code)?.label || code.toUpperCase()
+  try {
+    localStorage.setItem(LOCALE_STORAGE_KEY, code)
+  } catch {
+    // localStorage pode estar bloqueado — apenas a persistência é perdida
+  }
   closeLangDropdown()
 }
 
@@ -273,17 +279,43 @@ onUnmounted(() => {
             <span class="text-white/40 text-[11px] font-medium uppercase tracking-wide">{{
               t('header.nav.language')
             }}</span>
-            <div class="flex items-center gap-3">
+            <div class="relative">
               <button
-                v-for="lang in languages"
-                :key="lang.code"
-                @click="setLanguage(lang.code)"
-                class="text-[13px] font-medium transition-colors flex items-center gap-2"
-                :class="locale === lang.code ? 'text-primary' : 'text-white/50 hover:text-white'"
+                @click="toggleLangDropdown"
+                class="text-white/70 hover:text-white text-[13px] font-medium transition-colors flex items-center gap-2"
               >
-                <span :class="['fi', lang.flagClass]" class="w-50 h-50 rounded-sm" />
-                <span>{{ lang.label }}</span>
+                <span
+                  :class="['fi', languages.find((l) => l.code === locale)?.flagClass]"
+                  class="w-7 h-7 rounded-sm"
+                />
+                <span>{{ currentLangLabel }}</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 transition-transform"
+                  :class="langDropdownOpen ? 'rotate-180' : ''"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
               </button>
+              <div
+                v-show="langDropdownOpen"
+                class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-24 bg-dark/95 backdrop-blur-md border border-primary/15 rounded-lg shadow-lg py-2 z-10"
+              >
+                <button
+                  v-for="lang in languages"
+                  :key="lang.code"
+                  @click="setLanguage(lang.code)"
+                  class="flex items-center gap-2 w-full text-left px-4 py-2 text-white/70 hover:text-white hover:bg-primary/10 text-[12px] font-medium transition-colors"
+                  :class="{ 'text-primary': locale === lang.code }"
+                >
+                  <span :class="['fi', lang.flagClass]" class="w-7 h-7 rounded-sm" />
+                  {{ lang.label }}
+                </button>
+              </div>
             </div>
           </div>
         </li>

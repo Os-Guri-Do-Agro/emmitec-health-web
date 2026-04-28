@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -35,7 +35,7 @@ const teamSection = ref<HTMLElement | null>(null)
 const statsSection = ref<HTMLElement | null>(null)
 
 // Dados das seções
-const valuesData = [
+const valuesData = computed(() => [
   {
     icon: HeartHandshake,
     title: t('about.values.card1.title'),
@@ -60,26 +60,26 @@ const valuesData = [
     description: t('about.values.card4.description'),
     color: 'from-purple-400/20 to-purple-400/5',
   },
-]
+])
 
-const statsData = [
+const statsData = computed(() => [
   { num: '2018', label: t('about.stats.founded') },
   { num: '500+', label: t('about.stats.clinics') },
   { num: '50K+', label: t('about.stats.patients') },
   { num: '120+', label: t('about.stats.team') },
-]
+])
 
-const milestones = [
+const milestones = computed(() => [
   { year: '2018', title: t('about.timeline.2018.title'), desc: t('about.timeline.2018.desc') },
   { year: '2020', title: t('about.timeline.2020.title'), desc: t('about.timeline.2020.desc') },
   { year: '2022', title: t('about.timeline.2022.title'), desc: t('about.timeline.2022.desc') },
   { year: '2024', title: t('about.timeline.2024.title'), desc: t('about.timeline.2024.desc') },
-]
+])
 
 onMounted(() => {
   // Hero entrance
   gsap
-    .timeline({ defaults: { ease: 'power3.out' } })
+    .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
@@ -92,6 +92,7 @@ onMounted(() => {
       stagger: 0.12,
       duration: 0.72,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: storySection.value, start: 'top 80%', once: true },
     })
   }
@@ -104,6 +105,7 @@ onMounted(() => {
       stagger: 0.12,
       duration: 0.72,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: missionSection.value, start: 'top 80%', once: true },
     })
   }
@@ -116,6 +118,7 @@ onMounted(() => {
       stagger: 0.12,
       duration: 0.72,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: visionSection.value, start: 'top 80%', once: true },
     })
   }
@@ -128,6 +131,7 @@ onMounted(() => {
       stagger: 0.08,
       duration: 0.7,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: valuesSection.value, start: 'top 80%', once: true },
     })
   }
@@ -140,6 +144,7 @@ onMounted(() => {
       stagger: 0.15,
       duration: 0.6,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: teamSection.value, start: 'top 80%', once: true },
     })
   }
@@ -152,6 +157,7 @@ onMounted(() => {
       stagger: 0.08,
       duration: 0.6,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: statsSection.value, start: 'top 85%', once: true },
     })
   }

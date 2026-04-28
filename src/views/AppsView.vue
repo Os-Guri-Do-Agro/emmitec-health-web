@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -33,21 +33,21 @@ const clinicalAppSection = ref<HTMLElement | null>(null)
 const featuresSection = ref<HTMLElement | null>(null)
 const downloadSection = ref<HTMLElement | null>(null)
 
-const patientFeatures = [
+const patientFeatures = computed(() => [
   t('appsPage.patient.feature1'),
   t('appsPage.patient.feature2'),
   t('appsPage.patient.feature3'),
   t('appsPage.patient.feature4'),
-]
+])
 
-const clinicalFeatures = [
+const clinicalFeatures = computed(() => [
   t('appsPage.clinical.feature1'),
   t('appsPage.clinical.feature2'),
   t('appsPage.clinical.feature3'),
   t('appsPage.clinical.feature4'),
-]
+])
 
-const featureGrid = [
+const featureGrid = computed(() => [
   {
     icon: Bell,
     title: t('appsPage.features.card1.title'),
@@ -74,11 +74,11 @@ const featureGrid = [
     title: t('appsPage.features.card6.title'),
     desc: t('appsPage.features.card6.desc'),
   },
-]
+])
 
 onMounted(() => {
   gsap
-    .timeline({ defaults: { ease: 'power3.out' } })
+    .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
@@ -91,6 +91,7 @@ onMounted(() => {
       stagger: 0.1,
       duration: 0.7,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: { trigger: el, start: 'top 80%', once: true },
       ...opts,
     })
