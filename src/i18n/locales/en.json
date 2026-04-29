@@ -622,6 +622,10 @@
       "submit": "Send",
       "privacy": "Your data is secure. We don't send spam."
     },
+    "addresses": [
+      "USA - 105 Boniface Drive, Rochester, NY 14620",
+      "UK - Innovation Centre, Gallows Hill Warwick CV34 6UW"
+    ],
     "backToTop": "Back to top",
     "copyright": "All rights reserved."
   }

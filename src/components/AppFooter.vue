@@ -5,7 +5,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Mail, ArrowRight, MapPin, Check } from 'lucide-vue-next'
 
-const { t } = useI18n()
+const { t, tm } = useI18n()
 gsap.registerPlugin(ScrollTrigger)
 
 // Refs para animações
@@ -139,13 +139,12 @@ onUnmounted(() => {
           <!-- Endereço com ícone -->
           <div class="flex items-start gap-3 text-white/50 text-[13px]">
             <div
-              class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0"
+              class="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5"
             >
               <MapPin class="w-4 h-4 text-primary" />
             </div>
-            <div class="leading-relaxed pt-1">
-              Rua Primeiro de Maio, 442, Pinhais<br />
-              PR 83323-020, Brazil
+            <div class="leading-relaxed flex flex-col gap-1">
+              <span v-for="(line, i) in (tm('footer.addresses') as string[])" :key="i">{{ line }}</span>
             </div>
           </div>
 

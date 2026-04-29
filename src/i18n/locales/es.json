@@ -622,6 +622,9 @@
       "submit": "Enviar",
       "privacy": "Tus datos están seguros. No enviamos spam."
     },
+    "addresses": [
+      "USA - 105 Boniface Drive, Rochester, NY 14620"
+    ],
     "backToTop": "Volver arriba",
     "copyright": "Todos los derechos reservados."
   }
