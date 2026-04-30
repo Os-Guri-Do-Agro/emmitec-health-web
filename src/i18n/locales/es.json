@@ -92,7 +92,9 @@
     "subtitle": "Muestra a tu equipo cómo Emmitec Health puede transformar la gestión de pacientes y la calidad del cuidado en tu clínica.",
     "button": {
       "specialist": "Hablar con especialista",
-      "cases": "Ver casos de éxito"
+      "cases": "Ver casos de éxito",
+      "primary": "Solicitar demostración",
+      "secondary": "Ver equipos →"
     }
   },
   "about": {
@@ -157,9 +159,13 @@
     "timeline": {
       "badge": "Nuestro viaje",
       "title": "Evolución Emmitec",
+      "2006": {
+        "title": "EMMI Technologies",
+        "desc": "Fundación de EMMI Technologies, desarrollando tecnología de vanguardia para finanzas y retail en asociación con grandes innovadores"
+      },
       "2018": {
-        "title": "Fundación",
-        "desc": "Nacimiento de Emmitec con la misión de conectar salud y tecnología"
+        "title": "Emmitec Health",
+        "desc": "Pivote hacia la salud: nacimiento de Emmitec Health con enfoque exclusivo en monitoreo remoto de pacientes"
       },
       "2020": {
         "title": "Primera plataforma",
@@ -187,7 +193,9 @@
       "subtitle": "Ya seas paciente, profesional de la salud o clínica, hay un lugar para ti en este viaje de transformación.",
       "button": {
         "contact": "Habla con nosotros",
-        "learn": "Conocer soluciones"
+        "learn": "Conocer soluciones",
+        "primary": "Solicitar demostración",
+        "secondary": "Qué es RPM →"
       }
     }
   },
@@ -263,8 +271,8 @@
       "title": "¿Listo para implantar RPM en tu institución?",
       "subtitle": "Nuestro equipo te ayuda a diseñar un piloto a medida para tu realidad clínica y operativa.",
       "button": {
-        "primary": "Agendar demostración",
-        "secondary": "Conocer apps"
+        "primary": "Solicitar demostración",
+        "secondary": "Ver beneficios →"
       }
     }
   },
@@ -334,8 +342,8 @@
       "title": "¿Listo para cosechar estos resultados?",
       "subtitle": "Agenda una conversación y descubre cómo el RPM de Emmitec puede adaptarse a la realidad de tu institución.",
       "button": {
-        "primary": "Hablar con especialista",
-        "secondary": "Ver casos"
+        "primary": "Solicitar demostración",
+        "secondary": "Conoce Emmitec →"
       }
     }
   },
@@ -348,7 +356,7 @@
     "hero": {
       "badge": "Aplicaciones",
       "title": "Apps que marcan nuevos estándares para la salud digital",
-      "subtitle": "En EmmiTec.Health, desarrollamos aplicaciones construidas según los más altos estándares internacionales de calidad, seguridad e interoperabilidad — certificadas por las principales autoridades regulatorias del mundo.",
+      "subtitle": "En Emmitec Health, desarrollamos aplicaciones construidas según los más altos estándares internacionales de calidad, seguridad e interoperabilidad — certificadas por las principales autoridades regulatorias del mundo.",
       "button": {
         "primary": "Solicitar Demo",
         "secondary": "Explorar la plataforma"
@@ -357,7 +365,7 @@
     "patient": {
       "badge": "Estándar internacional",
       "title": "Desarrolladas bajo los estándares más rigurosos en salud",
-      "description": "En EmmiTec.Health, desarrollamos apps que cumplen los más altos estándares internacionales de calidad, seguridad e interoperabilidad. Nuestras apps son compatibles con dispositivos médicos certificados por autoridades como la FDA (EE.UU.), ANVISA (Brasil), CE (Europa) y MHRA (Reino Unido), permitiendo el monitoreo remoto de pacientes con precisión, seguridad y total integración a la rutina clínica.",
+      "description": "En Emmitec Health, desarrollamos apps que cumplen los más altos estándares internacionales de calidad, seguridad e interoperabilidad. Nuestras apps son compatibles con dispositivos médicos certificados por autoridades como la FDA (EE.UU.), ANVISA (Brasil), CE (Europa) y MHRA (Reino Unido), permitiendo el monitoreo remoto de pacientes con precisión, seguridad y total integración a la rutina clínica.",
       "feature1": "Compatible con dispositivos certificados FDA, ANVISA, CE y MHRA",
       "feature2": "Cumplimiento con HIPAA, LGPD y estándares internacionales de privacidad",
       "feature3": "Interoperabilidad nativa con estándares HL7 y FHIR",
@@ -559,8 +567,8 @@
       "title": "¿No encontraste el dispositivo que buscas?",
       "subtitle": "Evaluamos nuevos equipos continuamente. Habla con nuestro equipo y conoce las opciones disponibles para tu operación.",
       "button": {
-        "primary": "Hablar con especialista",
-        "secondary": "Solicitar catálogo"
+        "primary": "Solicitar demostración",
+        "secondary": "Conoce Emmitec →"
       }
     },
     "detail": {
@@ -622,9 +630,7 @@
       "submit": "Enviar",
       "privacy": "Tus datos están seguros. No enviamos spam."
     },
-    "addresses": [
-      "USA - 105 Boniface Drive, Rochester, NY 14620"
-    ],
+    "addresses": ["USA - 105 Boniface Drive, Rochester, NY 14620"],
     "backToTop": "Volver arriba",
     "copyright": "Todos los derechos reservados."
   }

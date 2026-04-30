@@ -92,7 +92,9 @@
     "subtitle": "Show your team how Emmitec Health can transform patient management and the quality of care in your clinic.",
     "button": {
       "specialist": "Talk to a specialist",
-      "cases": "See success stories"
+      "cases": "See success stories",
+      "primary": "Request demo",
+      "secondary": "View equipment →"
     }
   },
   "about": {
@@ -157,9 +159,13 @@
     "timeline": {
       "badge": "Our journey",
       "title": "Emmitec Evolution",
+      "2006": {
+        "title": "EMMI Technologies",
+        "desc": "Founding of EMMI Technologies, developing cutting-edge technology for finance and retail in partnership with major innovators"
+      },
       "2018": {
-        "title": "Foundation",
-        "desc": "Birth of Emmitec with the mission to connect health and technology"
+        "title": "Emmitec Health",
+        "desc": "Pivot to healthcare: birth of Emmitec Health with exclusive focus on remote patient monitoring"
       },
       "2020": {
         "title": "First platform",
@@ -187,7 +193,9 @@
       "subtitle": "Whether you're a patient, healthcare professional, or clinic, there's a place for you in this transformation journey.",
       "button": {
         "contact": "Contact us",
-        "learn": "Explore solutions"
+        "learn": "Explore solutions",
+        "primary": "Request demo",
+        "secondary": "What is RPM →"
       }
     }
   },
@@ -263,8 +271,8 @@
       "title": "Ready to deploy RPM at your institution?",
       "subtitle": "Our team helps you design a tailored pilot for your clinical and operational reality.",
       "button": {
-        "primary": "Schedule demo",
-        "secondary": "Discover apps"
+        "primary": "Request demo",
+        "secondary": "View benefits →"
       }
     }
   },
@@ -334,8 +342,8 @@
       "title": "Ready to reap these results?",
       "subtitle": "Schedule a conversation and see how Emmitec's RPM can adapt to your institution's reality.",
       "button": {
-        "primary": "Talk to a specialist",
-        "secondary": "View cases"
+        "primary": "Request demo",
+        "secondary": "Meet Emmitec →"
       }
     }
   },
@@ -348,7 +356,7 @@
     "hero": {
       "badge": "Apps",
       "title": "Apps that set new standards for digital health",
-      "subtitle": "At EmmiTec.Health, we develop apps built to the highest international standards of quality, security, and interoperability — certified by the world's leading regulatory authorities.",
+      "subtitle": "At Emmitec Health, we develop apps built to the highest international standards of quality, security, and interoperability — certified by the world's leading regulatory authorities.",
       "button": {
         "primary": "Request Demo",
         "secondary": "Explore the platform"
@@ -357,7 +365,7 @@
     "patient": {
       "badge": "International standard",
       "title": "Built to the most rigorous standards in healthcare",
-      "description": "At EmmiTec.Health, we develop apps that meet the highest international standards of quality, security, and interoperability. Our apps are compatible with medical devices certified by authorities such as the FDA (USA), ANVISA (Brazil), CE (Europe), and MHRA (UK), enabling remote patient monitoring with precision, safety, and full integration into clinical routines.",
+      "description": "At Emmitec Health, we develop apps that meet the highest international standards of quality, security, and interoperability. Our apps are compatible with medical devices certified by authorities such as the FDA (USA), ANVISA (Brazil), CE (Europe), and MHRA (UK), enabling remote patient monitoring with precision, safety, and full integration into clinical routines.",
       "feature1": "Compatible with FDA, ANVISA, CE, and MHRA certified devices",
       "feature2": "Compliant with HIPAA, LGPD, and international privacy standards",
       "feature3": "Native interoperability with HL7 and FHIR standards",
@@ -559,8 +567,8 @@
       "title": "Didn't find the device you're looking for?",
       "subtitle": "We continuously evaluate new equipment. Talk to our team and explore the options available for your operation.",
       "button": {
-        "primary": "Talk to a specialist",
-        "secondary": "Request catalog"
+        "primary": "Request demo",
+        "secondary": "Meet Emmitec →"
       }
     },
     "detail": {

@@ -457,12 +457,12 @@ watch(locale, async () => {
       <!-- Desktop: Grid -->
       <div
         ref="cardsSection"
-        class="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-7xl mx-auto px-4 sm:px-6"
+        class="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-7xl mx-auto px-4 sm:px-6 items-stretch"
       >
         <article
           v-for="(c, i) in cardsData"
           :key="c.title"
-          class="service-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]"
+          class="service-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] h-full flex flex-col"
         >
           <!-- Imagem -->
           <div class="relative overflow-hidden aspect-16/10">
@@ -498,15 +498,15 @@ watch(locale, async () => {
           </div>
 
           <!-- Corpo -->
-          <div class="p-6 pt-8 flex flex-col gap-3">
+          <div class="p-6 pt-8 flex flex-col gap-3 grow">
             <h3
               class="font-display font-bold text-gray-900 text-[17px] leading-snug tracking-tight"
             >
               {{ c.title }}
             </h3>
-            <p class="text-gray-500 text-[13px] leading-[1.7]">{{ c.description }}</p>
+            <p class="text-gray-500 text-[13px] leading-[1.7] grow">{{ c.description }}</p>
 
-            <div class="mt-4 pt-5 border-t border-gray-100 flex items-center justify-between">
+            <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
               <a
                 href="#"
                 class="card-cta relative inline-flex items-center gap-2 text-primary text-[12px] font-display font-semibold tracking-wide no-underline"
@@ -536,7 +536,7 @@ watch(locale, async () => {
             <article
               v-for="(c, i) in cardsData"
               :key="c.title"
-              class="service-card group w-full shrink-0 rounded-2xl border border-gray-200/80 bg-white overflow-hidden"
+              class="service-card group w-full shrink-0 rounded-2xl border border-gray-200/80 bg-white overflow-hidden h-full flex flex-col"
             >
               <!-- Imagem -->
               <div class="relative overflow-hidden aspect-16/10">
@@ -569,15 +569,17 @@ watch(locale, async () => {
               </div>
 
               <!-- Corpo -->
-              <div class="p-6 pt-8 flex flex-col gap-3">
+              <div class="p-6 pt-8 flex flex-col gap-3 grow">
                 <h3
                   class="font-display font-bold text-gray-900 text-[17px] leading-snug tracking-tight"
                 >
                   {{ c.title }}
                 </h3>
-                <p class="text-gray-500 text-[13px] leading-[1.7]">{{ c.description }}</p>
+                <p class="text-gray-500 text-[13px] leading-[1.7] grow">{{ c.description }}</p>
 
-                <div class="mt-4 pt-5 border-t border-gray-100 flex items-center justify-between">
+                <div
+                  class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between"
+                >
                   <a
                     href="#"
                     class="card-cta relative inline-flex items-center gap-2 text-primary text-[12px] font-display font-semibold tracking-wide no-underline"
@@ -656,7 +658,13 @@ watch(locale, async () => {
               {{ item }}
             </li>
           </ul>
-          <Button :label="f.btnLabel" unstyled class="btn-primary font-display font-extrabold" />
+          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+            <Button
+              label="Solicitar demonstração"
+              unstyled
+              class="btn-primary font-display font-extrabold"
+            />
+          </a>
         </div>
         <!-- Image -->
         <div :style="f.reverse ? 'direction:ltr' : ''">
@@ -689,12 +697,12 @@ watch(locale, async () => {
         </p>
       </div>
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full max-w-7xl mx-auto px-4 sm:px-6"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full max-w-7xl mx-auto px-4 sm:px-6 items-stretch"
       >
         <div
           v-for="b in benefitsData"
           :key="b.title"
-          class="benefit-item text-center px-3 sm:px-4 py-4 sm:py-6 group cursor-default flex flex-col items-center justify-center gap-3"
+          class="benefit-item text-center px-3 sm:px-4 py-4 sm:py-6 group cursor-default flex flex-col items-center h-full gap-3"
         >
           <div
             class="icon-box w-12 h-12 p-3 rounded-[14px] bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4 text-primary group-hover:bg-primary/20 group-hover:shadow-[0_0_28px_rgba(17,211,211,.22)] transition-all duration-300"
@@ -747,8 +755,12 @@ watch(locale, async () => {
           {{ t('cta.subtitle') }}
         </p>
         <div class="flex gap-4 justify-center flex-wrap">
-          <Button :label="t('cta.button.specialist')" unstyled class="btn-primary font-display" />
-          <Button :label="t('cta.button.cases')" unstyled class="btn-ghost font-display" />
+          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+            <Button :label="t('cta.button.primary')" unstyled class="btn-primary font-display" />
+          </a>
+          <a href="/equipment">
+            <Button :label="t('cta.button.secondary')" unstyled class="btn-ghost font-display" />
+          </a>
         </div>
       </div>
     </section>

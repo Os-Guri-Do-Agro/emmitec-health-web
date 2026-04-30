@@ -76,13 +76,14 @@ const valuesData = computed(() => [
 ])
 
 const statsData = computed(() => [
-  { num: '2018', label: t('about.stats.founded') },
+  { num: '2006', label: t('about.stats.founded') },
   { num: '500+', label: t('about.stats.clinics') },
   { num: '50K+', label: t('about.stats.patients') },
   { num: '120+', label: t('about.stats.team') },
 ])
 
 const milestones = computed(() => [
+  { year: '2006', title: t('about.timeline.2006.title'), desc: t('about.timeline.2006.desc') },
   { year: '2018', title: t('about.timeline.2018.title'), desc: t('about.timeline.2018.desc') },
   { year: '2020', title: t('about.timeline.2020.title'), desc: t('about.timeline.2020.desc') },
   { year: '2022', title: t('about.timeline.2022.title'), desc: t('about.timeline.2022.desc') },
@@ -236,7 +237,7 @@ onUnmounted(() => {
           <div class="grid grid-cols-2 gap-4 w-full max-w-sm">
             <!-- Founded -->
             <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <div class="font-display font-extrabold text-primary text-3xl">2018</div>
+              <div class="font-display font-extrabold text-primary text-3xl">2006</div>
               <div class="text-white/60 text-sm mt-1">{{ t('about.stats.founded') }}</div>
             </div>
             <!-- Clinics -->
@@ -598,16 +599,16 @@ onUnmounted(() => {
           {{ t('about.cta.subtitle') }}
         </p>
         <div class="flex gap-4 justify-center flex-wrap">
-          <Button
-            :label="t('about.cta.button.contact')"
-            unstyled
-            class="btn-primary font-display px-8 py-3"
-          />
-          <Button
-            :label="t('about.cta.button.learn')"
-            unstyled
-            class="btn-ghost font-display px-8 py-3"
-          />
+          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+            <Button
+              :label="t('about.cta.button.primary')"
+              unstyled
+              class="btn-primary font-display px-8 py-3"
+            />
+          </a>
+          <a href="/what-is-rpm">
+            <Button :label="t('about.cta.button.secondary')" unstyled class="btn-ghost font-display px-8 py-3" />
+          </a>
         </div>
       </div>
     </section>

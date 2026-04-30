@@ -287,11 +287,13 @@ onUnmounted(() => {
               </li>
             </ul>
             <div class="flex gap-4 flex-wrap mt-4">
-              <Button
-                :label="t('benefitsPage.clinic.button')"
-                unstyled
-                class="btn-primary font-display font-bold"
-              />
+              <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+                <Button
+                  label="Solicitar demonstração"
+                  unstyled
+                  class="btn-primary font-display font-bold"
+                />
+              </a>
             </div>
           </div>
 
@@ -489,16 +491,16 @@ onUnmounted(() => {
           {{ t('benefitsPage.cta.subtitle') }}
         </p>
         <div class="flex gap-4 justify-center flex-wrap">
-          <Button
-            :label="t('benefitsPage.cta.button.primary')"
-            unstyled
-            class="btn-primary font-display px-8 py-3"
-          />
-          <Button
-            :label="t('benefitsPage.cta.button.secondary')"
-            unstyled
-            class="btn-ghost font-display px-8 py-3"
-          />
+          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+            <Button
+              :label="t('benefitsPage.cta.button.primary')"
+              unstyled
+              class="btn-primary font-display px-8 py-3"
+            />
+          </a>
+          <a href="/about">
+            <Button :label="t('benefitsPage.cta.button.secondary')" unstyled class="btn-ghost font-display px-8 py-3" />
+          </a>
         </div>
       </div>
     </section>
