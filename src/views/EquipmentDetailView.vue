@@ -19,7 +19,6 @@ import {
   Check,
   ArrowLeft,
   ArrowRight,
-  Share2,
   Search,
 } from 'lucide-vue-next'
 
@@ -458,21 +457,18 @@ onUnmounted(() => {
             <div class="flex flex-wrap gap-4">
               <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
                 <Button
-                  :label="t('equipmentPage.detail.contactButton') || 'Entrar em Contato'"
+                  label="Solicitar demonstração"
                   unstyled
                   class="btn-primary font-display font-bold px-8 py-3"
                 />
               </a>
-              <Button
-                :label="t('equipmentPage.detail.share') || 'Compartilhar'"
-                unstyled
-                class="btn-ghost-light font-display font-bold px-6 py-3 flex items-center gap-2"
-              >
-                <template #default>
-                  <Share2 :size="18" />
-                  <span>{{ t('equipmentPage.detail.share') || 'Compartilhar' }}</span>
-                </template>
-              </Button>
+              <a href="/equipment">
+                <Button
+                  label="Ver todos os equipamentos →"
+                  unstyled
+                  class="btn-ghost-light font-display font-bold px-6 py-3 flex items-center gap-2"
+                />
+              </a>
             </div>
           </div>
         </div>

@@ -52,12 +52,42 @@ const featuresSection = ref<HTMLElement | null>(null)
 const downloadSection = ref<HTMLElement | null>(null)
 
 const apps = [
-  { img: emmitecHealthImg, name: 'Emmitec Health' },
-  { img: emmitecJudicemedImg, name: 'Emmitec Judicemed' },
-  { img: emmitecHealthBlueImg, name: 'Emmitec Health' },
-  { img: emmitecCuidemeCareImg, name: 'Emmitec Cuideme Care' },
-  { img: emmitecLongTermCareImg, name: 'Emmitec Long Term Care' },
-  { img: emmitecGuardianHealthImg, name: 'Emmitec Guardian Health' },
+  {
+    img: emmitecHealthImg,
+    name: 'Emmitec Health',
+    google: 'https://play.google.com/store/apps/details?id=com.emmitec.wl1&pcampaignid=web_share',
+    apple: 'https://apps.apple.com/us/app/emmitec-wl1/id1635668189',
+  },
+  {
+    img: emmitecJudicemedImg,
+    name: 'Emmitec Judicemed',
+    google: 'https://play.google.com/store/apps/details?id=com.emmitec.jd1&pcampaignid=web_share',
+    apple: 'https://apps.apple.com/us/app/emmitec-jd1/id6670299440',
+  },
+  {
+    img: emmitecHealthBlueImg,
+    name: 'Emmitec Health Blue',
+    google: 'https://play.google.com/store/apps/details?id=com.emmitec.eh1&pcampaignid=web_share',
+    apple: 'https://apps.apple.com/us/app/emmitec-eh1/id6740423403',
+  },
+  {
+    img: emmitecCuidemeCareImg,
+    name: 'Emmitec Cuideme Care',
+    google: null,
+    apple: 'https://apps.apple.com/us/app/emmitec-cc1/id6738710484',
+  },
+  {
+    img: emmitecGuardianHealthImg,
+    name: 'Emmitec Guardian Health',
+    google: 'https://play.google.com/store/apps/details?id=com.emmitec.gd1&pcampaignid=web_share',
+    apple: null,
+  },
+  {
+    img: emmitecLongTermCareImg,
+    name: 'Emmitec Long Term Care',
+    google: 'https://play.google.com/store/apps/details?id=com.emmitec.lt1&pcampaignid=web_share',
+    apple: 'https://apps.apple.com/us/app/emmitec-lt1/id6743580958',
+  },
 ]
 
 const patientFeatures = computed(() => [
@@ -270,10 +300,22 @@ onUnmounted(() => {
             <div class="px-5 py-4 flex items-center justify-between gap-4 flex-wrap bg-dark">
               <span class="font-display font-bold text-white text-[15px]">{{ app.name }}</span>
               <div class="flex gap-2 flex-wrap">
-                <a href="#" class="store-badge">
+                <a
+                  v-if="app.apple"
+                  :href="app.apple"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="store-badge"
+                >
                   <img :src="appStoreWhiteImg" alt="Download on the App Store" class="h-9" />
                 </a>
-                <a href="#" class="store-badge">
+                <a
+                  v-if="app.google"
+                  :href="app.google"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="store-badge"
+                >
                   <img :src="googlePlayWhiteImg" alt="Get it on Google Play" class="h-9" />
                 </a>
               </div>

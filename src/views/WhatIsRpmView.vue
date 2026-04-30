@@ -409,16 +409,16 @@ onUnmounted(() => {
           {{ t('whatIsRpm.cta.subtitle') }}
         </p>
         <div class="flex gap-4 justify-center flex-wrap">
-          <Button
-            :label="t('whatIsRpm.cta.button.primary')"
-            unstyled
-            class="btn-primary font-display px-8 py-3"
-          />
-          <Button
-            :label="t('whatIsRpm.cta.button.secondary')"
-            unstyled
-            class="btn-ghost font-display px-8 py-3"
-          />
+          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
+            <Button
+              :label="t('whatIsRpm.cta.button.primary')"
+              unstyled
+              class="btn-primary font-display px-8 py-3"
+            />
+          </a>
+          <a href="/benefits">
+            <Button :label="t('whatIsRpm.cta.button.secondary')" unstyled class="btn-ghost font-display px-8 py-3" />
+          </a>
         </div>
       </div>
     </section>

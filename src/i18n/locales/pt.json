@@ -92,7 +92,9 @@
     "subtitle": "Mostre para sua equipe como a Emmitec Health pode transformar a gestão de pacientes e a qualidade do cuidado na sua clínica.",
     "button": {
       "specialist": "Falar com especialista",
-      "cases": "Ver cases de sucesso"
+      "cases": "Ver cases de sucesso",
+      "primary": "Solicitar demonstração",
+      "secondary": "Ver equipamentos →"
     }
   },
   "about": {
@@ -157,9 +159,13 @@
     "timeline": {
       "badge": "Nossa jornada",
       "title": "Evolução Emmitec",
+      "2006": {
+        "title": "EMMI Technologies",
+        "desc": "Fundação da EMMI Technologies, desenvolvendo tecnologia de ponta para finanças e varejo em parceria com grandes inovadores"
+      },
       "2018": {
-        "title": "Fundação",
-        "desc": "Nascimento da Emmitec com a missão de conectar saúde e tecnologia"
+        "title": "Emmitec Health",
+        "desc": "Pivô para a saúde: nascimento da Emmitec Health com foco exclusivo em monitoramento remoto de pacientes"
       },
       "2020": {
         "title": "Primeira plataforma",
@@ -187,7 +193,9 @@
       "subtitle": "Seja você um paciente, profissional de saúde ou clínica, há um lugar para você nessa jornada de transformação.",
       "button": {
         "contact": "Falar conosco",
-        "learn": "Conhecer soluções"
+        "learn": "Conhecer soluções",
+        "primary": "Solicitar demonstração",
+        "secondary": "O que é RPM →"
       }
     }
   },
@@ -263,8 +271,8 @@
       "title": "Pronto para implantar RPM na sua instituição?",
       "subtitle": "Nossa equipe ajuda você a desenhar um piloto sob medida para sua realidade clínica e operacional.",
       "button": {
-        "primary": "Agendar demonstração",
-        "secondary": "Conhecer apps"
+        "primary": "Solicitar demonstração",
+        "secondary": "Ver benefícios →"
       }
     }
   },
@@ -334,8 +342,8 @@
       "title": "Pronto para colher esses resultados?",
       "subtitle": "Marque uma conversa e veja como o RPM da Emmitec pode se adaptar à realidade da sua instituição.",
       "button": {
-        "primary": "Falar com especialista",
-        "secondary": "Ver cases"
+        "primary": "Solicitar demonstração",
+        "secondary": "Conheça a Emmitec →"
       }
     }
   },
@@ -348,7 +356,7 @@
     "hero": {
       "badge": "Aplicativos",
       "title": "Apps que definem novos padrões para a saúde digital",
-      "subtitle": "Na EmmiTec.Health, desenvolvemos aplicativos que seguem os mais altos padrões internacionais de qualidade, segurança e interoperabilidade — certificados pelas principais autoridades regulatórias do mundo.",
+      "subtitle": "Na Emmitec Health, desenvolvemos aplicativos que seguem os mais altos padrões internacionais de qualidade, segurança e interoperabilidade — certificados pelas principais autoridades regulatórias do mundo.",
       "button": {
         "primary": "Solicitar Demonstração",
         "secondary": "Conhecer a plataforma"
@@ -357,7 +365,7 @@
     "patient": {
       "badge": "Padrão internacional",
       "title": "Desenvolvidos sob os mais rígidos padrões do mercado de saúde",
-      "description": "Na EmmiTec.Health, desenvolvemos aplicativos que seguem os mais altos padrões internacionais de qualidade, segurança e interoperabilidade. Nossos apps são compatíveis com dispositivos médicos certificados por autoridades como FDA (EUA), ANVISA (Brasil), CE (Europa) e MHRA (Reino Unido), permitindo o monitoramento remoto de pacientes com precisão, segurança e total integração à rotina clínica.",
+      "description": "Na Emmitec Health, desenvolvemos aplicativos que seguem os mais altos padrões internacionais de qualidade, segurança e interoperabilidade. Nossos apps são compatíveis com dispositivos médicos certificados por autoridades como FDA (EUA), ANVISA (Brasil), CE (Europa) e MHRA (Reino Unido), permitindo o monitoramento remoto de pacientes com precisão, segurança e total integração à rotina clínica.",
       "feature1": "Compatível com dispositivos certificados FDA, ANVISA, CE e MHRA",
       "feature2": "Conformidade com LGPD, HIPAA e padrões internacionais de privacidade",
       "feature3": "Interoperabilidade nativa com padrões HL7 e FHIR",
@@ -559,8 +567,8 @@
       "title": "Não encontrou o dispositivo que procura?",
       "subtitle": "Avaliamos novos equipamentos continuamente. Fale com nosso time e conheça as opções disponíveis para sua operação.",
       "button": {
-        "primary": "Falar com especialista",
-        "secondary": "Solicitar catálogo"
+        "primary": "Solicitar demonstração",
+        "secondary": "Conheça a Emmitec →"
       }
     },
     "detail": {
@@ -622,10 +630,7 @@
       "submit": "Enviar",
       "privacy": "Seus dados estão seguros. Não enviamos spam."
     },
-    "addresses": [
-      "Rua Primeiro de Maio, 442, Pinhais",
-      "PR 83323-020, Brazil"
-    ],
+    "addresses": ["Rua Primeiro de Maio, 442, Pinhais", "PR 83323-020, Brazil"],
     "backToTop": "Voltar ao topo",
     "copyright": "Todos os direitos reservados."
   }

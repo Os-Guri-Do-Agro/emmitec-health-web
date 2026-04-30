@@ -392,11 +392,18 @@ onUnmounted(() => {
                 {{ item }}
               </li>
             </ul>
-            <Button
-              :label="t('equipmentPage.compatibility.button')"
-              unstyled
-              class="btn-primary font-display font-bold mt-4 self-start"
-            />
+            <a
+              :href="calendlyUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-4 self-start"
+            >
+              <Button
+                label="Solicitar demonstração"
+                unstyled
+                class="btn-primary font-display font-bold"
+              />
+            </a>
           </div>
 
           <div class="animate-in">
@@ -482,11 +489,9 @@ onUnmounted(() => {
               class="btn-primary font-display px-8 py-3"
             />
           </a>
-          <Button
-            :label="t('equipmentPage.cta.button.secondary')"
-            unstyled
-            class="btn-ghost font-display px-8 py-3"
-          />
+          <a href="/about">
+            <Button :label="t('equipmentPage.cta.button.secondary')" unstyled class="btn-ghost font-display px-8 py-3" />
+          </a>
         </div>
       </div>
     </section>
