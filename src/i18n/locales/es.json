@@ -19,6 +19,12 @@
     "title": "Descubre cómo Emmitec Health está transformando la salud a través de la innovación y la tecnología",
     "description": "Unimos dispositivos inteligentes, plataformas digitales e inteligencia artificial para ofrecer cuidados de salud más eficientes, accesibles y humanos."
   },
+  "homeBlogStrip": {
+    "badge": "Blog",
+    "title": "Lecturas sobre salud digital y RPM",
+    "subtitle": "Artículos del equipo Emmitec e invitados — tendencias, casos y regulación.",
+    "cta": "Ir al blog"
+  },
   "cards": {
     "rpm": {
       "label": "RPM DEVICES",
@@ -109,7 +115,8 @@
       },
       "button": {
         "contact": "Ponte en contacto",
-        "careers": "Trabaja con nosotros"
+        "careers": "Trabaja con nosotros",
+        "demo": "Solicitar demostración"
       }
     },
     "story": {
@@ -425,6 +432,13 @@
       "subtitle": "Artículos, casos y análisis producidos por el equipo Emmitec y especialistas invitados. Todo sobre el presente y futuro de la salud conectada.",
       "searchPlaceholder": "Buscar artículos..."
     },
+    "preview": {
+      "badge": "Vista previa",
+      "title": "Artículos para empezar",
+      "subtitle": "Una selección rápida de lo mejor del blog — lecturas claras antes de explorar todo.",
+      "ctaScroll": "Ver todas las publicaciones",
+      "readArticle": "Leer artículo"
+    },
     "categories": {
       "all": "Todos",
       "rpm": "RPM",
@@ -582,7 +596,8 @@
       "share": "Compartir",
       "relatedBadge": "Sigue Explorando",
       "relatedTitle": "Otros Equipos",
-      "searchPlaceholder": "Buscar equipos..."
+      "searchPlaceholder": "Buscar equipos...",
+      "viewAllEquipment": "Ver todos los equipos"
     }
   },
   "aria": {
@@ -590,6 +605,7 @@
   },
   "header": {
     "nav": {
+      "home": "Inicio",
       "about": "Sobre nosotros",
       "ourHistory": "Nuestra historia",
       "whatIsRpm": "Qué es RPM",

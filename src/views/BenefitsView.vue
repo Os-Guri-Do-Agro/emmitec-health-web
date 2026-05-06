@@ -148,7 +148,7 @@ onUnmounted(() => {
             <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
               <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
                 <Button
-                  label="Solicitar Demonstração"
+                  :label="t('benefitsPage.hero.button.primary')"
                   unstyled
                   class="btn-primary font-display font-bold"
                 />
@@ -289,7 +289,7 @@ onUnmounted(() => {
             <div class="flex gap-4 flex-wrap mt-4">
               <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
                 <Button
-                  label="Solicitar demonstração"
+                  :label="t('benefitsPage.hero.button.primary')"
                   unstyled
                   class="btn-primary font-display font-bold"
                 />

@@ -41,6 +41,7 @@ function setLanguage(code: string) {
 
 // Estrutura de navegação com suporte a dropdown
 const navItems = computed(() => [
+  { label: t('header.nav.home'), href: '/', children: null },
   {
     label: t('header.nav.about'),
     href: '#',

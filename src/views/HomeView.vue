@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
@@ -15,17 +16,20 @@ import {
   Cloud,
   Heart,
   HandHeart,
+  Sparkles,
+  Layers,
+  Calendar,
+  Tag,
+  BookOpen,
 } from 'lucide-vue-next'
 
-// Imagens
+// Imagens (hero + seções split)
 import imgRPM from '@/assets/home/RPM.jpg'
-import imgTecnologiaRPM from '@/assets/home/tecnologia_rpm.jpg'
-import imgRevolucionando from '@/assets/home/revolucionando.jpg'
 import imgMonitoramento from '@/assets/home/monitoramento.jpg'
-import imgNossaHistoria from '@/assets/home/nossa_historia.jpg'
 import headerIMG from '@/assets/home/header_img.png'
 
 const { t, locale } = useI18n()
+const router = useRouter()
 
 const calendlyUrl = computed(() => {
   const now = new Date()
@@ -141,21 +145,42 @@ const cardsData = computed(() => [
     headerLabel: t('cards.rpm.label'),
     title: t('cards.rpm.title'),
     description: t('cards.rpm.description'),
-    image: imgTecnologiaRPM,
   },
   {
     icon: Cpu,
     headerLabel: t('cards.ai.label'),
     title: t('cards.ai.title'),
     description: t('cards.ai.description'),
-    image: imgNossaHistoria,
   },
   {
     icon: Users,
     headerLabel: t('cards.dashboard.label'),
     title: t('cards.dashboard.title'),
     description: t('cards.dashboard.description'),
-    image: imgRevolucionando,
+  },
+])
+
+const homeBlogStripPosts = computed(() => [
+  {
+    id: 1,
+    catLabel: t('blogPage.categories.tech'),
+    title: t('blogPage.articles.a1.title'),
+    excerpt: t('blogPage.articles.a1.excerpt'),
+    date: t('blogPage.articles.a1.date'),
+  },
+  {
+    id: 2,
+    catLabel: t('blogPage.categories.rpm'),
+    title: t('blogPage.articles.a2.title'),
+    excerpt: t('blogPage.articles.a2.excerpt'),
+    date: t('blogPage.articles.a2.date'),
+  },
+  {
+    id: 3,
+    catLabel: t('blogPage.categories.cases'),
+    title: t('blogPage.articles.a3.title'),
+    excerpt: t('blogPage.articles.a3.excerpt'),
+    date: t('blogPage.articles.a3.date'),
   },
 ])
 
@@ -163,39 +188,34 @@ const cardsData = computed(() => [
 const split1 = ref<Element | null>(null)
 const split2 = ref<Element | null>(null)
 
-const splitFeatures = computed(() => [
-  {
-    tag: t('features.monitoring.tag'),
-    title: t('features.monitoring.title'),
-    body: t('features.monitoring.body'),
-    items: [
-      t('features.monitoring.items[0]'),
-      t('features.monitoring.items[1]'),
-      t('features.monitoring.items[2]'),
-    ],
-    image: imgRPM,
-    imgAlt: t('features.monitoring.imageAlt'),
-    btnLabel: t('features.monitoring.button'),
-    dark: false,
-    reverse: false,
-  },
-  {
-    tag: t('features.services.tag'),
-    title: t('features.services.title'),
-    body: t('features.services.body'),
-    items: [
-      t('features.services.items[0]'),
-      t('features.services.items[1]'),
-      t('features.services.items[2]'),
-      t('features.services.items[3]'),
-    ],
-    image: imgMonitoramento,
-    imgAlt: t('features.services.imageAlt'),
-    btnLabel: t('features.services.button'),
-    dark: true,
-    reverse: true,
-  },
-])
+const splitMonitoring = computed(() => ({
+  tag: t('features.monitoring.tag'),
+  title: t('features.monitoring.title'),
+  body: t('features.monitoring.body'),
+  items: [
+    t('features.monitoring.items[0]'),
+    t('features.monitoring.items[1]'),
+    t('features.monitoring.items[2]'),
+  ],
+  image: imgRPM,
+  imgAlt: t('features.monitoring.imageAlt'),
+  btnLabel: t('features.monitoring.button'),
+}))
+
+const splitServices = computed(() => ({
+  tag: t('features.services.tag'),
+  title: t('features.services.title'),
+  body: t('features.services.body'),
+  items: [
+    t('features.services.items[0]'),
+    t('features.services.items[1]'),
+    t('features.services.items[2]'),
+    t('features.services.items[3]'),
+  ],
+  image: imgMonitoramento,
+  imgAlt: t('features.services.imageAlt'),
+  btnLabel: t('features.services.button'),
+}))
 
 // ── BENEFITS ──
 const benefitsSection = ref<HTMLElement | null>(null)
@@ -223,9 +243,16 @@ const benefitsData = computed(() => [
   },
 ])
 
+// ── BLOG (faixa antes do CTA final) ──
+const blogStripSection = ref<HTMLElement | null>(null)
+
 // ── CTA ──
 const ctaSection = ref<HTMLElement | null>(null)
 const ctaInner = ref<HTMLElement | null>(null)
+
+function goHomeBlogPost(id: number) {
+  router.push(`/blog/${id}`)
+}
 
 onMounted(() => {
   startMarquee()
@@ -270,15 +297,16 @@ onMounted(() => {
     })
   }
 
-  // Split sections
+  // Split sections (sem transition/transform em .split-reveal — conflita com GSAP)
   ;[split1.value, split2.value].forEach((el) => {
     if (el && el instanceof Element) {
-      gsap.from(el.querySelectorAll('h2, p, ul, button, .split-visual'), {
+      gsap.from(el.querySelectorAll('.split-reveal'), {
         opacity: 0,
-        y: 30,
-        stagger: 0.09,
+        y: 28,
+        stagger: 0.08,
         duration: 0.72,
         ease: 'power3.out',
+        clearProps: 'opacity,transform',
         scrollTrigger: { trigger: el, start: 'top 82%', once: true },
       })
     }
@@ -293,6 +321,18 @@ onMounted(() => {
       duration: 0.7,
       ease: 'power3.out',
       scrollTrigger: { trigger: benefitsSection.value, start: 'top 86%', once: true },
+    })
+  }
+
+  if (blogStripSection.value) {
+    gsap.from(blogStripSection.value.querySelectorAll('.blog-strip-reveal'), {
+      opacity: 0,
+      y: 22,
+      stagger: 0.09,
+      duration: 0.65,
+      ease: 'power3.out',
+      clearProps: 'opacity,transform',
+      scrollTrigger: { trigger: blogStripSection.value, start: 'top 84%', once: true },
     })
   }
 
@@ -363,7 +403,7 @@ watch(locale, async () => {
             <div ref="heroActions" class="flex gap-4 flex-wrap justify-start">
               <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
                 <Button
-                  label="Solicitar Demonstração"
+                  :label="t('hero.button.demo')"
                   unstyled
                   class="btn-primary font-display font-bold"
                 />
@@ -436,14 +476,14 @@ watch(locale, async () => {
     <!-- ── INTRO ── -->
     <section
       ref="introSection"
-      class="bg-white py-12 sm:py-16 w-full flex flex-col items-center justify-center gap-5"
+      class="bg-white py-12 sm:py-16 w-full flex flex-col items-center justify-center gap-8 sm:gap-12"
     >
-      <div class="text-center px-6 flex flex-col items-center justify-center gap-5">
-        <span class="inline-block text-[11px] font-bold uppercase text-primary mb-3 font-display">{{
+      <div class="flex flex-col items-center justify-center gap-4 px-6 text-center sm:gap-5">
+        <span class="inline-block font-display text-[11px] font-bold uppercase text-primary">{{
           t('intro.badge')
         }}</span>
         <h2
-          class="font-display font-extrabold text-black text-[clamp(20px,2vw,30px)] tracking-tight leading-tight max-w-xl mx-auto mb-4 mt-1"
+          class="font-display font-extrabold text-black text-[clamp(20px,2vw,30px)] tracking-tight leading-tight max-w-xl mx-auto"
         >
           {{ t('intro.title') }}
         </h2>
@@ -452,79 +492,44 @@ watch(locale, async () => {
         </p>
       </div>
 
-      <!-- Cards dentro da intro -->
+      <!-- Cards soluções (não clicáveis — visual de produto, não blog) -->
 
       <!-- Desktop: Grid -->
       <div
         ref="cardsSection"
-        class="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full max-w-7xl mx-auto px-4 sm:px-6 items-stretch"
+        class="hidden w-full max-w-7xl grid-cols-2 items-stretch gap-6 px-4 sm:px-6 md:grid lg:grid-cols-3 lg:gap-8"
       >
-        <article
-          v-for="(c, i) in cardsData"
+        <div
+          v-for="c in cardsData"
           :key="c.title"
-          class="service-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] h-full flex flex-col"
+          class="service-card flex h-full flex-col rounded-xl border border-gray-200/90 bg-mid/40"
         >
-          <!-- Imagem -->
-          <div class="relative overflow-hidden aspect-16/10">
-            <img
-              :src="c.image"
-              :alt="c.title"
-              class="absolute inset-0 w-full h-full object-cover"
-            />
-            <div
-              class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent"
-            />
-
-            <!-- Index chip -->
-            <span
-              class="absolute top-4 right-4 font-mono text-[10px] tracking-[3px] text-white/80 bg-white/5 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1"
-            >
-              0{{ i + 1 }} / 0{{ cardsData.length }}
-            </span>
-
-            <!-- Label -->
-            <span
-              class="absolute bottom-4 left-4 font-mono text-[10px] text-primary tracking-[3px] uppercase font-semibold"
-            >
-              {{ c.headerLabel }}
-            </span>
-
-            <!-- Icon flutuante -->
-            <div
-              class="absolute -bottom-5 right-5 w-12 h-12 rounded-xl bg-primary text-dark flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)] group-hover:-translate-y-1 group-hover:rotate-[-4deg]"
-            >
-              <component :is="c.icon" :size="20" stroke-width="2.2" />
-            </div>
-          </div>
-
-          <!-- Corpo -->
-          <div class="p-6 pt-8 flex flex-col gap-3 grow">
-            <h3
-              class="font-display font-bold text-gray-900 text-[17px] leading-snug tracking-tight"
-            >
-              {{ c.title }}
-            </h3>
-            <p class="text-gray-500 text-[13px] leading-[1.7] grow">{{ c.description }}</p>
-
-            <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
-              <a
-                href="#"
-                class="card-cta relative inline-flex items-center gap-2 text-primary text-[12px] font-display font-semibold tracking-wide no-underline"
+          <div class="flex flex-col gap-4 p-5 sm:p-6">
+            <div class="flex items-start gap-4">
+              <div
+                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/12 text-primary ring-1 ring-primary/20"
               >
-                <span>{{ t('cards.cta') }}</span>
-                <ArrowRight :size="14" class="arrow-slide" />
-              </a>
-              <span class="font-mono text-[10px] text-gray-300 tracking-[2px]">
-                {{ c.headerLabel.split(' ')[0] }}
-              </span>
+                <component :is="c.icon" :size="22" stroke-width="2.2" aria-hidden="true" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <p
+                  class="font-display text-[10px] font-bold uppercase tracking-[0.18em] text-primary/90"
+                >
+                  {{ c.headerLabel }}
+                </p>
+                <h3 class="mt-1.5 font-display text-[16px] font-bold leading-snug tracking-tight text-black sm:text-[17px]">
+                  {{ c.title }}
+                </h3>
+              </div>
             </div>
+            <p class="text-[13px] leading-relaxed text-gray-600">{{ c.description }}</p>
           </div>
-        </article>
+        </div>
       </div>
 
       <!-- Mobile: Carousel -->
       <div
-        class="md:hidden w-full max-w-md mx-auto px-4"
+        class="mx-auto flex w-full max-w-md flex-col gap-6 px-4 md:hidden"
         @touchstart="onTouchStart"
         @touchend="onTouchEnd"
       >
@@ -533,71 +538,39 @@ watch(locale, async () => {
             class="flex transition-transform duration-300 ease-out"
             :style="{ transform: `translateX(-${currentCardIndex * 100}%)` }"
           >
-            <article
-              v-for="(c, i) in cardsData"
+            <div
+              v-for="c in cardsData"
               :key="c.title"
-              class="service-card group w-full shrink-0 rounded-2xl border border-gray-200/80 bg-white overflow-hidden h-full flex flex-col"
+              class="service-card flex w-full shrink-0 flex-col rounded-xl border border-gray-200/90 bg-mid/40"
             >
-              <!-- Imagem -->
-              <div class="relative overflow-hidden aspect-16/10">
-                <img
-                  :src="c.image"
-                  :alt="c.title"
-                  class="absolute inset-0 w-full h-full object-cover"
-                />
-                <div
-                  class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent"
-                />
-
-                <span
-                  class="absolute top-4 right-4 font-mono text-[10px] tracking-[3px] text-white/80 bg-white/5 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1"
-                >
-                  0{{ i + 1 }} / 0{{ cardsData.length }}
-                </span>
-
-                <span
-                  class="absolute bottom-4 left-4 font-mono text-[10px] text-primary tracking-[3px] uppercase font-semibold"
-                >
-                  {{ c.headerLabel }}
-                </span>
-
-                <div
-                  class="absolute -bottom-5 right-5 w-12 h-12 rounded-xl bg-primary text-dark flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)]"
-                >
-                  <component :is="c.icon" :size="20" stroke-width="2.2" />
-                </div>
-              </div>
-
-              <!-- Corpo -->
-              <div class="p-6 pt-8 flex flex-col gap-3 grow">
-                <h3
-                  class="font-display font-bold text-gray-900 text-[17px] leading-snug tracking-tight"
-                >
-                  {{ c.title }}
-                </h3>
-                <p class="text-gray-500 text-[13px] leading-[1.7] grow">{{ c.description }}</p>
-
-                <div
-                  class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between"
-                >
-                  <a
-                    href="#"
-                    class="card-cta relative inline-flex items-center gap-2 text-primary text-[12px] font-display font-semibold tracking-wide no-underline"
+              <div class="flex flex-col gap-4 p-5">
+                <div class="flex items-start gap-4">
+                  <div
+                    class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/12 text-primary ring-1 ring-primary/20"
                   >
-                    <span>{{ t('cards.cta') }}</span>
-                    <ArrowRight :size="14" class="arrow-slide" />
-                  </a>
-                  <span class="font-mono text-[10px] text-gray-300 tracking-[2px]">
-                    {{ c.headerLabel.split(' ')[0] }}
-                  </span>
+                    <component :is="c.icon" :size="22" stroke-width="2.2" aria-hidden="true" />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p
+                      class="font-display text-[10px] font-bold uppercase tracking-[0.18em] text-primary/90"
+                    >
+                      {{ c.headerLabel }}
+                    </p>
+                    <h3
+                      class="mt-1.5 font-display text-[16px] font-bold leading-snug tracking-tight text-black"
+                    >
+                      {{ c.title }}
+                    </h3>
+                  </div>
                 </div>
+                <p class="text-[13px] leading-relaxed text-gray-600">{{ c.description }}</p>
               </div>
-            </article>
+            </div>
           </div>
         </div>
 
         <!-- Indicators -->
-        <div class="flex justify-center gap-2 mt-12 pt-4">
+        <div class="flex justify-center gap-2.5 pt-2">
           <button
             v-for="(_, index) in cardsData"
             :key="index"
@@ -610,72 +583,182 @@ watch(locale, async () => {
       </div>
     </section>
 
-    <!-- ── SPLIT FEATURES ── -->
+    <!-- ── CUIDADO INTELIGENTE (monitoring) ── -->
     <section
-      v-for="(f, i) in splitFeatures"
-      :key="f.tag"
-      :ref="
-        (el) => {
-          if (el) {
-            const el2 = '$el' in el ? el.$el : el
-            i === 0 ? (split1 = el2) : (split2 = el2)
-          }
-        }
-      "
-      class="py-12 sm:py-16 w-full flex items-center justify-center"
-      :class="f.dark ? 'bg-dark-2' : 'bg-mid'"
+      ref="split1"
+      class="split-section-monitoring relative flex w-full flex-col items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24"
     >
+      <div class="split-monitoring-glow pointer-events-none absolute inset-0" aria-hidden="true" />
       <div
-        class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center"
-        :style="f.reverse ? 'direction:rtl' : ''"
+        class="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-14 px-4 sm:px-6 sm:gap-16 lg:grid lg:grid-cols-12 lg:items-center lg:justify-center lg:gap-x-14 lg:gap-y-12 lg:px-8 xl:gap-x-20"
       >
-        <!-- Text -->
-        <div :style="f.reverse ? 'direction:ltr' : ''" class="flex flex-col gap-5 pb-7 md:pb-0">
-          <span
-            v-if="f.tag"
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary mb-3"
-            >{{ f.tag }}</span
+        <div
+          class="flex w-full flex-col items-center gap-7 text-center sm:gap-8 lg:col-span-5 lg:items-start lg:text-left"
+        >
+          <div
+            class="split-reveal flex items-center justify-center gap-3 border-l-0 pl-0 lg:justify-start lg:border-l-[3px] lg:border-primary lg:pl-6"
           >
+            <span
+              class="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white/90 px-3 py-1.5 font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary shadow-[0_8px_30px_rgba(17,211,211,0.12)] backdrop-blur-sm"
+            >
+              <Sparkles :size="12" class="shrink-0 opacity-90" stroke-width="2.5" aria-hidden="true" />
+              {{ splitMonitoring.tag }}
+            </span>
+          </div>
           <h2
-            class="font-display font-extrabold tracking-tight leading-tight text-[clamp(22px,4vw,28px)] mb-3 mt-1"
-            :class="f.dark ? 'text-white' : 'text-black'"
+            class="split-reveal font-display text-[clamp(1.5rem,4vw,2.15rem)] font-extrabold leading-[1.12] tracking-tight text-black"
           >
-            {{ f.title }}
+            {{ splitMonitoring.title }}
           </h2>
-          <p class="text-muted text-[14px] leading-relaxed">{{ f.body }}</p>
-          <ul class="list-none mt-5 mb-6 flex flex-col gap-2.5 text-left">
+          <p class="split-reveal max-w-xl text-[14px] leading-relaxed text-muted sm:text-[15px]">
+            {{ splitMonitoring.body }}
+          </p>
+          <ul class="grid w-full max-w-xl list-none grid-cols-1 gap-4 p-0 sm:gap-5 lg:max-w-none" role="list">
             <li
-              v-for="item in f.items"
+              v-for="(item, idx) in splitMonitoring.items"
               :key="item"
-              class="flex items-start gap-2.5 text-[13px]"
-              :class="f.dark ? 'text-white/55' : 'text-sec'"
+              class="split-reveal split-monitoring-card group flex w-full gap-4 rounded-2xl border border-gray-200/90 bg-white/80 p-5 shadow-[0_4px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm sm:gap-5 sm:p-6"
             >
               <span
-                class="icon-box w-5 h-5 p-1 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0 mt-0.5 text-primary"
+                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/12 font-display text-xs font-extrabold text-primary ring-1 ring-primary/20"
+                >{{ String(idx + 1).padStart(2, '0') }}</span
               >
-                <Check :size="12" stroke-width="3" />
+              <span class="flex items-center text-left text-[13px] leading-snug text-gray-700 sm:text-[14px]">
+                {{ item }}
               </span>
-              {{ item }}
             </li>
           </ul>
-          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
-            <Button
-              label="Solicitar demonstração"
-              unstyled
-              class="btn-primary font-display font-extrabold"
-            />
-          </a>
+          <div class="split-reveal flex justify-center lg:justify-start">
+            <a
+              href="/what-is-rpm"
+              class="split-cta-monitoring inline-flex items-center gap-3 font-display text-[13px] font-bold text-dark no-underline"
+            >
+              <span
+                class="split-cta-monitoring__pill inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-dark shadow-[0_10px_36px_rgba(17,211,211,0.35)]"
+              >
+                {{ splitMonitoring.btnLabel }}
+              </span>
+              <ArrowRight :size="18" class="text-primary opacity-80" aria-hidden="true" />
+            </a>
+          </div>
         </div>
-        <!-- Image -->
-        <div :style="f.reverse ? 'direction:ltr' : ''">
+
+        <div class="split-reveal relative flex w-full justify-center lg:col-span-7">
           <div
-            class="split-visual rounded-2xl overflow-hidden aspect-video md:aspect-4/3 relative shadow-[0_28px_72px_rgba(0,0,0,.22)]"
+            class="split-visual split-visual--framed relative aspect-4/3 w-full max-w-none overflow-hidden rounded-[1.35rem] sm:rounded-3xl"
+          >
+            <div
+              class="pointer-events-none absolute -right-6 -top-6 h-28 w-28 rounded-full bg-primary/20 blur-2xl sm:h-36 sm:w-36"
+              aria-hidden="true"
+            />
+            <div
+              class="pointer-events-none absolute -bottom-8 -left-8 h-32 w-32 rounded-full bg-primary/15 blur-3xl"
+              aria-hidden="true"
+            />
+            <div
+              class="absolute inset-0 rounded-[1.25rem] ring-1 ring-gray-200/90 sm:rounded-[1.65rem] sm:ring-2"
+            />
+            <img
+              :src="splitMonitoring.image"
+              :alt="splitMonitoring.imgAlt"
+              class="absolute inset-[5px] h-[calc(100%-10px)] w-[calc(100%-10px)] rounded-[1.05rem] object-cover sm:inset-2 sm:h-[calc(100%-16px)] sm:w-[calc(100%-16px)] sm:rounded-[1.35rem]"
+            />
+            <div
+              class="absolute bottom-4 left-4 flex flex-wrap gap-2 sm:bottom-6 sm:left-6"
+              aria-hidden="true"
+            >
+              <span
+                class="rounded-lg border border-white/25 bg-dark/55 px-2.5 py-1 font-display text-[10px] font-bold uppercase tracking-wider text-white/95 backdrop-blur-md"
+                >RPM</span
+              >
+              <span
+                class="rounded-lg border border-primary/40 bg-primary/90 px-2.5 py-1 font-display text-[10px] font-bold uppercase tracking-wider text-dark shadow-lg"
+                >IA</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SERVIÇOS ── -->
+    <section
+      ref="split2"
+      class="split-section-services relative flex w-full flex-col items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24"
+    >
+      <div class="split-services-mesh pointer-events-none absolute inset-0" aria-hidden="true" />
+      <div
+        class="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center justify-items-center gap-14 px-4 sm:gap-16 sm:px-6 lg:grid-cols-12 lg:items-center lg:justify-center lg:justify-items-stretch lg:gap-x-14 lg:gap-y-12 lg:px-8 xl:gap-x-20"
+      >
+        <div class="split-reveal order-2 flex w-full justify-center lg:order-1 lg:col-span-6 lg:justify-start">
+          <div
+            class="split-visual split-visual--services relative aspect-4/3 w-full overflow-hidden rounded-2xl sm:rounded-3xl"
           >
             <img
-              :src="f.image"
-              :alt="f.imgAlt"
-              class="absolute inset-0 w-full h-full object-cover"
+              :src="splitServices.image"
+              :alt="splitServices.imgAlt"
+              class="absolute inset-0 h-full w-full object-cover"
             />
+            <div
+              class="pointer-events-none absolute inset-0 bg-linear-to-tr from-dark/80 via-dark/25 to-transparent"
+            />
+            <div
+              class="absolute bottom-5 left-5 flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 backdrop-blur-md sm:bottom-7 sm:left-7"
+            >
+              <Layers :size="18" class="text-primary" aria-hidden="true" />
+              <span class="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-white/90"
+                >RPM</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="order-1 flex w-full flex-col items-center gap-7 text-center sm:gap-8 lg:order-2 lg:col-span-6 lg:items-start lg:text-left"
+        >
+          <div class="split-reveal flex justify-center lg:justify-start">
+            <span
+              class="inline-block rounded-full border border-primary/45 bg-primary/10 px-4 py-1.5 font-display text-[10px] font-bold uppercase tracking-[0.28em] text-primary"
+            >
+              {{ splitServices.tag }}
+            </span>
+          </div>
+          <h2
+            class="split-reveal font-display text-[clamp(1.45rem,3.6vw,2rem)] font-extrabold leading-[1.12] tracking-tight text-white"
+          >
+            {{ splitServices.title }}
+          </h2>
+          <p class="split-reveal text-[14px] leading-relaxed text-white/58 sm:text-[15px]">
+            {{ splitServices.body }}
+          </p>
+          <ul
+            class="grid w-full max-w-2xl list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2 sm:gap-5 lg:max-w-none"
+            role="list"
+          >
+            <li
+              v-for="item in splitServices.items"
+              :key="item"
+              class="split-reveal split-services-card flex w-full gap-4 rounded-xl border border-white/12 bg-white/6 p-4 backdrop-blur-md sm:p-5"
+            >
+              <span
+                class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/20 text-primary ring-1 ring-primary/30"
+              >
+                <Check :size="14" stroke-width="3" />
+              </span>
+              <span class="text-left text-[12px] leading-snug text-white/72 sm:text-[13px]">
+                {{ item }}
+              </span>
+            </li>
+          </ul>
+          <div class="split-reveal flex justify-center lg:justify-start">
+            <a href="/apps" class="inline-flex items-center gap-3 no-underline">
+              <span
+                class="inline-flex items-center justify-center rounded-lg border border-primary/50 bg-primary/15 px-5 py-2.5 font-display text-[13px] font-bold text-primary"
+              >
+                {{ splitServices.btnLabel }}
+              </span>
+              <ArrowRight :size="18" class="text-primary/90" aria-hidden="true" />
+            </a>
           </div>
         </div>
       </div>
@@ -713,6 +796,92 @@ watch(locale, async () => {
             {{ b.title }}
           </h4>
           <p class="text-muted text-[13px] leading-relaxed">{{ b.desc }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BLOG (convite — meio da página, antes do CTA) ── -->
+    <section
+      ref="blogStripSection"
+      class="border-y border-gray-200/90 bg-linear-to-b from-white via-mid to-white py-14 sm:py-20 w-full flex items-center justify-center"
+    >
+      <div
+        class="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 sm:gap-12 sm:px-6 lg:px-8"
+      >
+        <div
+          class="flex flex-col items-center gap-5 text-center md:flex-row md:items-end md:justify-between md:gap-8 md:text-left"
+        >
+          <div class="flex max-w-2xl flex-col items-center gap-3 md:items-start md:gap-4">
+            <span
+              class="blog-strip-reveal inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white px-3 py-1 font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary shadow-sm"
+            >
+              <BookOpen :size="12" stroke-width="2.5" aria-hidden="true" />
+              {{ t('homeBlogStrip.badge') }}
+            </span>
+            <h2
+              class="blog-strip-reveal font-display text-[clamp(1.35rem,3vw,1.85rem)] font-extrabold leading-tight tracking-tight text-black"
+            >
+              {{ t('homeBlogStrip.title') }}
+            </h2>
+            <p
+              class="blog-strip-reveal text-[13px] leading-relaxed text-gray-500 sm:text-[14px]"
+            >
+              {{ t('homeBlogStrip.subtitle') }}
+            </p>
+          </div>
+          <a
+            href="/blog"
+            class="blog-strip-reveal inline-flex shrink-0 items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 font-display text-[12px] font-bold text-gray-800 no-underline shadow-sm hover:border-primary/40 hover:text-primary"
+          >
+            {{ t('homeBlogStrip.cta') }}
+            <ArrowRight :size="14" class="text-primary" aria-hidden="true" />
+          </a>
+        </div>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-3 lg:gap-8">
+          <a
+            v-for="post in homeBlogStripPosts"
+            :key="post.id"
+            :href="`/blog/${post.id}`"
+            class="home-blog-card group flex flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white text-inherit no-underline shadow-[0_6px_28px_rgba(15,23,42,0.06)] outline-none ring-primary/0 focus-visible:ring-2 focus-visible:ring-primary md:hover:border-primary/35 md:hover:shadow-[0_18px_44px_-16px_rgba(17,211,211,0.22)]"
+            @click.prevent="goHomeBlogPost(post.id)"
+          >
+            <div
+              class="relative flex h-28 shrink-0 items-center justify-center bg-dark sm:h-32"
+            >
+              <div
+                class="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/20 via-dark to-dark"
+              />
+              <div class="hero-grid absolute inset-0 opacity-35" />
+              <BookOpen
+                :size="36"
+                stroke-width="2"
+                class="relative z-10 text-primary"
+                aria-hidden="true"
+              />
+              <span
+                class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider text-white/90 backdrop-blur-sm"
+              >
+                <Tag :size="10" class="shrink-0" aria-hidden="true" />
+                {{ post.catLabel }}
+              </span>
+            </div>
+            <div class="flex flex-1 flex-col gap-2 p-5 sm:p-6">
+              <h3
+                class="font-display text-[15px] font-bold leading-snug tracking-tight text-black group-hover:text-primary sm:text-[16px]"
+              >
+                {{ post.title }}
+              </h3>
+              <p class="line-clamp-2 text-[13px] leading-relaxed text-gray-500">
+                {{ post.excerpt }}
+              </p>
+              <div
+                class="mt-auto flex items-center gap-2 border-t border-gray-100 pt-3 text-[11px] text-gray-400"
+              >
+                <Calendar :size="12" aria-hidden="true" />
+                {{ post.date }}
+              </div>
+            </div>
+          </a>
         </div>
       </div>
     </section>
@@ -796,38 +965,68 @@ watch(locale, async () => {
   letter-spacing: -0.05em;
 }
 
-/* Service card CTA — underline animado + seta desliza */
-.card-cta {
-  position: relative;
+/* Split sections — monitoring (claro) */
+.split-section-monitoring {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f4f6f7 42%, #fafcfd 100%);
 }
-.card-cta::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.35s ease;
-}
-.service-card:hover .card-cta::after {
-  width: 100%;
-}
-.arrow-slide {
-  transition: transform 0.35s ease;
-}
-.service-card:hover .arrow-slide {
-  transform: translateX(4px);
+.split-monitoring-glow {
+  background:
+    radial-gradient(ellipse 90% 70% at 100% 0%, rgba(17, 211, 211, 0.14), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgba(17, 211, 211, 0.08), transparent 50%);
 }
 
-/* Split visual placeholder */
+/* Split sections — serviços (escuro) */
+.split-section-services {
+  background: linear-gradient(165deg, #0e1117 0%, #121a24 45%, #0e1117 100%);
+}
+.split-services-mesh {
+  background-image:
+    linear-gradient(rgba(17, 211, 211, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 211, 211, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, black 20%, transparent 72%);
+}
+.split-services-mesh::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 20%, rgba(17, 211, 211, 0.12), transparent 42%),
+    radial-gradient(circle at 15% 80%, rgba(17, 211, 211, 0.06), transparent 40%);
+  pointer-events: none;
+}
+
+/* Hover só em elementos que o GSAP não anima (evita briga com transform/opacity) */
+@media (hover: hover) {
+  .split-cta-monitoring:hover .split-cta-monitoring__pill {
+    box-shadow: 0 14px 44px rgba(17, 211, 211, 0.42);
+  }
+  .split-monitoring-card:hover {
+    border-color: rgba(17, 211, 211, 0.45);
+    box-shadow: 0 16px 48px -12px rgba(17, 211, 211, 0.18);
+  }
+  .split-services-card:hover {
+    border-color: rgba(17, 211, 211, 0.38);
+    background-color: rgba(255, 255, 255, 0.09);
+  }
+}
+
+/* Split visual */
 .split-visual {
-  border-radius: 20px;
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
   position: relative;
   background: linear-gradient(135deg, #1e3040, #0d1e2a);
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.18);
+}
+.split-visual--framed {
+  box-shadow:
+    0 28px 72px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(17, 211, 211, 0.08);
+}
+.split-visual--services {
+  box-shadow:
+    0 0 0 1px rgba(17, 211, 211, 0.22),
+    0 28px 80px rgba(0, 0, 0, 0.45),
+    0 0 100px -20px rgba(17, 211, 211, 0.25);
 }
 
 /* Pulse animation */
