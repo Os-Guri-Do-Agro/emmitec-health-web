@@ -457,14 +457,14 @@ onUnmounted(() => {
             <div class="flex flex-wrap gap-4">
               <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
                 <Button
-                  label="Solicitar demonstração"
+                  :label="t('equipmentPage.cta.button.primary')"
                   unstyled
                   class="btn-primary font-display font-bold px-8 py-3"
                 />
               </a>
               <a href="/equipment">
                 <Button
-                  label="Ver todos os equipamentos →"
+                  :label="t('equipmentPage.detail.viewAllEquipment') + ' →'"
                   unstyled
                   class="btn-ghost-light font-display font-bold px-6 py-3 flex items-center gap-2"
                 />

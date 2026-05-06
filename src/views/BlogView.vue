@@ -6,7 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
 
-import { Calendar, Clock, ArrowRight, Search, Tag } from 'lucide-vue-next'
+import { Calendar, Clock, ArrowRight, Search, Tag, BookOpen } from 'lucide-vue-next'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -24,6 +24,7 @@ const heroTitle = ref<HTMLElement | null>(null)
 const heroSub = ref<HTMLElement | null>(null)
 const heroActions = ref<HTMLElement | null>(null)
 
+const previewSection = ref<HTMLElement | null>(null)
 const featuredSection = ref<HTMLElement | null>(null)
 const articlesSection = ref<HTMLElement | null>(null)
 const newsletterSection = ref<HTMLElement | null>(null)
@@ -126,6 +127,9 @@ const filteredArticles = computed(() => {
   return list
 })
 
+/** Três posts para pré-visualização (convite à leitura antes do destaque completo). */
+const previewPosts = computed(() => articles.value.slice(0, 3))
+
 const goToArticle = (id: number) => {
   router.push(`/blog/${id}`)
 }
@@ -151,6 +155,7 @@ onMounted(() => {
     })
   }
 
+  animate(previewSection.value, '.preview-card', { stagger: 0.1 })
   animate(featuredSection.value, '.animate-in')
   animate(articlesSection.value, '.article-card', { stagger: 0.08 })
   animate(newsletterSection.value, '.animate-in')
@@ -280,8 +285,9 @@ onUnmounted(() => {
 
     <!-- ── ARTICLES GRID ── -->
     <section
+      id="blog-articles"
       ref="articlesSection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center"
+      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center scroll-mt-[72px]"
     >
       <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col items-center text-center gap-5 mb-10">
@@ -370,6 +376,105 @@ onUnmounted(() => {
               </div>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRÉ-VISUALIZAÇÃO (ícones — após a grelha, antes do newsletter) ── -->
+    <section
+      ref="previewSection"
+      class="relative border-t border-gray-200/80 bg-linear-to-b from-white to-mid py-14 sm:py-16 w-full flex items-center justify-center"
+    >
+      <div
+        class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/25 to-transparent"
+        aria-hidden="true"
+      />
+      <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="mb-10 flex flex-col gap-4 text-center md:mb-12 md:flex-row md:items-end md:justify-between md:text-left"
+        >
+          <div class="flex max-w-2xl flex-col items-center gap-3 md:items-start">
+            <span
+              class="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white px-3 py-1 font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary shadow-sm"
+            >
+              <BookOpen :size="12" class="shrink-0" stroke-width="2.5" aria-hidden="true" />
+              {{ t('blogPage.preview.badge') }}
+            </span>
+            <h2
+              class="font-display text-[clamp(1.25rem,2.8vw,1.75rem)] font-extrabold leading-tight tracking-tight text-black"
+            >
+              {{ t('blogPage.preview.title') }}
+            </h2>
+            <p class="text-[13px] leading-relaxed text-gray-500 sm:text-[14px]">
+              {{ t('blogPage.preview.subtitle') }}
+            </p>
+          </div>
+          <a
+            href="#blog-articles"
+            class="hidden shrink-0 items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 font-display text-[12px] font-bold text-gray-700 no-underline shadow-sm md:inline-flex md:hover:border-primary/40 md:hover:text-primary"
+          >
+            {{ t('blogPage.preview.ctaScroll') }}
+            <ArrowRight :size="14" class="text-primary" aria-hidden="true" />
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <a
+            v-for="(p, idx) in previewPosts"
+            :key="p.id"
+            :href="`/blog/${p.id}`"
+            class="preview-card group flex flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white text-inherit no-underline shadow-[0_8px_32px_rgba(15,23,42,0.06)] outline-none ring-primary/0 focus-visible:ring-2 focus-visible:ring-primary md:hover:border-primary/35 md:hover:shadow-[0_20px_50px_-18px_rgba(17,211,211,0.28)]"
+            @click.prevent="goToArticle(p.id)"
+          >
+            <div class="relative flex h-24 shrink-0 items-center justify-center overflow-hidden sm:h-28">
+              <div :class="`absolute inset-0 bg-linear-to-br ${p.gradient}`" />
+              <div class="absolute inset-0 bg-dark/55" />
+              <div class="hero-grid absolute inset-0 opacity-30" />
+              <BookOpen :size="32" stroke-width="2" class="relative z-10 text-primary" aria-hidden="true" />
+              <span
+                class="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider text-white/90 backdrop-blur-sm"
+              >
+                <Tag :size="10" class="shrink-0" aria-hidden="true" />
+                {{ p.catLabel }}
+              </span>
+              <span
+                class="absolute right-3 top-3 font-mono text-[10px] tracking-widest text-white/50"
+                >0{{ idx + 1 }}</span
+              >
+            </div>
+            <div class="flex flex-1 flex-col gap-3 p-5 sm:p-6">
+              <h3
+                class="font-display text-[16px] font-bold leading-snug tracking-tight text-black group-hover:text-primary sm:text-[17px]"
+              >
+                {{ p.title }}
+              </h3>
+              <p class="line-clamp-2 flex-1 text-[13px] leading-relaxed text-gray-500">
+                {{ p.excerpt }}
+              </p>
+              <div
+                class="mt-1 flex items-center justify-between border-t border-gray-100 pt-3 text-[11px] text-gray-400"
+              >
+                <span class="flex items-center gap-1.5">
+                  <Calendar :size="12" />
+                  {{ p.date }}
+                </span>
+                <span class="flex items-center gap-1 font-display text-[11px] font-semibold text-primary">
+                  {{ t('blogPage.preview.readArticle') }}
+                  <ArrowRight :size="14" class="shrink-0" aria-hidden="true" />
+                </span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="mt-8 flex justify-center md:hidden">
+          <a
+            href="#blog-articles"
+            class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 font-display text-[12px] font-bold text-gray-700 no-underline shadow-sm"
+          >
+            {{ t('blogPage.preview.ctaScroll') }}
+            <ArrowRight :size="14" class="text-primary" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </section>
