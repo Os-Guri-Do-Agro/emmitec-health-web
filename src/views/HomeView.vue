@@ -67,10 +67,15 @@ function animateCounter(element: HTMLElement, targetValue: number, duration: num
   })
 }
 
-// ── MARQUEE ──
-const marquee = ref<HTMLElement | null>(null)
-let marqueeTween: gsap.core.Tween | null = null
+function setHeroStatNumberRef(index: number, el: unknown) {
+  if (el instanceof HTMLElement) {
+    heroStatNumbers.value[index] = el
+  } else {
+    delete heroStatNumbers.value[index]
+  }
+}
 
+// ── MARQUEE (CSS — duas cópias; deslocamento em px da 1ª faixa = sem salto por arredondamento de -50%) ──
 const marqueeItems = computed(() => [
   t('hero.stats.accuracy'),
   t('hero.stats.clinics'),
@@ -80,21 +85,33 @@ const marqueeItems = computed(() => [
   t('cards.dashboard.label'),
 ])
 
-function startMarquee() {
-  if (!marquee.value) return
-  const track = marquee.value.querySelector('.marquee-track') as HTMLElement | null
-  if (!track) return
-  marqueeTween?.kill()
-  gsap.set(track, { x: 0 })
-  const half = track.scrollWidth / 2
-  if (half <= 0) return
-  marqueeTween = gsap.to(track, {
-    x: -half,
-    duration: Math.max(24, half / 55),
-    ease: 'none',
-    repeat: -1,
+const marqueeSetA = ref<HTMLElement | null>(null)
+const marqueeW = ref(0)
+let marqueeResizeObserver: ResizeObserver | null = null
+
+function measureMarqueeWidth() {
+  requestAnimationFrame(() => {
+    const el = marqueeSetA.value
+    if (!el) return
+    const w = Math.round(el.getBoundingClientRect().width)
+    if (w > 0) marqueeW.value = w
   })
 }
+
+function bindMarqueeResizeObserver() {
+  marqueeResizeObserver?.disconnect()
+  marqueeResizeObserver = null
+  const el = marqueeSetA.value
+  if (!el || typeof ResizeObserver === 'undefined') return
+  marqueeResizeObserver = new ResizeObserver(() => measureMarqueeWidth())
+  marqueeResizeObserver.observe(el)
+}
+
+const marqueeDuration = computed(() => {
+  const w = marqueeW.value
+  if (w <= 0) return '55s'
+  return `${Math.max(24, Math.round(w / 42))}s`
+})
 
 // ── INTRO ──
 const introSection = ref<HTMLElement | null>(null)
@@ -255,8 +272,6 @@ function goHomeBlogPost(id: number) {
 }
 
 onMounted(() => {
-  startMarquee()
-
   // Hero entrance
   gsap
     .timeline({ defaults: { ease: 'power3.out' } })
@@ -346,26 +361,43 @@ onMounted(() => {
       scrollTrigger: { trigger: ctaSection.value, start: 'top 80%', once: true },
     })
   }
+
+  void nextTick(() => {
+    measureMarqueeWidth()
+    bindMarqueeResizeObserver()
+  })
 })
 
 onUnmounted(() => {
+  marqueeResizeObserver?.disconnect()
+  marqueeResizeObserver = null
   ScrollTrigger.getAll().forEach((t) => t.kill())
-  marqueeTween?.kill()
 })
 
-// Re-animar números quando o idioma mudar
-watch(locale, async () => {
-  heroStatNumbers.value.forEach((el, index) => {
-    const targetValue = heroStatsData.value[index]?.num
-    if (el && targetValue !== undefined) {
-      // Reset para 0 antes de animar
-      el.textContent = '0'
-      animateCounter(el, targetValue, 1.5)
-    }
+// Re-animar números quando o idioma mudar (flush 'post': após o DOM / refs novos — 'pre' animava nós antigos)
+watch(
+  locale,
+  () => {
+    void nextTick(() => {
+      heroStatNumbers.value.forEach((el, index) => {
+        const targetValue = heroStatsData.value[index]?.num
+        if (el && targetValue !== undefined) {
+          el.textContent = '0'
+          animateCounter(el, targetValue, 1.5)
+        }
+      })
+    })
+  },
+  { flush: 'post' },
+)
+
+watch([locale, marqueeItems], () => {
+  marqueeW.value = 0
+  void nextTick(() => {
+    measureMarqueeWidth()
+    bindMarqueeResizeObserver()
   })
-  await nextTick()
-  startMarquee()
-})
+}, { flush: 'post' })
 </script>
 
 <template>
@@ -419,17 +451,11 @@ watch(locale, async () => {
               ref="heroStats"
               class="flex gap-6 sm:gap-10 mt-10 pt-8 border-t border-white/8 flex-wrap justify-start"
             >
-              <div v-for="(s, index) in heroStatsData" :key="s.label" class="text-left">
+              <div v-for="(s, index) in heroStatsData" :key="'hero-stat-' + index" class="text-left">
                 <div
                   class="font-display font-extrabold text-white text-[18px] sm:text-[20px] tracking-tight"
                 >
-                  <span
-                    class="font-display font-extrabold"
-                    :ref="
-                      (el) => {
-                        if (el) heroStatNumbers[index] = el as HTMLElement
-                      }
-                    "
+                  <span class="font-display font-extrabold" :ref="(el) => setHeroStatNumberRef(index, el)"
                     >0</span
                   ><span class="text-primary text-[14px] sm:text-[18px]">{{ s.suffix }}</span>
                 </div>
@@ -453,23 +479,40 @@ watch(locale, async () => {
       </div>
     </section>
 
-    <!-- ── MARQUEE ── -->
+    <!-- ── MARQUEE (loop infinito via CSS; duas faixas idênticas + translateX(-50%)) ── -->
     <div
-      ref="marquee"
       class="marquee bg-dark border-t border-white/10 py-4 overflow-hidden w-full"
       aria-hidden="true"
     >
-      <div class="marquee-track flex whitespace-nowrap will-change-transform">
-        <template v-for="n in 2" :key="n">
+      <div
+        :key="locale"
+        class="marquee-track flex w-max"
+        :class="{ 'marquee-track--ready': marqueeW > 0 }"
+        :style="{
+          '--marquee-shift': marqueeW > 0 ? `${marqueeW}px` : '0px',
+          '--marquee-dur': marqueeDuration,
+        }"
+      >
+        <div ref="marqueeSetA" class="marquee-set flex shrink-0 items-center">
           <div
             v-for="item in marqueeItems"
-            :key="item + n"
-            class="marquee-item flex items-center font-display font-bold uppercase tracking-[3px] text-white/35 text-[12px] sm:text-[13px] px-8"
+            :key="'a-' + item"
+            class="marquee-item flex shrink-0 items-center font-display font-bold uppercase tracking-[3px] text-white/35 text-[12px] sm:text-[13px] px-8"
           >
             <span>{{ item }}</span>
             <span class="text-primary ml-8">◆</span>
           </div>
-        </template>
+        </div>
+        <div class="marquee-set flex shrink-0 items-center">
+          <div
+            v-for="item in marqueeItems"
+            :key="'b-' + item"
+            class="marquee-item flex shrink-0 items-center font-display font-bold uppercase tracking-[3px] text-white/35 text-[12px] sm:text-[13px] px-8"
+          >
+            <span>{{ item }}</span>
+            <span class="text-primary ml-8">◆</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -631,14 +674,14 @@ watch(locale, async () => {
           <div class="split-reveal flex justify-center lg:justify-start">
             <a
               href="/what-is-rpm"
-              class="split-cta-monitoring inline-flex items-center gap-3 font-display text-[13px] font-bold text-dark no-underline"
+              class="split-cta-monitoring split-cta-monitoring--primary font-display text-[13px] font-bold no-underline"
             >
-              <span
-                class="split-cta-monitoring__pill inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-dark shadow-[0_10px_36px_rgba(17,211,211,0.35)]"
-              >
+              <span class="split-cta-monitoring__inner">
                 {{ splitMonitoring.btnLabel }}
+                <span class="split-cta-monitoring__icon" aria-hidden="true">
+                  <ArrowRight :size="17" stroke-width="2.5" />
+                </span>
               </span>
-              <ArrowRight :size="18" class="text-primary opacity-80" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -751,13 +794,16 @@ watch(locale, async () => {
             </li>
           </ul>
           <div class="split-reveal flex justify-center lg:justify-start">
-            <a href="/apps" class="inline-flex items-center gap-3 no-underline">
-              <span
-                class="inline-flex items-center justify-center rounded-lg border border-primary/50 bg-primary/15 px-5 py-2.5 font-display text-[13px] font-bold text-primary"
-              >
+            <a
+              href="/apps"
+              class="split-cta-services font-display text-[13px] font-bold no-underline"
+            >
+              <span class="split-cta-services__inner">
                 {{ splitServices.btnLabel }}
+                <span class="split-cta-services__icon" aria-hidden="true">
+                  <ArrowRight :size="17" stroke-width="2.5" />
+                </span>
               </span>
-              <ArrowRight :size="18" class="text-primary/90" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -937,6 +983,28 @@ watch(locale, async () => {
 </template>
 
 <style scoped>
+/* Marquee: deslocamento = largura medida da 1ª faixa (--marquee-shift), evita salto de -50% */
+.marquee-track {
+  animation: none;
+  will-change: transform;
+}
+.marquee-track.marquee-track--ready {
+  animation: marquee-scroll-pixel var(--marquee-dur, 55s) linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track.marquee-track--ready {
+    animation: none;
+  }
+}
+@keyframes marquee-scroll-pixel {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(-1 * var(--marquee-shift, 0px)), 0, 0);
+  }
+}
+
 /* Background patterns */
 .hero-grid {
   background-image:
@@ -996,10 +1064,71 @@ watch(locale, async () => {
   pointer-events: none;
 }
 
-/* Hover só em elementos que o GSAP não anima (evita briga com transform/opacity) */
+/* CTAs split: hover em CSS (transform só no ícone interno — o GSAP anima o .split-reveal pai) */
+.split-cta-monitoring--primary .split-cta-monitoring__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  background: #11d3d3;
+  color: #0e1117;
+  box-shadow: 0 8px 28px rgba(17, 211, 211, 0.32);
+  transition:
+    box-shadow 0.28s ease,
+    filter 0.28s ease;
+}
+.split-cta-monitoring__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.28s ease;
+}
+.split-cta-services .split-cta-services__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.125rem 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(17, 211, 211, 0.45);
+  background: rgba(17, 211, 211, 0.1);
+  color: #11d3d3;
+  box-shadow: 0 0 0 0 rgba(17, 211, 211, 0);
+  transition:
+    border-color 0.28s ease,
+    background-color 0.28s ease,
+    box-shadow 0.28s ease,
+    color 0.28s ease;
+}
+.split-cta-services__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.28s ease;
+}
+
+.split-cta-monitoring--primary:focus-visible .split-cta-monitoring__inner,
+.split-cta-services:focus-visible .split-cta-services__inner {
+  outline: 2px solid #11d3d3;
+  outline-offset: 3px;
+}
+
 @media (hover: hover) {
-  .split-cta-monitoring:hover .split-cta-monitoring__pill {
-    box-shadow: 0 14px 44px rgba(17, 211, 211, 0.42);
+  .split-cta-monitoring--primary:hover .split-cta-monitoring__inner {
+    box-shadow: 0 14px 40px rgba(17, 211, 211, 0.48);
+    filter: brightness(1.06);
+  }
+  .split-cta-monitoring--primary:hover .split-cta-monitoring__icon {
+    transform: translateX(4px);
+  }
+  .split-cta-services:hover .split-cta-services__inner {
+    border-color: rgba(17, 211, 211, 0.85);
+    background: rgba(17, 211, 211, 0.18);
+    color: #5ee8e8;
+    box-shadow: 0 0 32px -4px rgba(17, 211, 211, 0.35);
+  }
+  .split-cta-services:hover .split-cta-services__icon {
+    transform: translateX(4px);
   }
   .split-monitoring-card:hover {
     border-color: rgba(17, 211, 211, 0.45);
