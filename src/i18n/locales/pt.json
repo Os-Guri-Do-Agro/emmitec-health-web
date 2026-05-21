@@ -54,7 +54,11 @@
         "Relatórios automáticos para prontuário eletrônico"
       ],
       "button": "Ver como funciona",
-      "imageAlt": "Médico consultando plataforma"
+      "imageAlt": "Médico consultando plataforma",
+      "imageBadges": {
+        "rpm": "RPM",
+        "ai": "IA"
+      }
     },
     "services": {
       "tag": "SERVIÇOS",

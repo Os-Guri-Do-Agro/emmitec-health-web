@@ -712,11 +712,11 @@ watch([locale, marqueeItems], () => {
             >
               <span
                 class="rounded-lg border border-white/25 bg-dark/55 px-2.5 py-1 font-display text-[10px] font-bold uppercase tracking-wider text-white/95 backdrop-blur-md"
-                >RPM</span
+                >{{ t('features.monitoring.imageBadges.rpm') }}</span
               >
               <span
                 class="rounded-lg border border-primary/40 bg-primary/90 px-2.5 py-1 font-display text-[10px] font-bold uppercase tracking-wider text-dark shadow-lg"
-                >IA</span
+                >{{ t('features.monitoring.imageBadges.ai') }}</span
               >
             </div>
           </div>
@@ -750,7 +750,7 @@ watch([locale, marqueeItems], () => {
             >
               <Layers :size="18" class="text-primary" aria-hidden="true" />
               <span class="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-white/90"
-                >RPM</span
+                >{{ t('features.monitoring.imageBadges.rpm') }}</span
               >
             </div>
           </div>

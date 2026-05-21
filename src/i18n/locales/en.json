@@ -54,7 +54,11 @@
         "Automatic reports for electronic medical records"
       ],
       "button": "See how it works",
-      "imageAlt": "Doctor consulting platform"
+      "imageAlt": "Doctor consulting platform",
+      "imageBadges": {
+        "rpm": "RPM",
+        "ai": "AI"
+      }
     },
     "services": {
       "tag": "SERVICES",
