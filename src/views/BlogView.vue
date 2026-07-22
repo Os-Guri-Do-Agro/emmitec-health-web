@@ -6,7 +6,16 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
 
-import { Calendar, Clock, ArrowRight, Search, Tag, BookOpen } from 'lucide-vue-next'
+import {
+  Calendar,
+  Clock,
+  ArrowRight,
+  Search,
+  Tag,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-vue-next'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -22,7 +31,6 @@ gsap.registerPlugin(ScrollTrigger)
 
 const heroTitle = ref<HTMLElement | null>(null)
 const heroSub = ref<HTMLElement | null>(null)
-const heroActions = ref<HTMLElement | null>(null)
 
 const previewSection = ref<HTMLElement | null>(null)
 const featuredSection = ref<HTMLElement | null>(null)
@@ -127,8 +135,97 @@ const filteredArticles = computed(() => {
   return list
 })
 
-/** Três posts para pré-visualização (convite à leitura antes do destaque completo). */
+/** Três posts para pré-visualização (convite à leitura). */
 const previewPosts = computed(() => articles.value.slice(0, 3))
+
+/** Até 5 posts no carrossel Em destaque. */
+const FEATURED_MAX = 5
+const featuredPosts = computed(() => {
+  const main = {
+    id: 0,
+    catLabel: featuredArticle.value.category,
+    title: featuredArticle.value.title,
+    excerpt: featuredArticle.value.excerpt,
+    date: featuredArticle.value.date,
+    readTime: featuredArticle.value.readTime,
+    gradient: featuredArticle.value.gradient,
+    author: featuredArticle.value.author,
+  }
+  const rest = articles.value.slice(0, FEATURED_MAX - 1).map((a) => ({
+    id: a.id,
+    catLabel: a.catLabel,
+    title: a.title,
+    excerpt: a.excerpt,
+    date: a.date,
+    readTime: a.readTime,
+    gradient: a.gradient,
+    author: t('blogPage.featured.author'),
+  }))
+  return [main, ...rest]
+})
+
+const currentFeaturedPage = ref(0)
+const touchStartX = ref(0)
+const touchEndX = ref(0)
+
+const AUTOPLAY_MS = 3000
+let autoplayTimer: ReturnType<typeof setInterval> | null = null
+
+function stopAutoplay() {
+  if (autoplayTimer) {
+    clearInterval(autoplayTimer)
+    autoplayTimer = null
+  }
+}
+
+function startAutoplay() {
+  stopAutoplay()
+  if (featuredPosts.value.length <= 1) return
+  autoplayTimer = setInterval(() => {
+    nextFeaturedPage()
+  }, AUTOPLAY_MS)
+}
+
+function goToFeaturedPage(index: number) {
+  currentFeaturedPage.value = index
+  startAutoplay()
+}
+
+function nextFeaturedPage() {
+  const total = featuredPosts.value.length
+  if (total === 0) return
+  currentFeaturedPage.value = (currentFeaturedPage.value + 1) % total
+}
+
+function prevFeaturedPage() {
+  const total = featuredPosts.value.length
+  if (total === 0) return
+  currentFeaturedPage.value = (currentFeaturedPage.value - 1 + total) % total
+}
+
+function goNextFeaturedPage() {
+  nextFeaturedPage()
+  startAutoplay()
+}
+
+function goPrevFeaturedPage() {
+  prevFeaturedPage()
+  startAutoplay()
+}
+
+function onFeaturedTouchStart(e: TouchEvent) {
+  touchStartX.value = e.changedTouches[0]?.screenX ?? 0
+}
+
+function onFeaturedTouchEnd(e: TouchEvent) {
+  touchEndX.value = e.changedTouches[0]?.screenX ?? 0
+  const swipeThreshold = 50
+  const diff = touchStartX.value - touchEndX.value
+  if (Math.abs(diff) > swipeThreshold) {
+    if (diff > 0) goNextFeaturedPage()
+    else goPrevFeaturedPage()
+  }
+}
 
 const goToArticle = (id: number) => {
   router.push(`/blog/${id}`)
@@ -139,7 +236,6 @@ onMounted(() => {
     .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
-    .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
 
   const animate = (el: HTMLElement | null, selector: string, opts: gsap.TweenVars = {}) => {
     if (!el) return
@@ -156,12 +252,15 @@ onMounted(() => {
   }
 
   animate(previewSection.value, '.preview-card', { stagger: 0.1 })
-  animate(featuredSection.value, '.animate-in')
+  animate(featuredSection.value, '.featured-carousel', { stagger: 0.1 })
   animate(articlesSection.value, '.article-card', { stagger: 0.08 })
   animate(newsletterSection.value, '.animate-in')
+
+  startAutoplay()
 })
 
 onUnmounted(() => {
+  stopAutoplay()
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
@@ -194,31 +293,16 @@ onUnmounted(() => {
         >
           {{ t('blogPage.hero.subtitle') }}
         </p>
-
-        <!-- Search bar -->
-        <div ref="heroActions" class="w-full max-w-xl mt-4">
-          <div
-            class="relative flex items-center bg-white/5 border border-white/15 rounded-full backdrop-blur-md focus-within:border-primary/50 transition-colors"
-          >
-            <Search :size="18" class="absolute left-5 text-white/40" />
-            <input
-              v-model="searchQuery"
-              type="text"
-              :placeholder="t('blogPage.hero.searchPlaceholder')"
-              class="w-full bg-transparent text-white text-sm pl-12 pr-5 py-4 outline-none placeholder:text-white/40"
-            />
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- ── FEATURED ARTICLE ── -->
+    <!-- ── FEATURED ARTICLES (carrossel) ── -->
     <section
       ref="featuredSection"
       class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
     >
       <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-8 animate-in">
+        <div class="flex items-center justify-between pb-8">
           <span
             class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
           >
@@ -226,60 +310,108 @@ onUnmounted(() => {
           </span>
         </div>
 
-        <article
-          @click="goToArticle(0)"
-          class="animate-in group grid grid-cols-1 lg:grid-cols-5 gap-8 rounded-2xl border border-gray-200/80 overflow-hidden bg-white transition-all duration-500 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
+        <div
+          class="featured-carousel flex flex-col gap-5"
+          @touchstart="onFeaturedTouchStart"
+          @touchend="onFeaturedTouchEnd"
         >
-          <div class="lg:col-span-3 relative aspect-16/10 lg:aspect-auto overflow-hidden">
-            <div :class="`absolute inset-0 bg-linear-to-br ${featuredArticle.gradient}`" />
-            <div
-              class="absolute inset-0 bg-linear-to-t from-[#0a1218]/85 via-[#0a1218]/30 to-transparent"
-            />
-            <div class="hero-grid absolute inset-0 pointer-events-none opacity-50" />
-            <div class="absolute top-5 left-5 flex items-center gap-2">
-              <span
-                class="px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-[10px] font-bold uppercase tracking-wider"
-              >
-                {{ featuredArticle.category }}
-              </span>
-            </div>
-            <div
-              class="absolute bottom-5 left-5 right-5 flex items-center gap-4 text-white/70 text-xs"
+          <div class="relative">
+            <button
+              type="button"
+              class="carousel-nav absolute top-1/2 left-3 z-20 hidden -translate-y-1/2 sm:flex"
+              :aria-label="t('aria.prevSlide')"
+              @click.stop="goPrevFeaturedPage"
             >
-              <span class="flex items-center gap-1.5">
-                <Calendar :size="12" />
-                {{ featuredArticle.date }}
-              </span>
-              <span class="flex items-center gap-1.5">
-                <Clock :size="12" />
-                {{ featuredArticle.readTime }}
-              </span>
-            </div>
-          </div>
-          <div class="lg:col-span-2 p-6 lg:p-10 flex flex-col gap-4 justify-center">
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(20px,2.5vw,30px)] tracking-tight leading-tight"
-            >
-              {{ featuredArticle.title }}
-            </h2>
-            <p class="text-gray-500 text-[14px] leading-relaxed">{{ featuredArticle.excerpt }}</p>
-            <div class="flex items-center gap-3 mt-2 pt-4 border-t border-gray-100">
+              <ChevronLeft :size="22" stroke-width="2.5" />
+            </button>
+
+            <div class="overflow-hidden rounded-2xl">
               <div
-                class="w-10 h-10 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-display font-bold text-sm"
+                class="flex transition-transform duration-500 ease-out"
+                :style="{ transform: `translateX(-${currentFeaturedPage * 100}%)` }"
               >
-                {{ featuredArticle.author.charAt(0) }}
+                <article
+                  v-for="post in featuredPosts"
+                  :key="post.id"
+                  class="grid w-full shrink-0 grid-cols-1 lg:grid-cols-5 gap-0 lg:gap-0 border border-gray-200/80 overflow-hidden bg-white transition-all duration-500 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
+                  @click="goToArticle(post.id)"
+                >
+                  <div
+                    class="lg:col-span-3 relative aspect-16/10 lg:aspect-auto overflow-hidden min-h-[220px] lg:min-h-[280px]"
+                  >
+                    <div :class="`absolute inset-0 bg-linear-to-br ${post.gradient}`" />
+                    <div
+                      class="absolute inset-0 bg-linear-to-t from-[#0a1218]/85 via-[#0a1218]/30 to-transparent"
+                    />
+                    <div class="hero-grid absolute inset-0 pointer-events-none opacity-50" />
+                    <div class="absolute top-5 left-5 flex items-center gap-2">
+                      <span
+                        class="px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-[10px] font-bold uppercase tracking-wider"
+                      >
+                        {{ post.catLabel }}
+                      </span>
+                    </div>
+                    <div
+                      class="absolute bottom-5 left-5 right-5 flex items-center gap-4 text-white/70 text-xs"
+                    >
+                      <span class="flex items-center gap-1.5">
+                        <Calendar :size="12" />
+                        {{ post.date }}
+                      </span>
+                      <span class="flex items-center gap-1.5">
+                        <Clock :size="12" />
+                        {{ post.readTime }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="lg:col-span-2 p-6 lg:p-10 flex flex-col gap-4 justify-center">
+                    <h2
+                      class="font-display font-extrabold text-black text-[clamp(20px,2.5vw,30px)] tracking-tight leading-tight"
+                    >
+                      {{ post.title }}
+                    </h2>
+                    <p class="text-gray-500 text-[14px] leading-relaxed">{{ post.excerpt }}</p>
+                    <div class="flex items-center gap-3 mt-2 pt-4 border-t border-gray-100">
+                      <div
+                        class="w-10 h-10 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-display font-bold text-sm"
+                      >
+                        {{ post.author.charAt(0) }}
+                      </div>
+                      <div class="flex-1">
+                        <div class="text-gray-700 font-semibold text-sm">{{ post.author }}</div>
+                        <div class="text-gray-400 text-xs">{{ t('blogPage.featured.role') }}</div>
+                      </div>
+                      <ArrowRight :size="20" class="text-primary" />
+                    </div>
+                  </div>
+                </article>
               </div>
-              <div class="flex-1">
-                <div class="text-gray-700 font-semibold text-sm">{{ featuredArticle.author }}</div>
-                <div class="text-gray-400 text-xs">{{ t('blogPage.featured.role') }}</div>
-              </div>
-              <ArrowRight
-                :size="20"
-                class="text-primary group-hover:translate-x-1 transition-transform"
-              />
             </div>
+
+            <button
+              type="button"
+              class="carousel-nav absolute top-1/2 right-3 z-20 hidden -translate-y-1/2 sm:flex"
+              :aria-label="t('aria.nextSlide')"
+              @click.stop="goNextFeaturedPage"
+            >
+              <ChevronRight :size="22" stroke-width="2.5" />
+            </button>
           </div>
-        </article>
+
+          <div v-if="featuredPosts.length > 1" class="flex justify-center gap-2.5">
+            <button
+              v-for="(_, index) in featuredPosts"
+              :key="index"
+              type="button"
+              class="h-2 rounded-full transition-all duration-300"
+              :class="
+                index === currentFeaturedPage ? 'w-6 bg-primary' : 'w-2 bg-dark/20 hover:bg-dark/35'
+              "
+              :aria-label="t('aria.goToSlide', { index: index + 1 })"
+              @click="goToFeaturedPage(index)"
+            />
+          </div>
+        </div>
       </div>
     </section>
 
@@ -303,21 +435,35 @@ onUnmounted(() => {
           </h2>
         </div>
 
-        <!-- Categories filter -->
-        <div class="flex flex-wrap items-center justify-center gap-2 mb-10 py-5">
-          <button
-            v-for="c in categories"
-            :key="c.id"
-            @click="activeCategory = c.id"
-            :class="[
-              'px-4 py-2 rounded-full text-[12px] font-display font-semibold transition-all',
-              activeCategory === c.id
-                ? 'bg-primary text-dark border border-primary shadow-[0_8px_24px_rgba(17,211,211,0.25)]'
-                : 'bg-white border border-gray-200 text-gray-600 hover:border-primary/40 hover:text-primary',
-            ]"
-          >
-            {{ c.label }}
-          </button>
+        <!-- Search + Categories filter -->
+        <div class="pb-5 flex flex-col items-center gap-5">
+          <div class="relative w-full max-w-md">
+            <Search
+              :size="16"
+              class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+            />
+            <input
+              v-model="searchQuery"
+              type="search"
+              :placeholder="t('blogPage.hero.searchPlaceholder')"
+              class="w-full rounded-full border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm text-dark outline-none placeholder:text-gray-400 shadow-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+            />
+          </div>
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <button
+              v-for="c in categories"
+              :key="c.id"
+              @click="activeCategory = c.id"
+              :class="[
+                'px-4 py-2 rounded-full text-[12px] font-display font-semibold transition-all',
+                activeCategory === c.id
+                  ? 'bg-primary text-dark border border-primary shadow-[0_8px_24px_rgba(17,211,211,0.25)]'
+                  : 'bg-white border border-gray-200 text-gray-600 hover:border-primary/40 hover:text-primary',
+              ]"
+            >
+              {{ c.label }}
+            </button>
+          </div>
         </div>
 
         <!-- Empty state -->
@@ -380,10 +526,10 @@ onUnmounted(() => {
       </div>
     </section>
 
-    <!-- ── PRÉ-VISUALIZAÇÃO (ícones — após a grelha, antes do newsletter) ── -->
+    <!-- ── PRÉ-VISUALIZAÇÃO (após a grelha, antes do newsletter) ── -->
     <section
       ref="previewSection"
-      class="relative border-t border-gray-200/80 bg-linear-to-b from-white to-mid py-14 sm:py-16 w-full flex items-center justify-center"
+      class="relative border-t border-gray-200/80 bg-linear-to-b from-white to-mid py-16 sm:py-20 w-full flex items-center justify-center"
     >
       <div
         class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/25 to-transparent"
@@ -391,9 +537,9 @@ onUnmounted(() => {
       />
       <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          class="mb-10 flex flex-col gap-4 text-center md:mb-12 md:flex-row md:items-end md:justify-between md:text-left"
+          class="pb-5 flex flex-col gap-5 text-center sm:mb-20 md:mb-24 md:flex-row md:items-end md:justify-between md:text-left"
         >
-          <div class="flex max-w-2xl flex-col items-center gap-3 md:items-start">
+          <div class="flex max-w-2xl flex-col items-center gap-4 md:items-start">
             <span
               class="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white px-3 py-1 font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary shadow-sm"
             >
@@ -418,7 +564,7 @@ onUnmounted(() => {
           </a>
         </div>
 
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-7">
           <a
             v-for="(p, idx) in previewPosts"
             :key="p.id"
@@ -426,11 +572,18 @@ onUnmounted(() => {
             class="preview-card group flex flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white text-inherit no-underline shadow-[0_8px_32px_rgba(15,23,42,0.06)] outline-none ring-primary/0 focus-visible:ring-2 focus-visible:ring-primary md:hover:border-primary/35 md:hover:shadow-[0_20px_50px_-18px_rgba(17,211,211,0.28)]"
             @click.prevent="goToArticle(p.id)"
           >
-            <div class="relative flex h-24 shrink-0 items-center justify-center overflow-hidden sm:h-28">
+            <div
+              class="relative flex h-24 shrink-0 items-center justify-center overflow-hidden sm:h-28"
+            >
               <div :class="`absolute inset-0 bg-linear-to-br ${p.gradient}`" />
               <div class="absolute inset-0 bg-dark/55" />
               <div class="hero-grid absolute inset-0 opacity-30" />
-              <BookOpen :size="32" stroke-width="2" class="relative z-10 text-primary" aria-hidden="true" />
+              <BookOpen
+                :size="32"
+                stroke-width="2"
+                class="relative z-10 text-primary"
+                aria-hidden="true"
+              />
               <span
                 class="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider text-white/90 backdrop-blur-sm"
               >
@@ -458,7 +611,9 @@ onUnmounted(() => {
                   <Calendar :size="12" />
                   {{ p.date }}
                 </span>
-                <span class="flex items-center gap-1 font-display text-[11px] font-semibold text-primary">
+                <span
+                  class="flex items-center gap-1 font-display text-[11px] font-semibold text-primary"
+                >
                   {{ t('blogPage.preview.readArticle') }}
                   <ArrowRight :size="14" class="shrink-0" aria-hidden="true" />
                 </span>
@@ -467,7 +622,7 @@ onUnmounted(() => {
           </a>
         </div>
 
-        <div class="mt-8 flex justify-center md:hidden">
+        <div class="mt-10 flex justify-center md:hidden">
           <a
             href="#blog-articles"
             class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 font-display text-[12px] font-bold text-gray-700 no-underline shadow-sm"
@@ -547,6 +702,29 @@ onUnmounted(() => {
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
   letter-spacing: -0.05em;
+}
+
+.carousel-nav {
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: 1px solid rgba(14, 17, 23, 0.12);
+  background: #fff;
+  color: #0e1117;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  transition:
+    border-color 0.25s,
+    color 0.25s,
+    background 0.25s,
+    box-shadow 0.25s;
+}
+.carousel-nav:hover {
+  border-color: #11d3d3;
+  color: #11d3d3;
+  box-shadow: 0 8px 24px rgba(17, 211, 211, 0.22);
 }
 
 :deep(.btn-primary),

@@ -605,7 +605,10 @@
     }
   },
   "aria": {
-    "goToCard": "Ir para card {index}"
+    "goToCard": "Ir para card {index}",
+    "goToSlide": "Ir para página {index}",
+    "prevSlide": "Página anterior",
+    "nextSlide": "Próxima página"
   },
   "header": {
     "nav": {
