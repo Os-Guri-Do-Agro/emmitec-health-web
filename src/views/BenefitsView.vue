@@ -19,6 +19,8 @@ import {
   Sparkles,
 } from 'lucide-vue-next'
 
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
+
 const { t } = useI18n()
 
 const calendlyUrl = computed(() => {
@@ -258,7 +260,8 @@ onUnmounted(() => {
 
         <!-- Right visual: floating benefit chips -->
         <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
-          <div ref="benefitsVisual" class="benefit-visual relative h-[360px] w-full max-w-[420px]">
+          <HeroLogoMark />
+          <div ref="benefitsVisual" class="benefit-visual relative z-10 h-[360px] w-full max-w-[420px]">
             <div
               class="benefit-glow absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full"
             />

@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
 import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, User, Share2 } from 'lucide-vue-next'
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -275,6 +276,7 @@ onUnmounted(() => {
       <div class="absolute inset-0 bg-dark/85" />
       <!-- Grid Pattern -->
       <div class="hero-grid absolute inset-0 pointer-events-none opacity-30" />
+      <HeroLogoMark variant="section" />
 
       <!-- Content -->
       <div

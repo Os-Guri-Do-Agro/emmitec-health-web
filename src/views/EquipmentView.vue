@@ -20,6 +20,8 @@ import {
   Check,
 } from 'lucide-vue-next'
 
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
+
 const { t } = useI18n()
 const router = useRouter()
 
@@ -35,6 +37,7 @@ gsap.registerPlugin(ScrollTrigger)
 const heroTitle = ref<HTMLElement | null>(null)
 const heroSub = ref<HTMLElement | null>(null)
 const heroActions = ref<HTMLElement | null>(null)
+const equipVisual = ref<HTMLElement | null>(null)
 
 const categoriesSection = ref<HTMLElement | null>(null)
 const devicesSection = ref<HTMLElement | null>(null)
@@ -153,6 +156,81 @@ onMounted(() => {
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
 
+  if (equipVisual.value) {
+    const root = equipVisual.value
+    const hub = root.querySelector('.equip-hub')
+    const glow = root.querySelector('.equip-glow')
+    const sweep = root.querySelector('.equip-sweep')
+    const ringOuter = root.querySelector('.equip-ring--outer')
+    const ringInner = root.querySelector('.equip-ring--inner')
+    const orbit = root.querySelector('.equip-orbit')
+    const faces = root.querySelectorAll('.equip-face')
+    const beadWraps = root.querySelectorAll('.equip-bead-wrap')
+    const arcs = root.querySelectorAll('.equip-arc')
+
+    gsap
+      .timeline({ defaults: { ease: 'power3.out' } })
+      .from(root, { opacity: 0, scale: 0.9, duration: 0.85 }, 0.15)
+      .from(glow, { opacity: 0, scale: 0.6, duration: 0.8 }, 0.2)
+      .from(hub, { scale: 0.55, opacity: 0, duration: 0.75, ease: 'back.out(1.55)' }, 0.28)
+      .from([ringOuter, ringInner, sweep], { opacity: 0, scale: 0.8, stagger: 0.08, duration: 0.65 }, 0.35)
+      .from(faces, { scale: 0.4, opacity: 0, stagger: 0.1, duration: 0.55, ease: 'back.out(1.4)' }, 0.5)
+
+    // Radar sweep
+    gsap.to(sweep, { rotation: 360, duration: 6, ease: 'none', repeat: -1, delay: 1 })
+
+    // Devices orbit; faces stay upright
+    gsap.to(orbit, { rotation: 360, duration: 36, ease: 'none', repeat: -1, delay: 1.1 })
+    gsap.to(faces, { rotation: -360, duration: 36, ease: 'none', repeat: -1, delay: 1.1 })
+
+    // Rings drift
+    gsap.to(ringOuter, { rotation: -360, duration: 55, ease: 'none', repeat: -1 })
+    gsap.to(ringInner, { rotation: 360, duration: 40, ease: 'none', repeat: -1 })
+
+    // Beads traveling on the outer ring
+    beadWraps.forEach((wrap, i) => {
+      gsap.set(wrap, { rotation: i * 120 })
+      gsap.to(wrap, {
+        rotation: `+=360`,
+        duration: 9 + i * 2,
+        ease: 'none',
+        repeat: -1,
+        delay: 1.2,
+      })
+    })
+
+    // Signal arcs from hub
+    arcs.forEach((arc, i) => {
+      gsap.fromTo(
+        arc,
+        { opacity: 0, scale: 0.65 },
+        {
+          opacity: 0,
+          scale: 1.2,
+          duration: 1.8,
+          ease: 'power1.out',
+          repeat: -1,
+          delay: 1.4 + i * 0.6,
+          keyframes: [
+            { opacity: 0.45, scale: 0.75, duration: 0.25 },
+            { opacity: 0.25, scale: 1.05, duration: 0.8 },
+            { opacity: 0, scale: 1.22, duration: 0.75 },
+          ],
+        },
+      )
+    })
+
+    gsap.to(glow, {
+      opacity: 0.65,
+      scale: 1.12,
+      duration: 2.2,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: 1.2,
+    })
+  }
+
   const animate = (el: HTMLElement | null, selector: string, opts: gsap.TweenVars = {}) => {
     if (!el) return
     gsap.from(el.querySelectorAll(selector), {
@@ -178,6 +256,7 @@ const goToDevice = (id: number) => {
 }
 
 onUnmounted(() => {
+  if (equipVisual.value) gsap.killTweensOf(equipVisual.value.querySelectorAll('*'))
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
@@ -227,41 +306,73 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Right visual: orbit of icons -->
-        <div class="hidden lg:flex relative h-full items-center justify-center p-12">
-          <div class="relative w-80 h-80">
+        <!-- Right visual: connected ecosystem -->
+        <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
+          <HeroLogoMark />
+          <div
+            ref="equipVisual"
+            class="equip-visual relative z-10 h-[360px] w-[360px] xl:h-[400px] xl:w-[400px]"
+            aria-hidden="true"
+          >
             <div
-              class="absolute inset-0 rounded-full border border-white/10 border-dashed slow-spin"
+              class="equip-glow absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full"
             />
-            <div
-              class="absolute inset-8 rounded-full border border-primary/20 border-dashed slow-spin-reverse"
-            />
-            <!-- Orbital icons -->
-            <div
-              class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-xl bg-dark-2 border border-rose-400/40 flex items-center justify-center"
-            >
-              <HeartPulse :size="20" class="text-rose-400" />
+
+            <!-- Radar sweep -->
+            <div class="equip-sweep absolute inset-[4%] rounded-full" />
+
+            <!-- Signal arcs -->
+            <div class="equip-arc absolute inset-[22%] rounded-full" />
+            <div class="equip-arc absolute inset-[18%] rounded-full" />
+            <div class="equip-arc absolute inset-[14%] rounded-full" />
+
+            <div class="equip-ring equip-ring--outer absolute inset-[2%] rounded-full" />
+            <div class="equip-ring equip-ring--inner absolute inset-[16%] rounded-full" />
+
+            <!-- Beads on outer ring -->
+            <div class="equip-bead-wrap absolute inset-[2%]">
+              <div
+                class="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_10px_rgba(17,211,211,0.9)]"
+              />
             </div>
-            <div
-              class="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-xl bg-dark-2 border border-blue-400/40 flex items-center justify-center"
-            >
-              <Droplet :size="20" class="text-blue-400" />
+            <div class="equip-bead-wrap absolute inset-[2%]">
+              <div
+                class="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/80 shadow-[0_0_8px_rgba(17,211,211,0.7)]"
+              />
             </div>
-            <div
-              class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-12 h-12 rounded-xl bg-dark-2 border border-emerald-400/40 flex items-center justify-center"
-            >
-              <Scale :size="20" class="text-emerald-400" />
+            <div class="equip-bead-wrap absolute inset-[2%]">
+              <div
+                class="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/70 shadow-[0_0_8px_rgba(17,211,211,0.6)]"
+              />
             </div>
-            <div
-              class="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-xl bg-dark-2 border border-purple-400/40 flex items-center justify-center"
-            >
-              <Watch :size="20" class="text-purple-400" />
+
+            <div class="equip-orbit absolute inset-[2%]">
+              <div class="equip-node absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
+                <div class="equip-face equip-face--rose">
+                  <HeartPulse :size="20" stroke-width="2.2" />
+                </div>
+              </div>
+              <div class="equip-node absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2">
+                <div class="equip-face equip-face--blue">
+                  <Droplet :size="20" stroke-width="2.2" />
+                </div>
+              </div>
+              <div class="equip-node absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+                <div class="equip-face equip-face--emerald">
+                  <Scale :size="20" stroke-width="2.2" />
+                </div>
+              </div>
+              <div class="equip-node absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div class="equip-face equip-face--purple">
+                  <Watch :size="20" stroke-width="2.2" />
+                </div>
+              </div>
             </div>
-            <!-- Center -->
-            <div
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center"
-            >
-              <Bluetooth :size="36" class="text-primary" />
+
+            <div class="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+              <div class="equip-hub">
+                <Bluetooth :size="34" stroke-width="2" class="text-primary" />
+              </div>
             </div>
           </div>
         </div>
@@ -517,19 +628,97 @@ onUnmounted(() => {
   letter-spacing: -0.05em;
 }
 
-.slow-spin {
-  animation: spin 60s linear infinite;
+.equip-glow {
+  background: radial-gradient(
+    circle,
+    rgba(17, 211, 211, 0.34) 0%,
+    rgba(17, 211, 211, 0.08) 42%,
+    transparent 70%
+  );
 }
-.slow-spin-reverse {
-  animation: spin 80s linear infinite reverse;
+
+.equip-sweep {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(17, 211, 211, 0.28) 35deg,
+    transparent 85deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent 34%, #000 35%, #000 98%, transparent 99%);
+  mask: radial-gradient(farthest-side, transparent 34%, #000 35%, #000 98%, transparent 99%);
+  opacity: 0.85;
 }
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.equip-arc {
+  border: 1.5px solid rgba(17, 211, 211, 0.35);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.equip-ring--outer {
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+}
+.equip-ring--inner {
+  border: 1px solid rgba(17, 211, 211, 0.18);
+}
+
+.equip-bead-wrap {
+  transform-origin: center center;
+}
+
+.equip-hub {
+  display: flex;
+  width: 100px;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(17, 211, 211, 0.5);
+  background: linear-gradient(160deg, rgba(17, 211, 211, 0.24), rgba(14, 17, 23, 0.9));
+  box-shadow:
+    0 0 0 12px rgba(17, 211, 211, 0.06),
+    0 18px 48px rgba(17, 211, 211, 0.22);
+}
+
+.equip-face {
+  display: flex;
+  width: 52px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #1a2230, #121820);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.equip-face--rose {
+  color: #fb7185;
+  border: 1px solid rgba(251, 113, 133, 0.5);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(251, 113, 133, 0.15);
+}
+.equip-face--blue {
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(96, 165, 250, 0.15);
+}
+.equip-face--emerald {
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.5);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(52, 211, 153, 0.15);
+}
+.equip-face--purple {
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.5);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(192, 132, 252, 0.15);
 }
 
 :deep(.btn-primary),

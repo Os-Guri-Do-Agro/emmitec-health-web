@@ -13,8 +13,11 @@ import {
   Stethoscope,
   ShieldCheck,
   HeartPulse,
+  Heart,
   Home,
 } from 'lucide-vue-next'
+
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t } = useI18n()
 
@@ -33,8 +36,216 @@ const heroActions = ref<HTMLElement | null>(null)
 const rpmVisual = ref<HTMLElement | null>(null)
 
 const definitionSection = ref<HTMLElement | null>(null)
-const processSection = ref<HTMLElement | null>(null)
 const whoSection = ref<HTMLElement | null>(null)
+
+/** Card RPM · Live — monitor clínico */
+const liveBpm = ref(72)
+const liveSpo2 = ref(98)
+const liveTemp = ref(36.6)
+const liveSys = ref(120)
+const liveDia = ref(80)
+const liveBp = computed(() => `${liveSys.value}/${liveDia.value}`)
+const beatPulse = ref(false)
+const ecgCanvas = ref<HTMLCanvasElement | null>(null)
+
+let vitalsTimer: ReturnType<typeof setInterval> | null = null
+let bpmTimer: ReturnType<typeof setInterval> | null = null
+let beatTimer: ReturnType<typeof setTimeout> | null = null
+let ecgRaf = 0
+let ecgX = 0
+let ecgPrevY = 0
+let ecgPhase = 0
+let ecgReady = false
+let ecgLastTs = 0
+let ecgReducedMotion = false
+let ecgNoiseSeed = 0
+
+function gauss(x: number, mu: number, sigma: number, amp: number) {
+  const d = x - mu
+  return amp * Math.exp(-(d * d) / (2 * sigma * sigma))
+}
+
+/** Síntese ECG (P–QRS–T) por ciclo cardíaco */
+function ecgSample(t: number): number {
+  const p = ((t % 1) + 1) % 1
+  const signal =
+    gauss(p, 0.11, 0.02, 0.14) + // P
+    gauss(p, 0.235, 0.008, -0.12) + // Q
+    gauss(p, 0.26, 0.011, 0.92) + // R
+    gauss(p, 0.288, 0.013, -0.28) + // S
+    gauss(p, 0.47, 0.042, 0.26) // T
+
+  const n =
+    Math.sin(ecgNoiseSeed * 0.5 + p * 28) * 0.005 +
+    Math.sin(ecgNoiseSeed * 1.1 + p * 13) * 0.003
+  return signal + n
+}
+
+function triggerBeatFlash() {
+  beatPulse.value = true
+  if (beatTimer) clearTimeout(beatTimer)
+  beatTimer = setTimeout(() => {
+    beatPulse.value = false
+  }, 280)
+}
+
+function sizeEcgCanvas() {
+  const canvas = ecgCanvas.value
+  if (!canvas) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const rect = canvas.getBoundingClientRect()
+  const w = Math.max(1, Math.floor(rect.width * dpr))
+  const h = Math.max(1, Math.floor(rect.height * dpr))
+  if (canvas.width !== w || canvas.height !== h) {
+    canvas.width = w
+    canvas.height = h
+    const ctx = canvas.getContext('2d')
+    ctx?.clearRect(0, 0, w, h)
+    ecgX = 0
+    ecgPrevY = h * 0.58
+    ecgReady = true
+  }
+}
+
+function strokeEcgSegment(
+  ctx: CanvasRenderingContext2D,
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number,
+  w: number,
+) {
+  const lw = Math.max(1.2, w * 0.002)
+
+  ctx.strokeStyle = 'rgba(17, 211, 211, 0.16)'
+  ctx.lineWidth = lw * 2.4
+  ctx.lineJoin = 'round'
+  ctx.lineCap = 'round'
+  ctx.beginPath()
+  ctx.moveTo(x0, y0)
+  ctx.lineTo(x1, y1)
+  ctx.stroke()
+
+  ctx.strokeStyle = '#11d3d3'
+  ctx.lineWidth = lw
+  ctx.beginPath()
+  ctx.moveTo(x0, y0)
+  ctx.lineTo(x1, y1)
+  ctx.stroke()
+}
+
+function drawEcgFrame(now: number) {
+  const canvas = ecgCanvas.value
+  if (!canvas || ecgReducedMotion) return
+
+  sizeEcgCanvas()
+  const ctx = canvas.getContext('2d')
+  if (!ctx || !ecgReady) {
+    ecgRaf = requestAnimationFrame(drawEcgFrame)
+    return
+  }
+
+  const w = canvas.width
+  const h = canvas.height
+  const baseline = h * 0.58
+  const amp = h * 0.32
+  const pxPerSec = w * 0.13
+  const beatsPerSec = liveBpm.value / 60
+  const gap = Math.max(14, w * 0.045)
+
+  if (!ecgLastTs) ecgLastTs = now
+  const dt = Math.min(0.05, (now - ecgLastTs) / 1000)
+  ecgLastTs = now
+  ecgNoiseSeed += dt
+
+  const distance = Math.max(1.2, pxPerSec * dt)
+  const samples = Math.max(2, Math.ceil(distance / 1.2))
+  const dx = distance / samples
+  const dPhase = (beatsPerSec * dt) / samples
+
+  for (let i = 0; i < samples; i++) {
+    const prevFrac = ((ecgPhase % 1) + 1) % 1
+    ecgPhase += dPhase
+    const nextFrac = ((ecgPhase % 1) + 1) % 1
+    if (prevFrac < 0.26 && nextFrac >= 0.26) triggerBeatFlash()
+
+    const y = baseline - ecgSample(ecgPhase) * amp
+    const x1 = ecgX + dx
+
+    ctx.clearRect(ecgX - 0.5, 0, gap + dx + 1, h)
+
+    if (x1 <= w) {
+      strokeEcgSegment(ctx, ecgX, ecgPrevY, x1, y, w)
+      ecgX = x1
+    } else {
+      strokeEcgSegment(ctx, ecgX, ecgPrevY, w, y, w)
+      ecgX = x1 - w
+      ctx.clearRect(0, 0, ecgX + gap, h)
+      strokeEcgSegment(ctx, 0, y, ecgX, y, w)
+    }
+    ecgPrevY = y
+  }
+
+  const tipX = ecgX
+  const tipGrad = ctx.createLinearGradient(tipX, 0, tipX + gap * 0.7, 0)
+  tipGrad.addColorStop(0, 'rgba(17, 211, 211, 0.18)')
+  tipGrad.addColorStop(1, 'rgba(17, 211, 211, 0)')
+  ctx.fillStyle = tipGrad
+  ctx.fillRect(tipX, 0, gap * 0.7, h)
+
+  ctx.fillStyle = 'rgba(17, 211, 211, 0.85)'
+  ctx.shadowColor = 'rgba(17, 211, 211, 0.35)'
+  ctx.shadowBlur = 4
+  ctx.beginPath()
+  ctx.arc(tipX, ecgPrevY, Math.max(1.2, w * 0.0024), 0, Math.PI * 2)
+  ctx.fill()
+  ctx.shadowBlur = 0
+
+  ecgRaf = requestAnimationFrame(drawEcgFrame)
+}
+
+function drawStaticEcg() {
+  const canvas = ecgCanvas.value
+  if (!canvas) return
+  sizeEcgCanvas()
+  const ctx = canvas.getContext('2d')
+  if (!ctx || !ecgReady) return
+  const w = canvas.width
+  const h = canvas.height
+  const baseline = h * 0.58
+  const amp = h * 0.36
+  ctx.clearRect(0, 0, w, h)
+  let prevY = baseline
+  for (let x = 0; x < w; x += 2) {
+    const phase = (x / w) * 2.4
+    const y = baseline - ecgSample(phase) * amp
+    strokeEcgSegment(ctx, x - 2, prevY, x, y, w)
+    prevY = y
+  }
+}
+
+function tickBpm() {
+  // Varia com frequência, mas não a cada frame — e volta perto de ~72
+  const step = Math.random() > 0.3 ? 1 : 2
+  const drift = Math.random() > 0.5 ? step : -step
+  const towardCenter = liveBpm.value > 74 ? -1 : liveBpm.value < 70 ? 1 : 0
+  const delta = towardCenter !== 0 && Math.random() > 0.45 ? towardCenter : drift
+  liveBpm.value = Math.min(82, Math.max(64, liveBpm.value + delta))
+}
+
+function tickVitals() {
+  if (Math.random() > 0.55) {
+    liveSpo2.value = Math.min(99, Math.max(96, liveSpo2.value + (Math.random() > 0.5 ? 1 : -1)))
+  }
+  if (Math.random() > 0.6) {
+    const next = Math.round((liveTemp.value + (Math.random() > 0.5 ? 0.1 : -0.1)) * 10) / 10
+    liveTemp.value = Math.min(37.0, Math.max(36.3, next))
+  }
+  if (Math.random() > 0.55) {
+    liveSys.value = Math.min(128, Math.max(112, liveSys.value + (Math.random() > 0.5 ? 2 : -2)))
+    liveDia.value = Math.min(86, Math.max(74, liveDia.value + (Math.random() > 0.5 ? 1 : -1)))
+  }
+}
 
 const processSteps = computed(() => [
   {
@@ -147,11 +358,25 @@ onMounted(() => {
   }
 
   animate(definitionSection.value, '.animate-in')
-  animate(processSection.value, '.process-step', { stagger: 0.15 })
   animate(whoSection.value, '.who-item', { stagger: 0.1, y: 20 })
+
+  bpmTimer = setInterval(tickBpm, 1200)
+  vitalsTimer = setInterval(tickVitals, 3200)
+  ecgReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  requestAnimationFrame(() => {
+    sizeEcgCanvas()
+    if (ecgReducedMotion) drawStaticEcg()
+    else ecgRaf = requestAnimationFrame(drawEcgFrame)
+  })
+  window.addEventListener('resize', sizeEcgCanvas)
 })
 
 onUnmounted(() => {
+  if (bpmTimer) clearInterval(bpmTimer)
+  if (vitalsTimer) clearInterval(vitalsTimer)
+  if (beatTimer) clearTimeout(beatTimer)
+  cancelAnimationFrame(ecgRaf)
+  window.removeEventListener('resize', sizeEcgCanvas)
   if (rpmVisual.value) gsap.killTweensOf(rpmVisual.value.querySelectorAll('*'))
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
@@ -204,9 +429,10 @@ onUnmounted(() => {
 
         <!-- Right visual: conceptual RPM illustration -->
         <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
+          <HeroLogoMark />
           <div
             ref="rpmVisual"
-            class="rpm-visual relative h-[340px] w-full max-w-[440px] xl:h-[380px]"
+            class="rpm-visual relative z-10 h-[340px] w-full max-w-[440px] xl:h-[380px]"
             aria-hidden="true"
           >
             <div class="rpm-glow absolute inset-[10%] rounded-full" />
@@ -320,46 +546,76 @@ onUnmounted(() => {
 
           <div class="animate-in">
             <div
-              class="relative rounded-2xl overflow-hidden aspect-4/3 bg-linear-to-br from-dark to-dark-2 shadow-[0_28px_72px_rgba(0,0,0,.18)] p-8 flex flex-col justify-between"
+              class="monitor-card relative rounded-2xl overflow-hidden aspect-4/3 bg-linear-to-br from-dark to-dark-2 shadow-[0_28px_72px_rgba(0,0,0,.18)] p-6 sm:p-8 flex flex-col justify-between gap-4"
             >
-              <div class="hero-grid absolute inset-0 pointer-events-none opacity-50" />
-              <div class="relative z-10">
-                <span class="text-[11px] font-bold uppercase text-primary tracking-[2px]">
-                  RPM · Live
-                </span>
-                <div class="mt-4 flex items-baseline gap-2">
-                  <span class="font-display font-extrabold text-white text-5xl">72</span>
-                  <span class="text-white/50 text-sm">bpm</span>
+              <div class="hero-grid absolute inset-0 pointer-events-none opacity-40" />
+              <div class="monitor-vignette absolute inset-0 pointer-events-none" aria-hidden="true" />
+
+              <div class="relative z-10 flex flex-col gap-3">
+                <div class="flex items-center justify-between gap-3">
+                  <span class="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-bold uppercase text-primary tracking-[2px]">
+                    <span class="live-dot" aria-hidden="true" />
+                    RPM · Live
+                  </span>
+                  <div class="flex items-center gap-2 text-[9px] sm:text-[10px] uppercase tracking-[1.5px] text-white/35 font-semibold">
+                    <span class="rounded px-1.5 py-0.5 border border-white/10 bg-white/5 text-primary/80">Lead II</span>
+                    <span>25 mm/s</span>
+                    <span>10 mm/mV</span>
+                  </div>
                 </div>
-                <p class="text-white/50 text-xs mt-1">{{ t('whatIsRpm.definition.cardLabel') }}</p>
+
+                <div class="flex items-end justify-between gap-4">
+                  <div>
+                    <div class="text-[10px] font-bold uppercase tracking-[2px] text-primary/70 mb-1">HR</div>
+                    <div class="flex items-baseline gap-2">
+                      <span
+                        class="monitor-hr font-display font-extrabold text-5xl sm:text-[52px] leading-none tabular-nums tracking-tight"
+                        :class="{ 'is-beat': beatPulse }"
+                      >{{ liveBpm }}</span>
+                      <span class="text-white/45 text-sm font-medium">bpm</span>
+                    </div>
+                    <p class="text-white/45 text-xs mt-1.5">{{ t('whatIsRpm.definition.cardLabel') }}</p>
+                  </div>
+                  <div class="flex flex-col items-end gap-1.5 pb-1">
+                    <Heart
+                      class="monitor-heart"
+                      :class="{ 'is-beat': beatPulse }"
+                      :size="18"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    />
+                    <span class="rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary/80">
+                      Sinusal
+                    </span>
+                  </div>
+                </div>
               </div>
-              <!-- Mock chart -->
-              <svg
-                class="relative z-10 w-full h-24"
-                viewBox="0 0 200 60"
-                preserveAspectRatio="none"
-              >
-                <polyline
-                  points="0,40 20,38 40,42 55,15 65,50 80,30 100,32 120,30 135,10 145,55 160,28 180,30 200,30"
-                  fill="none"
-                  stroke="#11d3d3"
-                  stroke-width="1.5"
-                  stroke-linejoin="round"
-                  stroke-linecap="round"
-                />
-              </svg>
-              <div class="relative z-10 grid grid-cols-3 gap-3">
-                <div class="rounded-lg bg-white/5 border border-white/10 p-3">
-                  <div class="text-white font-display font-bold">120/80</div>
-                  <div class="text-white/40 text-[10px] uppercase tracking-wider">BP</div>
+
+              <div class="monitor-scope relative z-10 w-full h-[96px] sm:h-[104px] rounded-xl overflow-hidden border border-primary/15">
+                <div class="monitor-scope-bg absolute inset-0" aria-hidden="true" />
+                <div class="monitor-scope-grid absolute inset-0" aria-hidden="true" />
+                <div class="monitor-scope-fade absolute inset-0 pointer-events-none" aria-hidden="true" />
+                <canvas ref="ecgCanvas" class="relative z-[1] block w-full h-full" aria-hidden="true" />
+                <div class="absolute left-2 top-1.5 z-[2] text-[8px] font-bold tracking-[1.5px] uppercase text-primary/55">
+                  ECG
                 </div>
-                <div class="rounded-lg bg-white/5 border border-white/10 p-3">
-                  <div class="text-white font-display font-bold">98%</div>
-                  <div class="text-white/40 text-[10px] uppercase tracking-wider">SpO₂</div>
+              </div>
+
+              <div class="relative z-10 grid grid-cols-3 gap-2.5 sm:gap-3">
+                <div class="monitor-vital">
+                  <div class="monitor-vital-label text-primary/80">NIBP</div>
+                  <div class="monitor-vital-value text-white">{{ liveBp }}</div>
+                  <div class="monitor-vital-unit">mmHg</div>
                 </div>
-                <div class="rounded-lg bg-white/5 border border-white/10 p-3">
-                  <div class="text-white font-display font-bold">36.6°</div>
-                  <div class="text-white/40 text-[10px] uppercase tracking-wider">Temp</div>
+                <div class="monitor-vital">
+                  <div class="monitor-vital-label text-primary/80">SpO₂</div>
+                  <div class="monitor-vital-value text-white">{{ liveSpo2 }}<span class="text-[0.7em] text-white/50">%</span></div>
+                  <div class="monitor-vital-unit">sat</div>
+                </div>
+                <div class="monitor-vital">
+                  <div class="monitor-vital-label text-primary/80">TEMP</div>
+                  <div class="monitor-vital-value text-white">{{ liveTemp.toFixed(1) }}<span class="text-[0.7em] text-white/50">°</span></div>
+                  <div class="monitor-vital-unit">°C</div>
                 </div>
               </div>
             </div>
@@ -369,10 +625,7 @@ onUnmounted(() => {
     </section>
 
     <!-- ── PROCESS ── -->
-    <section
-      ref="processSection"
-      class="py-16 sm:py-24 bg-mid w-full flex items-center justify-center"
-    >
+    <section class="py-16 sm:py-24 bg-mid w-full flex items-center justify-center">
       <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 flex flex-col items-center gap-5">
           <span
@@ -392,7 +645,6 @@ onUnmounted(() => {
 
         <!-- Timeline horizontal -->
         <div class="relative">
-          <!-- Linha conectora -->
           <div
             class="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-0.5 bg-linear-to-r from-primary/30 via-primary to-primary/30"
           />
@@ -403,13 +655,11 @@ onUnmounted(() => {
               :key="step.title"
               class="process-step relative flex flex-col items-center text-center gap-5"
             >
-              <!-- Número com ícone -->
               <div class="relative z-10 mb-6">
                 <div
                   class="w-24 h-24 rounded-full bg-white border-2 border-primary/20 shadow-[0_8px_32px_rgba(17,211,211,0.15)] flex items-center justify-center relative"
                 >
                   <component :is="step.icon" :size="28" class="text-primary" />
-                  <!-- Badge número -->
                   <div
                     class="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-primary text-dark font-display font-bold text-sm flex items-center justify-center shadow-lg"
                   >
@@ -418,7 +668,6 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <!-- Conteúdo -->
               <div class="bg-white rounded-2xl border border-gray-200/80 p-5 flex-1 w-full">
                 <h3 class="font-display font-bold text-black text-[15px] mb-2">
                   {{ step.title }}
@@ -588,6 +837,146 @@ onUnmounted(() => {
   offset-rotate: 0deg;
   opacity: 0.9;
   filter: drop-shadow(0 0 6px rgba(17, 211, 211, 0.8));
+}
+
+.monitor-vignette {
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 40%, transparent 40%, rgba(0, 0, 0, 0.28) 100%),
+    linear-gradient(180deg, rgba(17, 211, 211, 0.04), transparent 35%);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #11d3d3;
+  box-shadow: 0 0 6px rgba(17, 211, 211, 0.35);
+  animation: live-dot-blink 2.4s ease-in-out infinite;
+}
+
+.monitor-hr {
+  color: #11d3d3;
+  text-shadow: 0 0 14px rgba(17, 211, 211, 0.18);
+  transition:
+    opacity 0.35s ease,
+    text-shadow 0.35s ease;
+}
+
+.monitor-hr.is-beat {
+  opacity: 0.85;
+  text-shadow: 0 0 16px rgba(17, 211, 211, 0.35);
+}
+
+.monitor-heart {
+  color: rgba(17, 211, 211, 0.4);
+  transition:
+    color 0.35s ease,
+    transform 0.35s ease,
+    filter 0.35s ease;
+  transform-origin: center;
+}
+
+.monitor-heart.is-beat {
+  color: #11d3d3;
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 5px rgba(17, 211, 211, 0.4));
+}
+
+.monitor-scope {
+  background: #0e1117;
+  box-shadow:
+    inset 0 0 0 1px rgba(17, 211, 211, 0.06),
+    inset 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.monitor-scope-bg {
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 50%, rgba(17, 211, 211, 0.04), transparent 70%),
+    linear-gradient(180deg, #161c26 0%, #0e1117 100%);
+}
+
+.monitor-scope-grid {
+  background-image:
+    linear-gradient(rgba(17, 211, 211, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 211, 211, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(17, 211, 211, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 211, 211, 0.1) 1px, transparent 1px);
+  background-size:
+    8px 8px,
+    8px 8px,
+    40px 40px,
+    40px 40px;
+  background-position: center;
+  opacity: 0.75;
+}
+
+.monitor-scope-fade {
+  background: linear-gradient(
+    90deg,
+    rgba(14, 17, 23, 0.5) 0%,
+    transparent 14%,
+    transparent 86%,
+    rgba(14, 17, 23, 0.5) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+.monitor-vital {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  padding: 10px 10px 8px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.monitor-vital-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.monitor-vital-value {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+}
+
+.monitor-vital-unit {
+  margin-top: 2px;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.28);
+  font-weight: 600;
+}
+
+@keyframes live-dot-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot,
+  .monitor-heart,
+  .monitor-hr {
+    animation: none;
+    transition: none;
+  }
 }
 
 :deep(.btn-primary),

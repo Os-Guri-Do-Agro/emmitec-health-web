@@ -22,6 +22,8 @@ import {
   Search,
 } from 'lucide-vue-next'
 
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
+
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -357,7 +359,8 @@ onUnmounted(() => {
     >
       <!-- Grid Pattern -->
       <div class="hero-grid absolute inset-0 pointer-events-none opacity-40" />
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-5">
+      <HeroLogoMark variant="section" />
+      <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-5">
         <!-- Voltar -->
         <button
           @click="goBack"

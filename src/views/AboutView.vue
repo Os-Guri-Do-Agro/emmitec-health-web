@@ -22,7 +22,7 @@ import {
 import emilioImg from '@/assets/about/emillio.png'
 import missaoImg from '@/assets/about/nossaMissão-img.jpg'
 import logoCircleImg from '@/assets/about/logo-emmitec-circle.png'
-import logoMarkImg from '@/assets/about/EMMITEC.png'
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t } = useI18n()
 
@@ -276,13 +276,7 @@ onUnmounted(() => {
 
         <!-- Right visual - Logo -->
         <div class="hidden lg:flex relative h-full items-center justify-center p-12 overflow-visible">
-          <img
-            :src="logoMarkImg"
-            alt=""
-            aria-hidden="true"
-            class="hero-logo-bg pointer-events-none absolute select-none object-contain mix-blend-screen"
-            draggable="false"
-          />
+          <HeroLogoMark />
           <div ref="heroLogo" class="hero-logo-wrap relative z-10 flex items-center justify-center opacity-0">
             <div class="hero-logo-glow absolute rounded-full" aria-hidden="true" />
             <div class="hero-logo-pulse absolute rounded-full" aria-hidden="true" />
@@ -661,19 +655,6 @@ onUnmounted(() => {
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
   background-size: 64px 64px;
-}
-
-.hero-logo-bg {
-  top: -2%;
-  left: 4%;
-  right: 2%;
-  width: auto;
-  height: 72%;
-  max-width: none;
-  object-fit: contain;
-  object-position: top center;
-  opacity: 0.09;
-  z-index: 0;
 }
 
 .hero-logo-wrap {

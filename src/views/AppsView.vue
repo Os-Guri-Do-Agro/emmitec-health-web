@@ -16,6 +16,7 @@ import appStoreWhiteImg from '@/assets/apps/app-store-white.png'
 import appStoreBlackImg from '@/assets/apps/app-store-black.png'
 import googlePlayWhiteImg from '@/assets/apps/google-play-white.png'
 import googlePlayBlackImg from '@/assets/apps/google-play-black.png'
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 import {
   Smartphone,
@@ -291,7 +292,8 @@ onUnmounted(() => {
 
         <!-- Right visual: phone mockups -->
         <div class="hidden lg:flex relative h-full items-center justify-center p-12">
-          <div class="relative">
+          <HeroLogoMark />
+          <div class="relative z-10">
             <!-- Back phone -->
             <div
               class="absolute -left-12 top-8 w-44 h-[330px] rounded-[28px] bg-dark-2 border border-white/10 p-3 rotate-[-8deg] shadow-2xl"

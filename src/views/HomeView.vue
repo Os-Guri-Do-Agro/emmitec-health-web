@@ -27,6 +27,7 @@ import {
 import imgRPM from '@/assets/home/RPM.jpg'
 import imgMonitoramento from '@/assets/home/monitoramento.jpg'
 import headerIMG from '@/assets/home/header_img.png'
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -475,6 +476,7 @@ watch([locale, marqueeItems], () => {
             class="absolute inset-0 w-full h-full object-cover"
           />
           <div class="absolute inset-0 bg-linear-to-r from-dark via-dark/60 to-transparent" />
+          <HeroLogoMark />
         </div>
       </div>
     </section>
