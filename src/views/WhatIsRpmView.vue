@@ -11,9 +11,9 @@ import {
   Brain,
   BellRing,
   Stethoscope,
-  Smartphone,
   ShieldCheck,
   HeartPulse,
+  Home,
 } from 'lucide-vue-next'
 
 const { t } = useI18n()
@@ -30,6 +30,7 @@ gsap.registerPlugin(ScrollTrigger)
 const heroTitle = ref<HTMLElement | null>(null)
 const heroSub = ref<HTMLElement | null>(null)
 const heroActions = ref<HTMLElement | null>(null)
+const rpmVisual = ref<HTMLElement | null>(null)
 
 const definitionSection = ref<HTMLElement | null>(null)
 const processSection = ref<HTMLElement | null>(null)
@@ -72,6 +73,65 @@ onMounted(() => {
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
 
+  if (rpmVisual.value) {
+    const root = rpmVisual.value
+    const home = root.querySelector('.rpm-home')
+    const clinic = root.querySelector('.rpm-clinic')
+    const signal = root.querySelector('.rpm-signal')
+    const path = root.querySelector('.rpm-path')
+    const sparks = root.querySelectorAll('.rpm-spark')
+    const icons = root.querySelectorAll('.rpm-float')
+
+    gsap
+      .timeline({ defaults: { ease: 'power3.out' } })
+      .from(root, { opacity: 0, y: 20, duration: 0.85 }, 0.15)
+      .from(home, { x: -36, opacity: 0, duration: 0.75 }, 0.25)
+      .from(clinic, { x: 36, opacity: 0, duration: 0.75 }, 0.3)
+      .from(signal, { scale: 0.6, opacity: 0, duration: 0.7 }, 0.4)
+      .from(path, { opacity: 0, duration: 0.8 }, 0.45)
+      .from(icons, { y: 14, opacity: 0, stagger: 0.1, duration: 0.5 }, 0.55)
+
+    if (path) {
+      gsap.fromTo(
+        path,
+        { strokeDashoffset: 360 },
+        { strokeDashoffset: 0, duration: 2.8, ease: 'power1.inOut', repeat: -1, yoyo: true },
+      )
+    }
+
+    sparks.forEach((spark, i) => {
+      gsap.fromTo(
+        spark,
+        { offsetDistance: '0%' },
+        {
+          offsetDistance: '100%',
+          duration: 2.6,
+          ease: 'power1.inOut',
+          repeat: -1,
+          delay: i * 0.85,
+        },
+      )
+    })
+
+    icons.forEach((icon, i) => {
+      gsap.to(icon, {
+        y: i % 2 === 0 ? -8 : 8,
+        duration: 2.6 + i * 0.35,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+      })
+    })
+
+    gsap.to(signal, {
+      scale: 1.06,
+      duration: 1.8,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+    })
+  }
+
   const animate = (el: HTMLElement | null, selector: string, opts: gsap.TweenVars = {}) => {
     if (!el) return
     gsap.from(el.querySelectorAll(selector), {
@@ -92,6 +152,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (rpmVisual.value) gsap.killTweensOf(rpmVisual.value.querySelectorAll('*'))
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
@@ -141,20 +202,90 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Right visual: pulse rings -->
-        <div class="hidden lg:flex relative h-full items-center justify-center p-12">
-          <div class="relative w-72 h-72 flex items-center justify-center">
-            <div class="absolute inset-0 rounded-full border border-primary/20 pulse-ring" />
-            <div
-              class="absolute inset-6 rounded-full border border-primary/30 pulse-ring delay-500"
-            />
-            <div
-              class="absolute inset-12 rounded-full border border-primary/40 pulse-ring delay-1000"
-            />
-            <div
-              class="relative z-10 w-32 h-32 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center"
+        <!-- Right visual: conceptual RPM illustration -->
+        <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
+          <div
+            ref="rpmVisual"
+            class="rpm-visual relative h-[340px] w-full max-w-[440px] xl:h-[380px]"
+            aria-hidden="true"
+          >
+            <div class="rpm-glow absolute inset-[10%] rounded-full" />
+
+            <!-- Connection path: home → care -->
+            <svg
+              class="absolute inset-0 h-full w-full overflow-visible"
+              viewBox="0 0 440 380"
+              fill="none"
             >
-              <HeartPulse :size="56" class="text-primary" />
+              <path
+                class="rpm-path"
+                d="M95 190 C 160 120, 220 120, 280 190 C 320 230, 340 210, 355 190"
+                stroke="rgba(17,211,211,0.4)"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-dasharray="10 10"
+              />
+              <circle
+                class="rpm-spark"
+                r="4"
+                fill="#11d3d3"
+                style="offset-path: path('M95 190 C 160 120, 220 120, 280 190 C 320 230, 340 210, 355 190')"
+              />
+              <circle
+                class="rpm-spark"
+                r="3"
+                fill="#11d3d3"
+                style="offset-path: path('M95 190 C 160 120, 220 120, 280 190 C 320 230, 340 210, 355 190')"
+              />
+            </svg>
+
+            <!-- Home / patient side -->
+            <div
+              class="rpm-home absolute left-2 top-1/2 flex w-[118px] -translate-y-1/2 flex-col items-center gap-3"
+            >
+              <div
+                class="flex h-24 w-24 items-center justify-center rounded-[28px] border border-primary/30 bg-dark-2/70 shadow-[0_16px_40px_rgba(17,211,211,0.12)] backdrop-blur-sm"
+              >
+                <Home :size="36" class="text-primary" stroke-width="1.8" />
+              </div>
+              <div class="rpm-float flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-primary">
+                <HeartPulse :size="20" stroke-width="2" />
+              </div>
+            </div>
+
+            <!-- Signal bridge -->
+            <div class="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2">
+              <div
+                class="rpm-signal flex h-14 w-14 items-center justify-center rounded-full border border-primary/40 bg-primary/15 text-primary shadow-[0_0_40px_rgba(17,211,211,0.25)] backdrop-blur-sm"
+              >
+                <Wifi :size="24" stroke-width="2" />
+              </div>
+            </div>
+
+            <!-- Clinic / care side -->
+            <div
+              class="rpm-clinic absolute right-2 top-1/2 flex w-[118px] -translate-y-1/2 flex-col items-center gap-3"
+            >
+              <div
+                class="flex h-24 w-24 items-center justify-center rounded-[28px] border border-primary/30 bg-dark-2/70 shadow-[0_16px_40px_rgba(17,211,211,0.12)] backdrop-blur-sm"
+              >
+                <Stethoscope :size="36" class="text-primary" stroke-width="1.8" />
+              </div>
+              <div class="rpm-float flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-primary">
+                <ShieldCheck :size="20" stroke-width="2" />
+              </div>
+            </div>
+
+            <!-- Floating concept marks -->
+            <div
+              class="rpm-float absolute left-[38%] top-[18%] flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-dark-2/80 text-primary/90"
+            >
+              <Activity :size="18" stroke-width="2" />
+            </div>
+            <div
+              class="rpm-float absolute right-[36%] bottom-[16%] flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-dark-2/80 text-primary/90"
+            >
+              <BellRing :size="18" stroke-width="2" />
             </div>
           </div>
         </div>
@@ -444,25 +575,19 @@ onUnmounted(() => {
   letter-spacing: -0.05em;
 }
 
-.pulse-ring {
-  animation: pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.rpm-glow {
+  background: radial-gradient(
+    circle,
+    rgba(17, 211, 211, 0.16) 0%,
+    rgba(17, 211, 211, 0.04) 45%,
+    transparent 72%
+  );
 }
-.pulse-ring.delay-500 {
-  animation-delay: 0.6s;
-}
-.pulse-ring.delay-1000 {
-  animation-delay: 1.2s;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.06);
-    opacity: 0.3;
-  }
+
+.rpm-spark {
+  offset-rotate: 0deg;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 6px rgba(17, 211, 211, 0.8));
 }
 
 :deep(.btn-primary),

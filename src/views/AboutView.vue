@@ -21,6 +21,8 @@ import {
 
 import emilioImg from '@/assets/about/emillio.png'
 import missaoImg from '@/assets/about/nossaMissão-img.jpg'
+import logoCircleImg from '@/assets/about/logo-emmitec-circle.png'
+import logoMarkImg from '@/assets/about/EMMITEC.png'
 
 const { t } = useI18n()
 
@@ -39,6 +41,7 @@ const bioExpanded = ref(false)
 const heroTitle = ref<HTMLElement | null>(null)
 const heroSub = ref<HTMLElement | null>(null)
 const heroActions = ref<HTMLElement | null>(null)
+const heroLogo = ref<HTMLElement | null>(null)
 
 const storySection = ref<HTMLElement | null>(null)
 const missionSection = ref<HTMLElement | null>(null)
@@ -97,6 +100,44 @@ onMounted(() => {
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
+
+  if (heroLogo.value) {
+    const logoImg = heroLogo.value.querySelector('.hero-logo-img')
+    const logoRing = heroLogo.value.querySelector('.hero-logo-ring')
+    const logoGlow = heroLogo.value.querySelector('.hero-logo-glow')
+    const pulseRings = heroLogo.value.querySelectorAll('.hero-logo-pulse')
+
+    gsap.set(heroLogo.value, { opacity: 1 })
+    gsap
+      .timeline({ defaults: { ease: 'power3.out' } })
+      .from(logoGlow, { opacity: 0, scale: 0.4, duration: 1 }, 0.2)
+      .from(logoRing, { opacity: 0, scale: 0.55, rotation: -24, duration: 1 }, 0.3)
+      .from(
+        logoImg,
+        { opacity: 0, scale: 0.35, rotation: 18, duration: 1.05, ease: 'back.out(1.6)' },
+        0.4,
+      )
+      .from(pulseRings, { opacity: 0, duration: 0.4 }, 0.9)
+
+    gsap.to(logoRing, {
+      rotation: 360,
+      duration: 28,
+      ease: 'none',
+      repeat: -1,
+    })
+
+    pulseRings.forEach((ring, i) => {
+      gsap.set(ring, { scale: 0.72, opacity: 0.55 })
+      gsap.to(ring, {
+        scale: 1.85,
+        opacity: 0,
+        duration: 4.2,
+        ease: 'power1.out',
+        repeat: -1,
+        delay: i * 1.4,
+      })
+    })
+  }
 
   // Story section
   if (storySection.value) {
@@ -178,6 +219,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (heroLogo.value) gsap.killTweensOf(heroLogo.value.querySelectorAll('*'))
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
@@ -232,29 +274,27 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Right visual - Stats grid -->
-        <div class="hidden lg:flex relative h-full items-center justify-center p-12">
-          <div class="grid grid-cols-2 gap-4 w-full max-w-sm">
-            <!-- Founded -->
-            <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <div class="font-display font-extrabold text-primary text-3xl">2006</div>
-              <div class="text-white/60 text-sm mt-1">{{ t('about.stats.founded') }}</div>
-            </div>
-            <!-- Clinics -->
-            <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <div class="font-display font-extrabold text-primary text-3xl">500+</div>
-              <div class="text-white/60 text-sm mt-1">{{ t('about.stats.clinics') }}</div>
-            </div>
-            <!-- Patients -->
-            <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <div class="font-display font-extrabold text-primary text-3xl">50K+</div>
-              <div class="text-white/60 text-sm mt-1">{{ t('about.stats.patients') }}</div>
-            </div>
-            <!-- Team -->
-            <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <div class="font-display font-extrabold text-primary text-3xl">120+</div>
-              <div class="text-white/60 text-sm mt-1">{{ t('about.stats.team') }}</div>
-            </div>
+        <!-- Right visual - Logo -->
+        <div class="hidden lg:flex relative h-full items-center justify-center p-12 overflow-visible">
+          <img
+            :src="logoMarkImg"
+            alt=""
+            aria-hidden="true"
+            class="hero-logo-bg pointer-events-none absolute select-none object-contain mix-blend-screen"
+            draggable="false"
+          />
+          <div ref="heroLogo" class="hero-logo-wrap relative z-10 flex items-center justify-center opacity-0">
+            <div class="hero-logo-glow absolute rounded-full" aria-hidden="true" />
+            <div class="hero-logo-pulse absolute rounded-full" aria-hidden="true" />
+            <div class="hero-logo-pulse absolute rounded-full" aria-hidden="true" />
+            <div class="hero-logo-pulse absolute rounded-full" aria-hidden="true" />
+            <div class="hero-logo-ring absolute rounded-full" aria-hidden="true" />
+            <img
+              :src="logoCircleImg"
+              alt="Emmitec Health"
+              class="hero-logo-img relative z-10 h-56 w-56 xl:h-64 xl:w-64 object-contain select-none mix-blend-screen drop-shadow-[0_20px_60px_rgba(17,211,211,0.35)]"
+              draggable="false"
+            />
           </div>
         </div>
       </div>
@@ -621,6 +661,58 @@ onUnmounted(() => {
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
   background-size: 64px 64px;
+}
+
+.hero-logo-bg {
+  top: -2%;
+  left: 4%;
+  right: 2%;
+  width: auto;
+  height: 72%;
+  max-width: none;
+  object-fit: contain;
+  object-position: top center;
+  opacity: 0.09;
+  z-index: 0;
+}
+
+.hero-logo-wrap {
+  width: 320px;
+  height: 320px;
+}
+
+.hero-logo-glow {
+  inset: 18%;
+  background: radial-gradient(circle, rgba(17, 211, 211, 0.4) 0%, rgba(17, 211, 211, 0.08) 45%, transparent 70%);
+  filter: blur(8px);
+  opacity: 0.65;
+}
+
+.hero-logo-pulse {
+  inset: 10%;
+  border: 1.5px solid rgba(17, 211, 211, 0.55);
+  box-shadow: 0 0 24px rgba(17, 211, 211, 0.18);
+  pointer-events: none;
+}
+
+.hero-logo-ring {
+  inset: 8%;
+  border: 1px solid rgba(17, 211, 211, 0.22);
+  box-shadow:
+    0 0 0 10px rgba(17, 211, 211, 0.03),
+    inset 0 0 40px rgba(17, 211, 211, 0.05);
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(17, 211, 211, 0.55) 40deg,
+      transparent 90deg,
+      transparent 180deg,
+      rgba(17, 211, 211, 0.35) 220deg,
+      transparent 280deg
+    );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
 }
 
 .cta-glow {

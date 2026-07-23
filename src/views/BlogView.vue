@@ -17,6 +17,8 @@ import {
   ChevronRight,
 } from 'lucide-vue-next'
 
+import logoMarkImg from '@/assets/about/EMMITEC.png'
+
 const { t } = useI18n()
 const router = useRouter()
 
@@ -272,6 +274,13 @@ onUnmounted(() => {
       class="min-h-[50vh] sm:min-h-[55vh] bg-dark relative overflow-hidden w-full flex items-center justify-center"
     >
       <div class="hero-grid absolute inset-0 pointer-events-none" />
+      <img
+        :src="logoMarkImg"
+        alt=""
+        aria-hidden="true"
+        class="hero-logo-bg pointer-events-none absolute select-none object-contain mix-blend-screen"
+        draggable="false"
+      />
 
       <div
         class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col items-center text-center gap-5 z-10 relative justify-center"
@@ -691,6 +700,18 @@ onUnmounted(() => {
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
   background-size: 64px 64px;
+}
+
+.hero-logo-bg {
+  top: -2%;
+  right: -2%;
+  left: auto;
+  width: auto;
+  height: 72%;
+  object-fit: contain;
+  object-position: top right;
+  opacity: 0.09;
+  z-index: 0;
 }
 
 .cta-glow {
