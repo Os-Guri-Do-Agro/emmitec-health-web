@@ -19,6 +19,8 @@ import {
   Sparkles,
 } from 'lucide-vue-next'
 
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
+
 const { t } = useI18n()
 
 const calendlyUrl = computed(() => {
@@ -33,6 +35,7 @@ gsap.registerPlugin(ScrollTrigger)
 const heroTitle = ref<HTMLElement | null>(null)
 const heroSub = ref<HTMLElement | null>(null)
 const heroActions = ref<HTMLElement | null>(null)
+const benefitsVisual = ref<HTMLElement | null>(null)
 
 const patientSection = ref<HTMLElement | null>(null)
 const clinicSection = ref<HTMLElement | null>(null)
@@ -92,6 +95,98 @@ onMounted(() => {
     .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
     .from(heroActions.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
 
+  if (benefitsVisual.value) {
+    const root = benefitsVisual.value
+    const hub = root.querySelector('.benefit-hub')
+    const orbit = root.querySelector('.benefit-orbit')
+    const glow = root.querySelector('.benefit-glow')
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('.benefit-chip'))
+    const nums = root.querySelectorAll<HTMLElement>('.benefit-num')
+
+    gsap.set([hub, glow, orbit, ...cards], { opacity: 0 })
+    gsap.set(hub, { scale: 0.7 })
+    gsap.set(cards, { y: 18, scale: 0.94 })
+
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+    tl.to(glow, { opacity: 1, duration: 0.7 }, 0.2)
+      .to(orbit, { opacity: 1, duration: 0.6 }, 0.25)
+      .to(hub, { opacity: 1, scale: 1, duration: 0.75, ease: 'back.out(1.6)' }, 0.3)
+      .to(
+        cards,
+        { opacity: 1, y: 0, scale: 1, duration: 0.65, stagger: 0.14 },
+        0.5,
+      )
+
+    nums.forEach((el) => {
+      const target = Number(el.dataset.value)
+      const prefix = el.dataset.prefix ?? ''
+      const suffix = el.dataset.suffix ?? ''
+      const decimals = Number(el.dataset.decimals ?? 0)
+      if (Number.isNaN(target)) return
+      const state = { value: 0 }
+      tl.to(
+        state,
+        {
+          value: target,
+          duration: 1.15,
+          ease: 'power2.out',
+          onUpdate: () => {
+            el.textContent = `${prefix}${state.value.toFixed(decimals)}${suffix}`
+          },
+        },
+        0.75,
+      )
+    })
+
+    // Idle: soft float
+    cards.forEach((card, i) => {
+      gsap.to(card, {
+        y: i % 2 === 0 ? -6 : 6,
+        duration: 3 + i * 0.4,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 2 + i * 0.2,
+      })
+    })
+
+    // Idle: orbit drift
+    gsap.to(orbit, {
+      rotation: 360,
+      duration: 40,
+      ease: 'none',
+      repeat: -1,
+    })
+
+    // Idle: glow breathe
+    gsap.to(glow, {
+      scale: 1.12,
+      opacity: 0.55,
+      duration: 2.6,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: 1.8,
+    })
+
+    // Idle: highlight each benefit in turn
+    const spotlight = gsap.timeline({ repeat: -1, delay: 2.6 })
+    cards.forEach((card) => {
+      spotlight
+        .to(card, {
+          boxShadow: '0 16px 40px rgba(17,211,211,0.22)',
+          filter: 'brightness(1.12)',
+          duration: 0.4,
+        })
+        .to(card, {
+          boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+          filter: 'brightness(1)',
+          duration: 0.4,
+          delay: 1.15,
+        })
+    })
+  }
+
   const animate = (el: HTMLElement | null, selector: string, opts: gsap.TweenVars = {}) => {
     if (!el) return
     gsap.from(el.querySelectorAll(selector), {
@@ -113,6 +208,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (benefitsVisual.value) gsap.killTweensOf(benefitsVisual.value.querySelectorAll('*'))
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
@@ -163,48 +259,84 @@ onUnmounted(() => {
         </div>
 
         <!-- Right visual: floating benefit chips -->
-        <div class="hidden lg:flex relative h-full items-center justify-center p-12">
-          <div class="relative w-full max-w-sm h-80">
+        <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
+          <HeroLogoMark />
+          <div ref="benefitsVisual" class="benefit-visual relative z-10 h-[360px] w-full max-w-[420px]">
             <div
-              class="absolute top-0 left-0 px-4 py-3 rounded-xl bg-white/5 border border-primary/30 backdrop-blur flex items-center gap-3"
-            >
-              <TrendingDown class="text-primary" :size="20" />
+              class="benefit-glow absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            />
+            <div
+              class="benefit-orbit absolute left-1/2 top-1/2 h-[78%] w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full"
+              aria-hidden="true"
+            />
+
+            <div class="benefit-chip benefit-chip--tl">
+              <div class="benefit-chip-icon benefit-chip-icon--teal">
+                <TrendingDown :size="18" stroke-width="2.2" />
+              </div>
               <div>
-                <div class="text-white font-display font-bold text-sm">-38%</div>
-                <div class="text-white/50 text-xs">Readmissions</div>
+                <div
+                  class="benefit-num font-display text-[17px] font-extrabold leading-none text-white"
+                  data-prefix="-"
+                  data-suffix="%"
+                  data-value="38"
+                  data-decimals="0"
+                >
+                  -0%
+                </div>
+                <div class="mt-1 text-[11px] text-white/45">Readmissions</div>
               </div>
             </div>
-            <div
-              class="absolute top-12 right-0 px-4 py-3 rounded-xl bg-white/5 border border-emerald-400/30 backdrop-blur flex items-center gap-3"
-            >
-              <Smile class="text-emerald-400" :size="20" />
+
+            <div class="benefit-chip benefit-chip--tr">
+              <div class="benefit-chip-icon benefit-chip-icon--emerald">
+                <Smile :size="18" stroke-width="2.2" />
+              </div>
               <div>
-                <div class="text-white font-display font-bold text-sm">4.8/5</div>
-                <div class="text-white/50 text-xs">Satisfaction</div>
+                <div
+                  class="benefit-num font-display text-[17px] font-extrabold leading-none text-white"
+                  data-suffix="/5"
+                  data-value="4.8"
+                  data-decimals="1"
+                >
+                  0/5
+                </div>
+                <div class="mt-1 text-[11px] text-white/45">Satisfaction</div>
               </div>
             </div>
-            <div
-              class="absolute bottom-16 left-4 px-4 py-3 rounded-xl bg-white/5 border border-blue-400/30 backdrop-blur flex items-center gap-3"
-            >
-              <Clock class="text-blue-400" :size="20" />
+
+            <div class="benefit-chip benefit-chip--bl">
+              <div class="benefit-chip-icon benefit-chip-icon--blue">
+                <Clock :size="18" stroke-width="2.2" />
+              </div>
               <div>
-                <div class="text-white font-display font-bold text-sm">24/7</div>
-                <div class="text-white/50 text-xs">Monitoring</div>
+                <div class="font-display text-[17px] font-extrabold leading-none text-white">24/7</div>
+                <div class="mt-1 text-[11px] text-white/45">Monitoring</div>
               </div>
             </div>
-            <div
-              class="absolute bottom-0 right-8 px-4 py-3 rounded-xl bg-white/5 border border-rose-400/30 backdrop-blur flex items-center gap-3"
-            >
-              <Activity class="text-rose-400" :size="20" />
+
+            <div class="benefit-chip benefit-chip--br">
+              <div class="benefit-chip-icon benefit-chip-icon--rose">
+                <Activity :size="18" stroke-width="2.2" />
+              </div>
               <div>
-                <div class="text-white font-display font-bold text-sm">+62%</div>
-                <div class="text-white/50 text-xs">Adherence</div>
+                <div
+                  class="benefit-num font-display text-[17px] font-extrabold leading-none text-white"
+                  data-prefix="+"
+                  data-suffix="%"
+                  data-value="62"
+                  data-decimals="0"
+                >
+                  +0%
+                </div>
+                <div class="mt-1 text-[11px] text-white/45">Adherence</div>
               </div>
             </div>
-            <div
-              class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-primary/15 border border-primary/40 flex items-center justify-center"
-            >
-              <Sparkles :size="36" class="text-primary" />
+
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div class="benefit-hub">
+                <Sparkles :size="34" class="text-primary" stroke-width="2" />
+              </div>
             </div>
           </div>
         </div>
@@ -513,6 +645,97 @@ onUnmounted(() => {
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
   background-size: 64px 64px;
+}
+
+.benefit-glow {
+  background: radial-gradient(
+    circle,
+    rgba(17, 211, 211, 0.3) 0%,
+    rgba(17, 211, 211, 0.08) 42%,
+    transparent 70%
+  );
+  filter: blur(2px);
+}
+
+.benefit-orbit {
+  border: 1px dashed rgba(17, 211, 211, 0.18);
+  box-shadow: inset 0 0 40px rgba(17, 211, 211, 0.04);
+}
+
+.benefit-hub {
+  display: flex;
+  width: 96px;
+  height: 96px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(17, 211, 211, 0.45);
+  background: linear-gradient(160deg, rgba(17, 211, 211, 0.22), rgba(17, 211, 211, 0.06));
+  box-shadow:
+    0 0 0 10px rgba(17, 211, 211, 0.05),
+    0 16px 40px rgba(17, 211, 211, 0.15);
+}
+
+.benefit-chip {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 158px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(22, 28, 38, 0.72);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.benefit-chip--tl {
+  top: 8%;
+  left: 0;
+  border-color: rgba(17, 211, 211, 0.28);
+}
+.benefit-chip--tr {
+  top: 18%;
+  right: 0;
+  border-color: rgba(52, 211, 153, 0.28);
+}
+.benefit-chip--bl {
+  bottom: 18%;
+  left: 2%;
+  border-color: rgba(96, 165, 250, 0.28);
+}
+.benefit-chip--br {
+  bottom: 4%;
+  right: 4%;
+  border-color: rgba(251, 113, 133, 0.28);
+}
+
+.benefit-chip-icon {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+.benefit-chip-icon--teal {
+  color: #11d3d3;
+  background: rgba(17, 211, 211, 0.12);
+}
+.benefit-chip-icon--emerald {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
+}
+.benefit-chip-icon--blue {
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.12);
+}
+.benefit-chip-icon--rose {
+  color: #fb7185;
+  background: rgba(251, 113, 133, 0.12);
 }
 
 .cta-glow {

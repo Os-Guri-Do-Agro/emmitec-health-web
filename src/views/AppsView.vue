@@ -16,6 +16,7 @@ import appStoreWhiteImg from '@/assets/apps/app-store-white.png'
 import appStoreBlackImg from '@/assets/apps/app-store-black.png'
 import googlePlayWhiteImg from '@/assets/apps/google-play-white.png'
 import googlePlayBlackImg from '@/assets/apps/google-play-black.png'
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 import {
   Smartphone,
@@ -28,6 +29,8 @@ import {
   Check,
   ShieldCheck,
   Zap,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-vue-next'
 
 const { t } = useI18n()
@@ -89,6 +92,79 @@ const apps = [
     apple: 'https://apps.apple.com/us/app/emmitec-lt1/id6743580958',
   },
 ]
+
+const APPS_PER_PAGE = 2
+
+const appPages = computed(() => {
+  const pages: (typeof apps)[] = []
+  for (let i = 0; i < apps.length; i += APPS_PER_PAGE) {
+    pages.push(apps.slice(i, i + APPS_PER_PAGE))
+  }
+  return pages
+})
+
+const currentAppPage = ref(0)
+const touchStartX = ref(0)
+const touchEndX = ref(0)
+
+const AUTOPLAY_MS = 3000
+let autoplayTimer: ReturnType<typeof setInterval> | null = null
+
+function stopAutoplay() {
+  if (autoplayTimer) {
+    clearInterval(autoplayTimer)
+    autoplayTimer = null
+  }
+}
+
+function startAutoplay() {
+  stopAutoplay()
+  autoplayTimer = setInterval(() => {
+    nextAppPage()
+  }, AUTOPLAY_MS)
+}
+
+function goToAppPage(index: number) {
+  currentAppPage.value = index
+  startAutoplay()
+}
+
+function nextAppPage() {
+  currentAppPage.value = (currentAppPage.value + 1) % appPages.value.length
+}
+
+function prevAppPage() {
+  currentAppPage.value =
+    (currentAppPage.value - 1 + appPages.value.length) % appPages.value.length
+}
+
+function goNextAppPage() {
+  nextAppPage()
+  startAutoplay()
+}
+
+function goPrevAppPage() {
+  prevAppPage()
+  startAutoplay()
+}
+
+function onTouchStart(e: TouchEvent) {
+  touchStartX.value = e.changedTouches[0]?.screenX ?? 0
+}
+
+function onTouchEnd(e: TouchEvent) {
+  touchEndX.value = e.changedTouches[0]?.screenX ?? 0
+  handleSwipe()
+}
+
+function handleSwipe() {
+  const swipeThreshold = 50
+  const diff = touchStartX.value - touchEndX.value
+  if (Math.abs(diff) > swipeThreshold) {
+    if (diff > 0) goNextAppPage()
+    else goPrevAppPage()
+  }
+}
 
 const patientFeatures = computed(() => [
   t('appsPage.patient.feature1'),
@@ -154,14 +230,17 @@ onMounted(() => {
     })
   }
 
-  animate(appsListSection.value, '.app-card', { stagger: 0.1 })
+  animate(appsListSection.value, '.apps-carousel', { stagger: 0.1 })
   animate(patientAppSection.value, '.animate-in')
   animate(clinicalAppSection.value, '.animate-in')
   animate(featuresSection.value, '.feature-card', { stagger: 0.08 })
   animate(downloadSection.value, '.download-item', { stagger: 0.12 })
+
+  startAutoplay()
 })
 
 onUnmounted(() => {
+  stopAutoplay()
   ScrollTrigger.getAll().forEach((t) => t.kill())
 })
 </script>
@@ -213,7 +292,8 @@ onUnmounted(() => {
 
         <!-- Right visual: phone mockups -->
         <div class="hidden lg:flex relative h-full items-center justify-center p-12">
-          <div class="relative">
+          <HeroLogoMark />
+          <div class="relative z-10">
             <!-- Back phone -->
             <div
               class="absolute -left-12 top-8 w-44 h-[330px] rounded-[28px] bg-dark-2 border border-white/10 p-3 rotate-[-8deg] shadow-2xl"
@@ -280,47 +360,132 @@ onUnmounted(() => {
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <article
-            v-for="app in apps"
-            :key="app.name"
-            class="app-card group rounded-2xl overflow-hidden flex flex-col transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_20px_60px_-16px_rgba(17,211,211,0.2)]"
-          >
-            <div class="relative overflow-hidden">
-              <img
-                :src="app.img"
-                :alt="app.name"
-                class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                loading="lazy"
-              />
+        <div
+          class="apps-carousel flex flex-col gap-6"
+          @touchstart="onTouchStart"
+          @touchend="onTouchEnd"
+        >
+          <div class="relative flex items-center gap-2 sm:gap-4">
+            <button
+              type="button"
+              class="carousel-nav hidden sm:flex shrink-0"
+              :aria-label="t('aria.prevSlide')"
+              @click="goPrevAppPage"
+            >
+              <ChevronLeft :size="22" stroke-width="2.5" />
+            </button>
+
+            <div class="relative flex-1 overflow-hidden">
               <div
-                class="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-dark-2 to-transparent pointer-events-none"
-              />
-            </div>
-            <div class="px-5 py-4 flex items-center justify-between gap-4 flex-wrap bg-dark">
-              <span class="font-display font-bold text-white text-[15px]">{{ app.name }}</span>
-              <div class="flex gap-2 flex-wrap">
-                <a
-                  v-if="app.apple"
-                  :href="app.apple"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="store-badge"
+                class="flex transition-transform duration-500 ease-out"
+                :style="{ transform: `translateX(-${currentAppPage * 100}%)` }"
+              >
+                <div
+                  v-for="(page, pageIndex) in appPages"
+                  :key="pageIndex"
+                  class="grid w-full shrink-0 grid-cols-2 gap-3 sm:gap-5 px-0.5"
                 >
-                  <img :src="appStoreWhiteImg" alt="Download on the App Store" class="h-9" />
-                </a>
-                <a
-                  v-if="app.google"
-                  :href="app.google"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="store-badge"
-                >
-                  <img :src="googlePlayWhiteImg" alt="Get it on Google Play" class="h-9" />
-                </a>
+                  <article
+                    v-for="app in page"
+                    :key="app.name"
+                    class="app-card rounded-2xl overflow-hidden flex flex-col"
+                  >
+                    <div class="relative overflow-hidden">
+                      <img
+                        :src="app.img"
+                        :alt="app.name"
+                        class="block w-full h-auto object-cover"
+                        loading="lazy"
+                      />
+                      <div
+                        class="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-dark-2 to-transparent pointer-events-none"
+                      />
+                    </div>
+                    <div
+                      class="px-3 sm:px-5 py-3 sm:py-4 flex items-center justify-between gap-2 sm:gap-4 flex-wrap bg-dark"
+                    >
+                      <span class="font-display font-bold text-white text-[12px] sm:text-[15px]">{{
+                        app.name
+                      }}</span>
+                      <div class="flex gap-1.5 sm:gap-2 flex-wrap">
+                        <a
+                          v-if="app.apple"
+                          :href="app.apple"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="store-badge"
+                        >
+                          <img
+                            :src="appStoreWhiteImg"
+                            alt="Download on the App Store"
+                            class="h-7 sm:h-9"
+                          />
+                        </a>
+                        <a
+                          v-if="app.google"
+                          :href="app.google"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="store-badge"
+                        >
+                          <img
+                            :src="googlePlayWhiteImg"
+                            alt="Get it on Google Play"
+                            class="h-7 sm:h-9"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+                </div>
               </div>
             </div>
-          </article>
+
+            <button
+              type="button"
+              class="carousel-nav hidden sm:flex shrink-0"
+              :aria-label="t('aria.nextSlide')"
+              @click="goNextAppPage"
+            >
+              <ChevronRight :size="22" stroke-width="2.5" />
+            </button>
+          </div>
+
+          <div class="flex items-center justify-center gap-3">
+            <button
+              type="button"
+              class="carousel-nav sm:hidden"
+              :aria-label="t('aria.prevSlide')"
+              @click="goPrevAppPage"
+            >
+              <ChevronLeft :size="18" stroke-width="2.5" />
+            </button>
+
+            <div class="flex justify-center gap-2.5">
+              <button
+                v-for="(_, index) in appPages"
+                :key="index"
+                type="button"
+                class="h-2 rounded-full transition-all duration-300"
+                :class="
+                  index === currentAppPage
+                    ? 'w-6 bg-primary'
+                    : 'w-2 bg-dark/20 hover:bg-dark/35'
+                "
+                :aria-label="t('aria.goToSlide', { index: index + 1 })"
+                @click="goToAppPage(index)"
+              />
+            </div>
+
+            <button
+              type="button"
+              class="carousel-nav sm:hidden"
+              :aria-label="t('aria.nextSlide')"
+              @click="goNextAppPage"
+            >
+              <ChevronRight :size="18" stroke-width="2.5" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -393,6 +558,30 @@ onUnmounted(() => {
 .store-badge:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.carousel-nav {
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 9999px;
+  border: 1px solid rgba(14, 17, 23, 0.12);
+  background: #fff;
+  color: #0e1117;
+  cursor: pointer;
+  transition:
+    border-color 0.25s,
+    color 0.25s,
+    background 0.25s,
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+.carousel-nav:hover {
+  border-color: #11d3d3;
+  color: #11d3d3;
+  box-shadow: 0 8px 24px rgba(17, 211, 211, 0.18);
+  transform: translateY(-1px);
 }
 
 :deep(.btn-primary),

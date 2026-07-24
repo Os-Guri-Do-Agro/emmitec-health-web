@@ -54,7 +54,11 @@
         "Informes automáticos para historial médico electrónico"
       ],
       "button": "Ver cómo funciona",
-      "imageAlt": "Médico consultando plataforma"
+      "imageAlt": "Médico consultando plataforma",
+      "imageBadges": {
+        "rpm": "RPM",
+        "ai": "IA"
+      }
     },
     "services": {
       "tag": "SERVICIOS",
@@ -601,7 +605,10 @@
     }
   },
   "aria": {
-    "goToCard": "Ir al card {index}"
+    "goToCard": "Ir al card {index}",
+    "goToSlide": "Ir a la página {index}",
+    "prevSlide": "Página anterior",
+    "nextSlide": "Página siguiente"
   },
   "header": {
     "nav": {

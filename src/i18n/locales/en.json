@@ -54,7 +54,11 @@
         "Automatic reports for electronic medical records"
       ],
       "button": "See how it works",
-      "imageAlt": "Doctor consulting platform"
+      "imageAlt": "Doctor consulting platform",
+      "imageBadges": {
+        "rpm": "RPM",
+        "ai": "AI"
+      }
     },
     "services": {
       "tag": "SERVICES",
@@ -601,7 +605,10 @@
     }
   },
   "aria": {
-    "goToCard": "Go to card {index}"
+    "goToCard": "Go to card {index}",
+    "goToSlide": "Go to page {index}",
+    "prevSlide": "Previous page",
+    "nextSlide": "Next page"
   },
   "header": {
     "nav": {

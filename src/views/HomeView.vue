@@ -27,6 +27,7 @@ import {
 import imgRPM from '@/assets/home/RPM.jpg'
 import imgMonitoramento from '@/assets/home/monitoramento.jpg'
 import headerIMG from '@/assets/home/header_img.png'
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -475,6 +476,7 @@ watch([locale, marqueeItems], () => {
             class="absolute inset-0 w-full h-full object-cover"
           />
           <div class="absolute inset-0 bg-linear-to-r from-dark via-dark/60 to-transparent" />
+          <HeroLogoMark />
         </div>
       </div>
     </section>
@@ -712,11 +714,11 @@ watch([locale, marqueeItems], () => {
             >
               <span
                 class="rounded-lg border border-white/25 bg-dark/55 px-2.5 py-1 font-display text-[10px] font-bold uppercase tracking-wider text-white/95 backdrop-blur-md"
-                >RPM</span
+                >{{ t('features.monitoring.imageBadges.rpm') }}</span
               >
               <span
                 class="rounded-lg border border-primary/40 bg-primary/90 px-2.5 py-1 font-display text-[10px] font-bold uppercase tracking-wider text-dark shadow-lg"
-                >IA</span
+                >{{ t('features.monitoring.imageBadges.ai') }}</span
               >
             </div>
           </div>
@@ -750,7 +752,7 @@ watch([locale, marqueeItems], () => {
             >
               <Layers :size="18" class="text-primary" aria-hidden="true" />
               <span class="font-display text-[11px] font-bold uppercase tracking-[0.18em] text-white/90"
-                >RPM</span
+                >{{ t('features.monitoring.imageBadges.rpm') }}</span
               >
             </div>
           </div>
