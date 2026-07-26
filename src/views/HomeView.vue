@@ -441,11 +441,13 @@ watch([locale, marqueeItems], () => {
                   class="btn-primary font-display font-bold"
                 />
               </a>
-              <Button
-                :label="t('hero.button.solutions') + ' →'"
-                unstyled
-                class="btn-ghost font-display font-bold"
-              />
+              <a href="/equipment">
+                <Button
+                  :label="t('hero.button.solutions') + ' →'"
+                  unstyled
+                  class="btn-ghost font-display font-bold"
+                />
+              </a>
             </div>
 
             <div

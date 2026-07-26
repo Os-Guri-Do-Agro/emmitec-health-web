@@ -7,12 +7,9 @@ import Button from 'primevue/button'
 
 import {
   Target,
-  Eye,
   HeartHandshake,
-  Award,
   Users,
   Lightbulb,
-  Globe,
   Shield,
   ArrowRight,
   Quote,
@@ -45,7 +42,6 @@ const heroLogo = ref<HTMLElement | null>(null)
 
 const storySection = ref<HTMLElement | null>(null)
 const missionSection = ref<HTMLElement | null>(null)
-const visionSection = ref<HTMLElement | null>(null)
 const valuesSection = ref<HTMLElement | null>(null)
 const teamSection = ref<HTMLElement | null>(null)
 const statsSection = ref<HTMLElement | null>(null)
@@ -162,19 +158,6 @@ onMounted(() => {
       ease: 'power3.out',
       clearProps: 'opacity,transform',
       scrollTrigger: { trigger: missionSection.value, start: 'top 80%', once: true },
-    })
-  }
-
-  // Vision section
-  if (visionSection.value) {
-    gsap.from(visionSection.value.querySelectorAll('.animate-in'), {
-      opacity: 0,
-      y: 30,
-      stagger: 0.12,
-      duration: 0.72,
-      ease: 'power3.out',
-      clearProps: 'opacity,transform',
-      scrollTrigger: { trigger: visionSection.value, start: 'top 80%', once: true },
     })
   }
 
@@ -511,86 +494,6 @@ onUnmounted(() => {
                 <p class="text-gray-500 text-sm leading-relaxed">{{ m.desc }}</p>
               </div>
               <div class="w-[45%]" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── RECONHECIMENTOS ── -->
-    <section
-      ref="visionSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center gap-5"
-    >
-      <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-5">
-        <!-- Header centrado -->
-        <div class="text-center mb-12 flex flex-col items-center gap-4">
-          <div class="animate-in relative">
-            <div
-              class="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center"
-            >
-              <Award :size="28" class="text-primary" />
-            </div>
-            <div
-              class="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md"
-            >
-              2024
-            </div>
-          </div>
-          <span
-            class="animate-in inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
-            {{ t('about.vision.badge') }}
-          </span>
-          <h2
-            class="animate-in font-display font-extrabold text-black text-[clamp(24px,3vw,38px)] tracking-tight leading-tight max-w-2xl"
-          >
-            {{ t('about.vision.title') }}
-          </h2>
-          <p class="animate-in text-gray-500 text-[14px] sm:text-[15px] leading-relaxed max-w-2xl">
-            {{ t('about.vision.description') }}
-          </p>
-        </div>
-
-        <!-- Cards de depoimento -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
-          <div
-            class="animate-in rounded-2xl border border-gray-100 bg-gray-50 p-8 flex flex-col gap-4"
-          >
-            <Quote :size="20" class="text-primary" />
-            <p class="text-gray-700 text-[15px] leading-relaxed flex-1 italic">
-              "EmmiTec transformou nosso atendimento"
-            </p>
-            <div class="flex items-center gap-3 pt-4 border-t border-gray-200">
-              <div
-                class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0"
-              >
-                <Users :size="14" class="text-primary" />
-              </div>
-              <div>
-                <div class="font-display font-bold text-black text-sm">Partner</div>
-                <div class="text-gray-400 text-[11px]">Clínica parceira</div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="animate-in rounded-2xl border border-gray-100 bg-gray-50 p-8 flex flex-col gap-4"
-          >
-            <Quote :size="20" class="text-emerald-500" />
-            <p class="text-gray-700 text-[15px] leading-relaxed flex-1 italic">
-              "Cuidado remoto de qualidade"
-            </p>
-            <div class="flex items-center gap-3 pt-4 border-t border-gray-200">
-              <div
-                class="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center shrink-0"
-              >
-                <HeartHandshake :size="14" class="text-emerald-600" />
-              </div>
-              <div>
-                <div class="font-display font-bold text-black text-sm">Client</div>
-                <div class="text-gray-400 text-[11px]">Paciente</div>
-              </div>
             </div>
           </div>
         </div>

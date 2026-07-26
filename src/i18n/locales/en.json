@@ -634,7 +634,7 @@
       "benefits": "Benefits",
       "blog": "Blog",
       "contact": "Contact",
-      "certificates": "Certificates",
+      "certificates": "Apps",
       "privacyTerms": "Privacy Terms"
     },
     "blogCol": {
@@ -659,5 +659,46 @@
     ],
     "backToTop": "Back to top",
     "copyright": "All rights reserved."
+  },
+  "privacyPage": {
+    "badge": "Legal",
+    "title": "Privacy Terms",
+    "subtitle": "How Emmitec Health collects, uses, and protects your information.",
+    "updated": "Last updated: July 2026",
+    "contactNote": "Privacy questions? Contact us at contato@emmitec.health or through the official channels on this site.",
+    "sections": [
+      {
+        "title": "1. Who we are",
+        "body": "Emmitec Health builds Remote Patient Monitoring (RPM) solutions, apps, and a clinical platform. This document explains how we handle personal and health-related data when you use the website and our services."
+      },
+      {
+        "title": "2. Data we may collect",
+        "body": "We may collect identification and contact details (name, email, phone), professional information, data submitted via forms or bookings, and technical browsing data (IP, device, pages visited) for security and experience improvement."
+      },
+      {
+        "title": "3. How we use data",
+        "body": "We use data to respond to requests, schedule demos, send communications when authorized, operate and improve the site and services, meet legal obligations, and protect platform security."
+      },
+      {
+        "title": "4. Sharing",
+        "body": "We do not sell personal data. We may share information with essential providers (hosting, email, analytics) under contract, or when required by law. Clinical health data follows specific controls and agreements with partner institutions."
+      },
+      {
+        "title": "5. Security and retention",
+        "body": "We apply technical and organizational measures aligned with market best practices and applicable requirements (including privacy laws). We keep data only as long as needed for stated purposes or legal requirements."
+      },
+      {
+        "title": "6. Your rights",
+        "body": "You may request access, correction, anonymization, portability, or deletion of personal data, and revoke consents, within applicable law. We will respond through official contact channels."
+      },
+      {
+        "title": "7. Cookies and website",
+        "body": "The site may use cookies and similar technologies for operation, language preferences, and usage metrics. You can manage cookies in your browser settings."
+      },
+      {
+        "title": "8. Changes",
+        "body": "We may update these Privacy Terms periodically. The revision date will appear on this page. Continued use of the site after changes means you acknowledge the current version."
+      }
+    ]
   }
 }

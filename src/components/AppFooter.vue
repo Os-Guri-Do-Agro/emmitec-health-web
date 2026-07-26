@@ -8,32 +8,37 @@ import { Mail, ArrowRight, MapPin, Check } from 'lucide-vue-next'
 const { t, tm } = useI18n()
 gsap.registerPlugin(ScrollTrigger)
 
-// Refs para animações
 const footerRef = ref<HTMLElement | null>(null)
 const contentRef = ref<HTMLElement | null>(null)
 const bottomRef = ref<HTMLElement | null>(null)
 
+const calendlyUrl = computed(() => {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
+})
+
 const linksCol = computed(() => ({
   title: t('footer.links.title'),
   links: [
-    { text: t('footer.links.ourHistory'), href: '#history' },
-    { text: t('footer.links.whatIsRpm'), href: '#rpm' },
-    { text: t('footer.links.benefits'), href: '#benefits' },
-    { text: t('footer.links.blog'), href: '#blog' },
-    { text: t('footer.links.contact'), href: '#contact' },
-    { text: t('footer.links.certificates'), href: '#certificates' },
-    { text: t('footer.links.privacyTerms'), href: '#privacy' },
+    { text: t('footer.links.ourHistory'), href: '/about' },
+    { text: t('footer.links.whatIsRpm'), href: '/what-is-rpm' },
+    { text: t('footer.links.benefits'), href: '/benefits' },
+    { text: t('footer.links.blog'), href: '/blog' },
+    { text: t('footer.links.contact'), href: calendlyUrl.value, external: true },
+    { text: t('footer.links.certificates'), href: '/apps' },
+    { text: t('footer.links.privacyTerms'), href: '/privacy' },
   ],
 }))
 
 const blogCol = computed(() => ({
   title: t('footer.blogCol.title'),
   links: [
-    { text: t('footer.blogCol.rpmToday'), href: '#rpm-today' },
-    { text: t('footer.blogCol.facilities'), href: '#facilities' },
-    { text: t('footer.blogCol.challenges'), href: '#challenges' },
-    { text: t('footer.blogCol.laws'), href: '#laws' },
-    { text: t('footer.blogCol.reviews'), href: '#reviews' },
+    { text: t('blogPage.categories.rpm'), href: '/blog?category=rpm' },
+    { text: t('blogPage.categories.tech'), href: '/blog?category=tech' },
+    { text: t('blogPage.categories.cases'), href: '/blog?category=cases' },
+    { text: t('blogPage.categories.laws'), href: '/blog?category=laws' },
   ],
 }))
 
@@ -60,8 +65,11 @@ const socialLinks = [
   },
 ]
 
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 onMounted(() => {
-  // Animação de entrada do conteúdo
   if (contentRef.value) {
     gsap.from(contentRef.value.querySelectorAll('.footer-col'), {
       opacity: 0,
@@ -77,7 +85,6 @@ onMounted(() => {
     })
   }
 
-  // Animação da parte inferior
   if (bottomRef.value) {
     gsap.from(bottomRef.value, {
       opacity: 0,
@@ -113,12 +120,13 @@ onUnmounted(() => {
     <div
       ref="contentRef"
       class="z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center"
-       <!-- Main Grid  -->
+    >
+      <!-- Main Grid  -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-5">
         <!-- Coluna 1: Brand + Endereço + Social (ocupa 4 colunas) -->
         <div class="footer-col lg:col-span-4 flex flex-col gap-6">
           <!-- Logo -->
-          <a href="#" class="flex items-center no-underline group">
+          <a href="/" class="flex items-center no-underline group">
             <div class="relative">
               <img
                 src="/Logo Emmitec Horizontal.png"
@@ -201,6 +209,8 @@ onUnmounted(() => {
             <li v-for="(link, idx) in linksCol.links" :key="idx">
               <a
                 :href="link.href"
+                :target="link.external ? '_blank' : undefined"
+                :rel="link.external ? 'noopener noreferrer' : undefined"
                 class="group text-white/50 hover:text-white text-[13px] no-underline transition-all duration-300 flex items-center gap-2"
               >
                 <span class="w-0 h-px bg-primary group-hover:w-3 transition-all duration-300" />
@@ -296,9 +306,10 @@ onUnmounted(() => {
           </p>
 
           <!-- Back to Top -->
-          <a
-            href="#"
-            class="group flex items-center gap-2 text-white/40 hover:text-primary text-[12px] transition-colors duration-300"
+          <button
+            type="button"
+            class="group flex items-center gap-2 text-white/40 hover:text-primary text-[12px] transition-colors duration-300 bg-transparent border-none cursor-pointer p-0"
+            @click="scrollToTop"
           >
             <span>{{ t('footer.backToTop') }}</span>
             <div
@@ -314,7 +325,7 @@ onUnmounted(() => {
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
               </svg>
             </div>
-          </a>
+          </button>
         </div>
       </div>
     </div>

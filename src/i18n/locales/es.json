@@ -634,7 +634,7 @@
       "benefits": "Beneficios",
       "blog": "Blog",
       "contact": "Contacto",
-      "certificates": "Certificados",
+      "certificates": "Aplicaciones",
       "privacyTerms": "Términos de Privacidad"
     },
     "blogCol": {
@@ -656,5 +656,46 @@
     "addresses": ["USA - 105 Boniface Drive, Rochester, NY 14620"],
     "backToTop": "Volver arriba",
     "copyright": "Todos los derechos reservados."
+  },
+  "privacyPage": {
+    "badge": "Legal",
+    "title": "Términos de Privacidad",
+    "subtitle": "Cómo Emmitec Health recopila, usa y protege su información.",
+    "updated": "Última actualización: julio de 2026",
+    "contactNote": "¿Dudas sobre privacidad? Contáctenos en contato@emmitec.health o por los canales oficiales del sitio.",
+    "sections": [
+      {
+        "title": "1. Quiénes somos",
+        "body": "Emmitec Health desarrolla soluciones de Monitoreo Remoto de Pacientes (RPM), aplicaciones y plataforma clínica. Este documento describe cómo tratamos datos personales y de salud en el uso del sitio y de los servicios."
+      },
+      {
+        "title": "2. Datos que podemos recopilar",
+        "body": "Podemos recopilar datos de identificación y contacto (nombre, email, teléfono), datos profesionales, información enviada en formularios o agendamientos, y datos técnicos de navegación (IP, dispositivo, páginas visitadas) para seguridad y mejora de la experiencia."
+      },
+      {
+        "title": "3. Cómo usamos los datos",
+        "body": "Utilizamos los datos para responder solicitudes, agendar demostraciones, enviar comunicaciones cuando estén autorizadas, operar y mejorar el sitio y los servicios, cumplir obligaciones legales y proteger la seguridad de la plataforma."
+      },
+      {
+        "title": "4. Compartición",
+        "body": "No vendemos datos personales. Podemos compartir información con proveedores esenciales (hosting, email, analytics) bajo contrato, o cuando lo exija la ley. Los datos de salud en entornos clínicos siguen controles y acuerdos específicos con las instituciones asociadas."
+      },
+      {
+        "title": "5. Seguridad y retención",
+        "body": "Adoptamos medidas técnicas y organizativas alineadas con buenas prácticas y requisitos aplicables. Conservamos los datos solo el tiempo necesario para las finalidades informadas o exigencias legales."
+      },
+      {
+        "title": "6. Sus derechos",
+        "body": "Puede solicitar acceso, corrección, anonimización, portabilidad o eliminación de datos personales, así como revocar consentimientos, dentro de la legislación aplicable. Responderemos por los canales oficiales de contacto."
+      },
+      {
+        "title": "7. Cookies y sitio",
+        "body": "El sitio puede usar cookies y tecnologías similares para funcionamiento, preferencias de idioma y métricas de uso. Puede gestionar cookies en la configuración del navegador."
+      },
+      {
+        "title": "8. Cambios",
+        "body": "Podemos actualizar estos Términos de Privacidad periódicamente. La fecha de revisión se indicará en esta página. El uso continuado del sitio tras los cambios implica conocimiento de la versión vigente."
+      }
+    ]
   }
 }

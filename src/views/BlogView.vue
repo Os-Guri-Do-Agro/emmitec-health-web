@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
@@ -21,6 +21,7 @@ import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t } = useI18n()
 const router = useRouter()
+const route = useRoute()
 
 const calendlyUrl = computed(() => {
   const now = new Date()
@@ -39,8 +40,41 @@ const featuredSection = ref<HTMLElement | null>(null)
 const articlesSection = ref<HTMLElement | null>(null)
 const newsletterSection = ref<HTMLElement | null>(null)
 
-const activeCategory = ref('all')
+const categoryIds = ['all', 'rpm', 'tech', 'cases', 'laws'] as const
+type CategoryId = (typeof categoryIds)[number]
+
+function resolveCategory(raw: unknown): CategoryId {
+  const value = Array.isArray(raw) ? raw[0] : raw
+  if (typeof value === 'string' && categoryIds.includes(value as CategoryId)) {
+    return value as CategoryId
+  }
+  return 'all'
+}
+
+const activeCategory = ref<CategoryId>(resolveCategory(route.query.category))
 const searchQuery = ref('')
+
+function setCategory(id: CategoryId) {
+  activeCategory.value = id
+  const query = { ...route.query } as Record<string, string | string[] | undefined>
+  if (id === 'all') delete query.category
+  else query.category = id
+  router.replace({ path: '/blog', query })
+}
+
+async function applyCategoryFromRoute(scroll = false) {
+  activeCategory.value = resolveCategory(route.query.category)
+  if (!scroll || activeCategory.value === 'all') return
+  await nextTick()
+  articlesSection.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+watch(
+  () => route.query.category,
+  () => {
+    applyCategoryFromRoute(true)
+  },
+)
 
 const categories = computed(() => [
   { id: 'all', label: t('blogPage.categories.all') },
@@ -234,6 +268,8 @@ const goToArticle = (id: number) => {
 }
 
 onMounted(() => {
+  applyCategoryFromRoute(Boolean(route.query.category))
+
   gsap
     .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
     .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
@@ -456,7 +492,8 @@ onUnmounted(() => {
             <button
               v-for="c in categories"
               :key="c.id"
-              @click="activeCategory = c.id"
+              type="button"
+              @click="setCategory(c.id as CategoryId)"
               :class="[
                 'px-4 py-2 rounded-full text-[12px] font-display font-semibold transition-all',
                 activeCategory === c.id
