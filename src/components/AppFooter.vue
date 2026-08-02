@@ -119,10 +119,12 @@ onUnmounted(() => {
     <!-- Content Container -->
     <div
       ref="contentRef"
-      class="z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center"
+      class="z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 flex flex-col items-center justify-center"
     >
       <!-- Main Grid  -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-5">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 sm:gap-x-10 lg:gap-x-12 pb-5"
+      >
         <!-- Coluna 1: Brand + Endereço + Social (ocupa 4 colunas) -->
         <div class="footer-col lg:col-span-4 flex flex-col gap-6">
           <!-- Logo -->
@@ -152,7 +154,9 @@ onUnmounted(() => {
               <MapPin class="w-4 h-4 text-primary" />
             </div>
             <div class="leading-relaxed flex flex-col gap-1">
-              <span v-for="(line, i) in (tm('footer.addresses') as string[])" :key="i">{{ line }}</span>
+              <span v-for="(line, i) in tm('footer.addresses') as string[]" :key="i">{{
+                line
+              }}</span>
             </div>
           </div>
 
@@ -200,9 +204,7 @@ onUnmounted(() => {
 
         <!-- Coluna 2: Links (ocupa 2 colunas) -->
         <div class="footer-col lg:col-span-2 flex flex-col gap-5">
-          <h5
-            class="font-display font-semibold text-white text-[13px] uppercase tracking-wider"
-          >
+          <h5 class="font-display font-semibold text-white text-[13px] uppercase tracking-wider">
             {{ linksCol.title }}
           </h5>
           <ul class="list-none flex flex-col gap-3">

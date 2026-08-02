@@ -13,15 +13,12 @@ import emmitecLongTermCareImg from '@/assets/apps/emmitec-long-term-care.png'
 import emmitecGuardianHealthImg from '@/assets/apps/emmitec-guardian-health.png'
 
 import appStoreWhiteImg from '@/assets/apps/app-store-white.png'
-import appStoreBlackImg from '@/assets/apps/app-store-black.png'
 import googlePlayWhiteImg from '@/assets/apps/google-play-white.png'
-import googlePlayBlackImg from '@/assets/apps/google-play-black.png'
 import heroPhoneMenuImg from '@/assets/apps/tela-01.jpeg'
 import heroPhoneScanImg from '@/assets/apps/tela-02.jpeg'
 import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 import {
-  Smartphone,
   Bell,
   Calendar,
   MessageSquare,
@@ -50,8 +47,7 @@ const heroActions = ref<HTMLElement | null>(null)
 const heroPhones = ref<HTMLElement | null>(null)
 
 const appsListSection = ref<HTMLElement | null>(null)
-const patientAppSection = ref<HTMLElement | null>(null)
-const clinicalAppSection = ref<HTMLElement | null>(null)
+const standardsSection = ref<HTMLElement | null>(null)
 const featuresSection = ref<HTMLElement | null>(null)
 const downloadSection = ref<HTMLElement | null>(null)
 
@@ -135,8 +131,7 @@ function nextAppPage() {
 }
 
 function prevAppPage() {
-  currentAppPage.value =
-    (currentAppPage.value - 1 + appPages.value.length) % appPages.value.length
+  currentAppPage.value = (currentAppPage.value - 1 + appPages.value.length) % appPages.value.length
 }
 
 function goNextAppPage() {
@@ -167,18 +162,29 @@ function handleSwipe() {
   }
 }
 
-const patientFeatures = computed(() => [
-  t('appsPage.patient.feature1'),
-  t('appsPage.patient.feature2'),
-  t('appsPage.patient.feature3'),
-  t('appsPage.patient.feature4'),
-])
-
-const clinicalFeatures = computed(() => [
-  t('appsPage.clinical.feature1'),
-  t('appsPage.clinical.feature2'),
-  t('appsPage.clinical.feature3'),
-  t('appsPage.clinical.feature4'),
+const standardsBlocks = computed(() => [
+  {
+    badge: t('appsPage.patient.badge'),
+    title: t('appsPage.patient.title'),
+    description: t('appsPage.patient.description'),
+    items: [
+      t('appsPage.patient.feature1'),
+      t('appsPage.patient.feature2'),
+      t('appsPage.patient.feature3'),
+      t('appsPage.patient.feature4'),
+    ],
+  },
+  {
+    badge: t('appsPage.clinical.badge'),
+    title: t('appsPage.clinical.title'),
+    description: t('appsPage.clinical.description'),
+    items: [
+      t('appsPage.clinical.feature1'),
+      t('appsPage.clinical.feature2'),
+      t('appsPage.clinical.feature3'),
+      t('appsPage.clinical.feature4'),
+    ],
+  },
 ])
 
 const featureGrid = computed(() => [
@@ -257,8 +263,7 @@ onMounted(() => {
   }
 
   animate(appsListSection.value, '.apps-carousel', { stagger: 0.1 })
-  animate(patientAppSection.value, '.animate-in')
-  animate(clinicalAppSection.value, '.animate-in')
+  animate(standardsSection.value, '.standards-block', { stagger: 0.12 })
   animate(featuresSection.value, '.feature-card', { stagger: 0.08 })
   animate(downloadSection.value, '.download-item', { stagger: 0.12 })
 
@@ -276,28 +281,22 @@ onUnmounted(() => {
   <div class="font-body text-black overflow-x-hidden w-full">
     <!-- ── HERO ── -->
     <section class="min-h-[60vh] sm:min-h-[70vh] bg-dark relative overflow-hidden w-full">
+      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
       <div class="hero-grid absolute inset-0 pointer-events-none" />
+      <HeroLogoMark variant="section" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] sm:min-h-[70vh] w-full">
         <div
-          class="flex flex-col justify-center items-end px-4 sm:px-6 lg:px-12 xl:px-20 py-20 lg:py-0 z-10"
+          class="z-10 flex flex-col justify-center px-6 pb-16 pt-28 sm:px-8 sm:pt-32 lg:items-end lg:px-12 lg:pb-20 lg:pt-32 xl:px-20"
         >
           <div class="w-full max-w-xl flex flex-col gap-5">
-            <span
-              class="inline-block text-[11px] font-bold uppercase text-primary font-display tracking-[2px]"
-            >
+            <span class="eyebrow eyebrow--dark">
               {{ t('appsPage.hero.badge') }}
             </span>
-            <h1
-              ref="heroTitle"
-              class="font-display font-extrabold text-white leading-[1.08] tracking-tight text-xl sm:text-2xl lg:text-[34px]"
-            >
+            <h1 ref="heroTitle" class="display-2 text-white">
               {{ t('appsPage.hero.title') }}
             </h1>
-            <p
-              ref="heroSub"
-              class="text-white/50 text-[12px] sm:text-[14px] leading-relaxed max-w-md font-light"
-            >
+            <p ref="heroSub" class="lead max-w-xl text-white/55">
               {{ t('appsPage.hero.subtitle') }}
             </p>
             <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
@@ -319,9 +318,14 @@ onUnmounted(() => {
 
         <!-- Right visual: phone mockups -->
         <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
-          <HeroLogoMark />
-          <div ref="heroPhones" class="hero-phones relative z-10 h-[420px] w-[340px] xl:h-[460px] xl:w-[380px]">
-            <div class="hero-phones-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden="true" />
+          <div
+            ref="heroPhones"
+            class="hero-phones relative z-10 h-[420px] w-[340px] xl:h-[460px] xl:w-[380px]"
+          >
+            <div
+              class="hero-phones-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+              aria-hidden="true"
+            />
 
             <!-- Back phone: scanning -->
             <div class="hero-phone hero-phone--back absolute left-0 top-8">
@@ -358,22 +362,18 @@ onUnmounted(() => {
     <!-- ── APPS SUITE ── -->
     <section
       ref="appsListSection"
-      class="py-16 sm:py-20 bg-mid relative overflow-hidden w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-mid relative overflow-hidden w-full flex items-center justify-center"
     >
       <div class="hero-grid absolute inset-0 pointer-events-none opacity-40" />
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-12 flex flex-col items-center gap-4 pb-5">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
+        <div class="mx-auto mb-16 flex max-w-3xl flex-col items-center gap-6 text-center">
+          <span class="eyebrow eyebrow--light">
             {{ t('appsPage.suite.badge') }}
           </span>
-          <h2
-            class="font-display font-extrabold text-dark text-[clamp(24px,3vw,38px)] tracking-tight leading-tight"
-          >
+          <h2 class="display-2 text-dark">
             {{ t('appsPage.suite.title') }}
           </h2>
-          <p class="text-dark/50 text-[14px] sm:text-[16px] leading-relaxed max-w-2xl">
+          <p class="lead max-w-2xl text-dark/55">
             {{ t('appsPage.suite.subtitle') }}
           </p>
         </div>
@@ -476,9 +476,7 @@ onUnmounted(() => {
               type="button"
               class="h-2 rounded-full transition-all duration-300"
               :class="
-                index === currentAppPage
-                  ? 'w-6 bg-primary'
-                  : 'w-2 bg-dark/20 hover:bg-dark/35'
+                index === currentAppPage ? 'w-6 bg-primary' : 'w-2 bg-dark/20 hover:bg-dark/35'
               "
               :aria-label="t('aria.goToSlide', { index: index + 1 })"
               @click="goToAppPage(index)"
@@ -488,10 +486,74 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- ── PADRÃO INTERNACIONAL + PLATAFORMA MODULAR ── -->
+    <section ref="standardsSection" class="w-full bg-white py-20 sm:py-24 lg:py-28">
+      <div class="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
+        <div class="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-16 xl:gap-20">
+          <article
+            v-for="block in standardsBlocks"
+            :key="block.badge"
+            class="standards-block flex flex-col items-start gap-6"
+          >
+            <span class="eyebrow eyebrow--light">{{ block.badge }}</span>
+            <h2 class="display-3 text-black">{{ block.title }}</h2>
+            <p class="max-w-[62ch] text-[15px] leading-[1.8] text-gray-500">
+              {{ block.description }}
+            </p>
+            <ul class="m-0 w-full list-none p-0">
+              <li
+                v-for="item in block.items"
+                :key="item"
+                class="standards-row group flex items-start gap-4 border-t border-gray-200/80 py-4"
+              >
+                <span
+                  class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/25 transition-all duration-300 group-hover:bg-primary group-hover:text-dark"
+                >
+                  <Check :size="13" stroke-width="3" aria-hidden="true" />
+                </span>
+                <span class="text-[14.5px] leading-relaxed text-gray-700">{{ item }}</span>
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DIFERENCIAIS ── -->
+    <section ref="featuresSection" class="apps-features w-full py-20 sm:py-24 lg:py-28">
+      <div class="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
+        <div class="mx-auto mb-16 flex max-w-3xl flex-col items-center gap-6 text-center">
+          <span class="eyebrow eyebrow--light">{{ t('appsPage.features.badge') }}</span>
+          <h2 class="display-2 text-black">{{ t('appsPage.features.title') }}</h2>
+          <p class="lead max-w-2xl text-gray-500">{{ t('appsPage.features.subtitle') }}</p>
+        </div>
+
+        <div class="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <article
+            v-for="f in featureGrid"
+            :key="f.title"
+            class="feature-card group relative flex h-full gap-5 overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-6 sm:p-7"
+          >
+            <span
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary transition-all duration-400 group-hover:bg-primary group-hover:text-dark"
+            >
+              <component :is="f.icon" :size="22" stroke-width="2.1" aria-hidden="true" />
+            </span>
+            <div class="min-w-0">
+              <h3 class="font-display text-[15.5px] font-bold tracking-tight text-black">
+                {{ f.title }}
+              </h3>
+              <p class="mt-2.5 text-[13.5px] leading-relaxed text-muted">{{ f.desc }}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- ── DOWNLOAD CTA ── -->
     <section
       ref="downloadSection"
-      class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full flex items-center justify-center"
+      class="bg-dark py-20 sm:py-24 lg:py-28 relative overflow-hidden w-full flex items-center justify-center"
     >
       <div
         class="absolute -top-48 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full pointer-events-none cta-glow"
@@ -530,6 +592,37 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* Diferenciais */
+.apps-features {
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9fa 55%, #ffffff 100%);
+}
+.feature-card {
+  transition:
+    transform 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+.standards-row {
+  transition: border-color 0.3s ease;
+}
+@media (hover: hover) {
+  .feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(17, 211, 211, 0.35);
+    box-shadow: 0 24px 54px -28px rgba(17, 211, 211, 0.45);
+  }
+  .standards-row:hover {
+    border-color: rgba(17, 211, 211, 0.5);
+  }
+}
+
+/* mesma assinatura de fundo da hero da home */
+.page-hero-aurora {
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
+}
+
 .hero-grid {
   background-image:
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
@@ -541,7 +634,12 @@ onUnmounted(() => {
   width: 280px;
   height: 280px;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(17, 211, 211, 0.22) 0%, rgba(17, 211, 211, 0.05) 45%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(17, 211, 211, 0.22) 0%,
+    rgba(17, 211, 211, 0.05) 45%,
+    transparent 70%
+  );
   filter: blur(8px);
   pointer-events: none;
 }
@@ -644,48 +742,5 @@ onUnmounted(() => {
   color: #11d3d3;
   box-shadow: 0 8px 24px rgba(17, 211, 211, 0.18);
   transform: translateY(-1px);
-}
-
-:deep(.btn-primary),
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700 !important;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    box-shadow 0.25s,
-    transform 0.25s;
-}
-:deep(.btn-primary:hover),
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
-}
-
-:deep(.btn-ghost),
-.btn-ghost {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.75);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 700 !important;
-  font-size: 13px;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    border-color 0.25s,
-    color 0.25s;
-}
-:deep(.btn-ghost:hover),
-.btn-ghost:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
 }
 </style>

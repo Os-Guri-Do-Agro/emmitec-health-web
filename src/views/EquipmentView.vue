@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Button from 'primevue/button'
 
 import {
+  ArrowRight,
   HeartPulse,
   Activity,
   Thermometer,
@@ -42,6 +43,7 @@ const equipVisual = ref<HTMLElement | null>(null)
 const categoriesSection = ref<HTMLElement | null>(null)
 const devicesSection = ref<HTMLElement | null>(null)
 const compatibilitySection = ref<HTMLElement | null>(null)
+const certSection = ref<HTMLElement | null>(null)
 const certifSection = ref<HTMLElement | null>(null)
 
 const activeCategory = ref('all')
@@ -173,8 +175,16 @@ onMounted(() => {
       .from(root, { opacity: 0, scale: 0.9, duration: 0.85 }, 0.15)
       .from(glow, { opacity: 0, scale: 0.6, duration: 0.8 }, 0.2)
       .from(hub, { scale: 0.55, opacity: 0, duration: 0.75, ease: 'back.out(1.55)' }, 0.28)
-      .from([ringOuter, ringInner, sweep], { opacity: 0, scale: 0.8, stagger: 0.08, duration: 0.65 }, 0.35)
-      .from(faces, { scale: 0.4, opacity: 0, stagger: 0.1, duration: 0.55, ease: 'back.out(1.4)' }, 0.5)
+      .from(
+        [ringOuter, ringInner, sweep],
+        { opacity: 0, scale: 0.8, stagger: 0.08, duration: 0.65 },
+        0.35,
+      )
+      .from(
+        faces,
+        { scale: 0.4, opacity: 0, stagger: 0.1, duration: 0.55, ease: 'back.out(1.4)' },
+        0.5,
+      )
 
     // Radar sweep
     gsap.to(sweep, { rotation: 360, duration: 6, ease: 'none', repeat: -1, delay: 1 })
@@ -248,6 +258,7 @@ onMounted(() => {
   animate(categoriesSection.value, '.cat-card', { stagger: 0.06, y: 24 })
   animate(devicesSection.value, '.device-card', { stagger: 0.07 })
   animate(compatibilitySection.value, '.animate-in')
+  animate(certSection.value, '.cert-item', { stagger: 0.07, y: 22 })
   animate(certifSection.value, '.cert-badge', { stagger: 0.08, y: 16 })
 })
 
@@ -265,28 +276,22 @@ onUnmounted(() => {
   <div class="font-body text-black overflow-x-hidden w-full">
     <!-- ── HERO ── -->
     <section class="min-h-[60vh] sm:min-h-[70vh] bg-dark relative overflow-hidden w-full">
+      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
       <div class="hero-grid absolute inset-0 pointer-events-none" />
+      <HeroLogoMark variant="section" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] sm:min-h-[70vh] w-full">
         <div
-          class="flex flex-col justify-center items-end px-4 sm:px-6 lg:px-12 xl:px-20 py-20 lg:py-0 z-10"
+          class="z-10 flex flex-col justify-center px-6 pb-16 pt-28 sm:px-8 sm:pt-32 lg:items-end lg:px-12 lg:pb-20 lg:pt-32 xl:px-20"
         >
           <div class="w-full max-w-xl flex flex-col gap-5">
-            <span
-              class="inline-block text-[11px] font-bold uppercase text-primary font-display tracking-[2px]"
-            >
+            <span class="eyebrow eyebrow--dark">
               {{ t('equipmentPage.hero.badge') }}
             </span>
-            <h1
-              ref="heroTitle"
-              class="font-display font-extrabold text-white leading-[1.08] tracking-tight text-xl sm:text-2xl lg:text-[34px]"
-            >
+            <h1 ref="heroTitle" class="display-2 text-white">
               {{ t('equipmentPage.hero.title') }}
             </h1>
-            <p
-              ref="heroSub"
-              class="text-white/50 text-[12px] sm:text-[14px] leading-relaxed max-w-md font-light"
-            >
+            <p ref="heroSub" class="lead max-w-xl text-white/55">
               {{ t('equipmentPage.hero.subtitle') }}
             </p>
             <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
@@ -308,7 +313,6 @@ onUnmounted(() => {
 
         <!-- Right visual: connected ecosystem -->
         <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
-          <HeroLogoMark />
           <div
             ref="equipVisual"
             class="equip-visual relative z-10 h-[360px] w-[360px] xl:h-[400px] xl:w-[400px]"
@@ -380,17 +384,16 @@ onUnmounted(() => {
     </section>
 
     <!-- ── CATEGORIES ── -->
-    <section ref="categoriesSection" class="py-16 bg-white w-full flex items-center justify-center">
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      ref="categoriesSection"
+      class="py-20 sm:py-24 lg:py-28 bg-white w-full flex items-center justify-center"
+    >
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="text-center mb-10 flex flex-col items-center gap-5">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
+          <span class="eyebrow eyebrow--light">
             {{ t('equipmentPage.categories.badge') }}
           </span>
-          <h2
-            class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight"
-          >
+          <h2 class="display-2 text-black">
             {{ t('equipmentPage.categories.title') }}
           </h2>
         </div>
@@ -419,7 +422,7 @@ onUnmounted(() => {
       ref="devicesSection"
       class="pb-16 sm:pb-20 bg-white w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <article
             v-for="(d, i) in filteredDevices"
@@ -468,52 +471,70 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- ── CERTIFICAÇÕES ── -->
+    <section ref="certSection" class="w-full border-y border-gray-200/80 bg-white py-16 sm:py-20">
+      <div class="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
+        <div class="flex flex-col items-center gap-5 text-center">
+          <span class="cert-item eyebrow eyebrow--light">{{ t('equipmentPage.cert.badge') }}</span>
+          <h2 class="cert-item display-3 max-w-2xl text-black">
+            {{ t('equipmentPage.cert.title') }}
+          </h2>
+        </div>
+        <div class="mt-12 grid grid-cols-2 gap-5 lg:grid-cols-4 lg:gap-6">
+          <div
+            v-for="c in certifications"
+            :key="c.code"
+            class="cert-item flex flex-col items-center gap-1.5 rounded-2xl border border-gray-200/80 bg-white px-5 py-7 text-center"
+          >
+            <ShieldCheck :size="22" class="mb-2 text-primary" aria-hidden="true" />
+            <div class="font-display text-[17px] font-extrabold tracking-tight text-black">
+              {{ c.code }}
+            </div>
+            <div class="text-[12.5px] text-gray-500">{{ c.label }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── COMPATIBILITY ── -->
     <section
       ref="compatibilitySection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-mid w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
-          <div class="animate-in flex flex-col gap-5">
-            <span
-              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-            >
+          <div class="animate-in flex flex-col items-start gap-6">
+            <span class="eyebrow eyebrow--light">
               {{ t('equipmentPage.compatibility.badge') }}
             </span>
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(24px,3vw,36px)] tracking-tight leading-tight"
-            >
+            <h2 class="display-2 text-black">
               {{ t('equipmentPage.compatibility.title') }}
             </h2>
-            <p class="text-gray-500 text-[14px] sm:text-[16px] leading-relaxed">
+            <p class="max-w-[62ch] text-[15.5px] leading-[1.75] text-gray-500">
               {{ t('equipmentPage.compatibility.description') }}
             </p>
-            <ul class="flex flex-col gap-3 mt-2">
+            <ul class="m-0 w-full max-w-xl list-none p-0">
               <li
                 v-for="item in compatibilityItems"
                 :key="item"
-                class="flex items-start gap-3 text-[14px] text-gray-600"
+                class="compat-row group flex items-start gap-4 border-t border-gray-300/50 py-4"
               >
                 <span
-                  class="w-5 h-5 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0 mt-0.5 text-primary"
+                  class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/25 transition-all duration-300 group-hover:bg-primary group-hover:text-dark"
                 >
-                  <Check :size="12" stroke-width="3" />
+                  <Check :size="13" stroke-width="3" aria-hidden="true" />
                 </span>
-                {{ item }}
+                <span class="text-[14.5px] leading-relaxed text-gray-700">{{ item }}</span>
               </li>
             </ul>
             <a
               :href="calendlyUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="mt-4 self-start"
+              class="btn-primary font-display mt-2"
             >
-              <Button
-                :label="t('equipmentPage.cta.button.primary')"
-                unstyled
-                class="btn-primary font-display font-bold"
-              />
+              {{ t('equipmentPage.cta.button.primary') }}
+              <ArrowRight :size="16" stroke-width="2.5" aria-hidden="true" />
             </a>
           </div>
 
@@ -561,7 +582,7 @@ onUnmounted(() => {
 
     <!-- ── CTA ── -->
     <section
-      class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full flex items-center justify-center"
+      class="bg-dark py-20 sm:py-24 lg:py-28 relative overflow-hidden w-full flex items-center justify-center"
     >
       <div
         class="absolute -top-48 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full pointer-events-none cta-glow"
@@ -579,14 +600,10 @@ onUnmounted(() => {
       <div
         class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10 flex flex-col gap-5 items-center justify-center"
       >
-        <span
-          class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-        >
+        <span class="eyebrow eyebrow--dark">
           {{ t('equipmentPage.cta.badge') }}
         </span>
-        <h2
-          class="font-display font-extrabold text-white mt-2 mb-4 text-[clamp(24px,2.5vw,40px)] leading-tight tracking-tight"
-        >
+        <h2 class="display-2 mt-2 mb-4 text-white">
           {{ t('equipmentPage.cta.title') }}
         </h2>
         <p class="text-white/45 text-[14px] sm:text-[16px] leading-relaxed mb-8 max-w-2xl mx-auto">
@@ -600,9 +617,15 @@ onUnmounted(() => {
               class="btn-primary font-display px-8 py-3"
             />
           </a>
-          <a href="/about">
-            <Button :label="t('equipmentPage.cta.button.secondary')" unstyled class="btn-ghost font-display px-8 py-3" />
-          </a>
+          <RouterLink to="/about" class="btn-ghost font-display group">
+            {{ t('equipmentPage.cta.button.secondary') }}
+            <ArrowRight
+              :size="16"
+              stroke-width="2.5"
+              aria-hidden="true"
+              class="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </RouterLink>
         </div>
       </div>
     </section>
@@ -610,6 +633,22 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.compat-row {
+  transition: border-color 0.3s ease;
+}
+@media (hover: hover) {
+  .compat-row:hover {
+    border-color: rgba(17, 211, 211, 0.5);
+  }
+}
+
+/* mesma assinatura de fundo da hero da home */
+.page-hero-aurora {
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
+}
+
 .hero-grid {
   background-image:
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
@@ -644,7 +683,13 @@ onUnmounted(() => {
     rgba(17, 211, 211, 0.28) 35deg,
     transparent 85deg
   );
-  -webkit-mask: radial-gradient(farthest-side, transparent 34%, #000 35%, #000 98%, transparent 99%);
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent 34%,
+    #000 35%,
+    #000 98%,
+    transparent 99%
+  );
   mask: radial-gradient(farthest-side, transparent 34%, #000 35%, #000 98%, transparent 99%);
   opacity: 0.85;
 }
@@ -719,48 +764,5 @@ onUnmounted(() => {
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.35),
     0 0 20px rgba(192, 132, 252, 0.15);
-}
-
-:deep(.btn-primary),
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700 !important;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    box-shadow 0.25s,
-    transform 0.25s;
-}
-:deep(.btn-primary:hover),
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
-}
-
-:deep(.btn-ghost),
-.btn-ghost {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.75);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 700 !important;
-  font-size: 13px;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    border-color 0.25s,
-    color 0.25s;
-}
-:deep(.btn-ghost:hover),
-.btn-ghost:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
 }
 </style>

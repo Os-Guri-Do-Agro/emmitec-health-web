@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t, tm } = useI18n()
 
@@ -9,45 +10,36 @@ const sections = computed(() => tm('privacyPage.sections') as { title: string; b
 
 <template>
   <div class="font-body text-black overflow-x-hidden w-full">
-    <section class="bg-dark relative overflow-hidden w-full flex items-center justify-center">
-      <div class="privacy-grid absolute inset-0 pointer-events-none opacity-40" />
+    <section
+      class="relative flex min-h-[60vh] w-full items-center justify-center overflow-hidden bg-dark sm:min-h-[70vh]"
+    >
+      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
       <div
-        class="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col items-center text-center gap-4 relative z-10"
+        class="privacy-grid pointer-events-none absolute inset-0 opacity-40"
+        aria-hidden="true"
+      />
+      <HeroLogoMark variant="section" />
+      <div
+        class="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-6 pb-20 pt-32 text-center sm:px-8 lg:pb-24 lg:pt-36"
       >
-        <span
-          class="inline-block text-[11px] font-bold uppercase text-primary font-display tracking-[2px]"
-        >
-          {{ t('privacyPage.badge') }}
-        </span>
-        <h1
-          class="font-display font-extrabold text-white leading-[1.08] tracking-tight text-2xl sm:text-3xl lg:text-[44px]"
-        >
-          {{ t('privacyPage.title') }}
-        </h1>
-        <p class="text-white/55 text-[14px] sm:text-[16px] leading-relaxed max-w-2xl font-light">
-          {{ t('privacyPage.subtitle') }}
-        </p>
-        <p class="text-white/35 text-[12px]">{{ t('privacyPage.updated') }}</p>
+        <span class="eyebrow eyebrow--dark">{{ t('privacyPage.badge') }}</span>
+        <h1 class="display-2 text-white">{{ t('privacyPage.title') }}</h1>
+        <p class="lead max-w-2xl text-white/55">{{ t('privacyPage.subtitle') }}</p>
+        <p class="text-[12px] font-medium text-white/40">{{ t('privacyPage.updated') }}</p>
       </div>
     </section>
 
-    <section class="py-14 sm:py-20 bg-white w-full flex items-center justify-center">
-      <div class="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-10">
-        <article
-          v-for="(section, i) in sections"
-          :key="i"
-          class="flex flex-col gap-3"
-        >
-          <h2 class="font-display font-bold text-black text-[18px] sm:text-[20px] tracking-tight">
-            {{ section.title }}
-          </h2>
-          <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed whitespace-pre-line">
+    <section class="flex w-full items-center justify-center bg-white py-20 sm:py-24 lg:py-28">
+      <div class="mx-auto flex w-full max-w-3xl flex-col gap-12 px-6 sm:px-8">
+        <article v-for="(section, i) in sections" :key="i" class="flex flex-col gap-4">
+          <h2 class="display-3 text-black">{{ section.title }}</h2>
+          <p class="whitespace-pre-line text-[15px] leading-[1.75] text-gray-600">
             {{ section.body }}
           </p>
         </article>
 
-        <div class="pt-6 border-t border-gray-100">
-          <p class="text-gray-400 text-[13px] leading-relaxed">
+        <div class="border-t border-gray-200/80 pt-8">
+          <p class="text-[13.5px] leading-relaxed text-gray-500">
             {{ t('privacyPage.contactNote') }}
           </p>
         </div>
@@ -57,6 +49,13 @@ const sections = computed(() => tm('privacyPage.sections') as { title: string; b
 </template>
 
 <style scoped>
+/* mesma assinatura de fundo da hero da home */
+.page-hero-aurora {
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
+}
+
 .privacy-grid {
   background-image:
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),

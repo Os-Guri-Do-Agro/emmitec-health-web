@@ -3,10 +3,11 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Button from 'primevue/button'
 
 import {
   Activity,
+  ArrowRight,
+  CalendarClock,
   Wifi,
   Brain,
   BellRing,
@@ -76,8 +77,7 @@ function ecgSample(t: number): number {
     gauss(p, 0.47, 0.042, 0.26) // T
 
   const n =
-    Math.sin(ecgNoiseSeed * 0.5 + p * 28) * 0.005 +
-    Math.sin(ecgNoiseSeed * 1.1 + p * 13) * 0.003
+    Math.sin(ecgNoiseSeed * 0.5 + p * 28) * 0.005 + Math.sin(ecgNoiseSeed * 1.1 + p * 13) * 0.003
   return signal + n
 }
 
@@ -271,10 +271,10 @@ const processSteps = computed(() => [
 ])
 
 const whoData = computed(() => [
-  { icon: HeartPulse, label: t('whatIsRpm.who.item1') },
-  { icon: Stethoscope, label: t('whatIsRpm.who.item2') },
-  { icon: ShieldCheck, label: t('whatIsRpm.who.item3') },
-  { icon: Activity, label: t('whatIsRpm.who.item4') },
+  { icon: HeartPulse, label: t('whatIsRpm.who.item1'), desc: t('whatIsRpm.who.item1desc') },
+  { icon: Stethoscope, label: t('whatIsRpm.who.item2'), desc: t('whatIsRpm.who.item2desc') },
+  { icon: ShieldCheck, label: t('whatIsRpm.who.item3'), desc: t('whatIsRpm.who.item3desc') },
+  { icon: Activity, label: t('whatIsRpm.who.item4'), desc: t('whatIsRpm.who.item4desc') },
 ])
 
 onMounted(() => {
@@ -385,51 +385,53 @@ onUnmounted(() => {
 <template>
   <div class="font-body text-black overflow-x-hidden w-full">
     <!-- ── HERO ── -->
-    <section class="min-h-[60vh] sm:min-h-[70vh] bg-dark relative overflow-hidden w-full">
-      <div class="hero-grid absolute inset-0 pointer-events-none" />
+    <section class="relative min-h-[60vh] w-full overflow-hidden bg-dark sm:min-h-[70vh]">
+      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
+      <div class="hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
+      <HeroLogoMark variant="section" />
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] sm:min-h-[70vh] w-full">
-        <div
-          class="flex flex-col justify-center items-end px-4 sm:px-6 lg:px-12 xl:px-20 py-20 lg:py-0 z-10"
-        >
-          <div class="w-full max-w-xl flex flex-col gap-5">
-            <span
-              class="inline-block text-[11px] font-bold uppercase text-primary font-display tracking-[2px]"
+      <div
+        class="relative z-10 mx-auto grid min-h-[60vh] w-full max-w-7xl grid-cols-1 gap-14 px-6 pb-16 pt-28 sm:min-h-[70vh] sm:px-8 sm:pt-32 lg:grid-cols-2 lg:gap-16 lg:px-10 lg:pb-20"
+      >
+        <div class="flex flex-col items-start justify-center">
+          <span class="eyebrow eyebrow--dark">
+            {{ t('whatIsRpm.hero.badge') }}
+          </span>
+          <h1 ref="heroTitle" class="display-2 mt-7 text-white">
+            {{ t('whatIsRpm.hero.title') }}
+          </h1>
+          <p ref="heroSub" class="lead mt-6 max-w-xl text-white/55">
+            {{ t('whatIsRpm.hero.subtitle') }}
+          </p>
+          <div ref="heroActions" class="mt-9 flex flex-wrap items-center gap-4">
+            <a
+              :href="calendlyUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary font-display"
             >
-              {{ t('whatIsRpm.hero.badge') }}
-            </span>
-            <h1
-              ref="heroTitle"
-              class="font-display font-extrabold text-white leading-[1.08] tracking-tight text-xl sm:text-2xl lg:text-[34px]"
+              <CalendarClock :size="17" stroke-width="2.3" aria-hidden="true" />
+              {{ t('whatIsRpm.hero.button.primary') }}
+            </a>
+            <a
+              :href="calendlyUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-ghost font-display group"
             >
-              {{ t('whatIsRpm.hero.title') }}
-            </h1>
-            <p
-              ref="heroSub"
-              class="text-white/50 text-[12px] sm:text-[14px] leading-relaxed max-w-md font-light"
-            >
-              {{ t('whatIsRpm.hero.subtitle') }}
-            </p>
-            <div ref="heroActions" class="flex gap-4 flex-wrap mt-4">
-              <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
-                <Button
-                  :label="t('whatIsRpm.hero.button.primary')"
-                  unstyled
-                  class="btn-primary font-display font-bold"
-                />
-              </a>
-              <Button
-                :label="t('whatIsRpm.hero.button.secondary') + ' →'"
-                unstyled
-                class="btn-ghost font-display font-bold"
+              {{ t('whatIsRpm.hero.button.secondary') }}
+              <ArrowRight
+                :size="16"
+                stroke-width="2.5"
+                aria-hidden="true"
+                class="transition-transform duration-300 group-hover:translate-x-1"
               />
-            </div>
+            </a>
           </div>
         </div>
 
-        <!-- Right visual: conceptual RPM illustration -->
-        <div class="hidden lg:flex relative h-full items-center justify-center p-10 xl:p-14">
-          <HeroLogoMark />
+        <!-- Right visual: coluna de altura cheia — o HeroLogoMark se dimensiona por ela -->
+        <div class="relative hidden h-full items-center justify-center overflow-visible lg:flex">
           <div
             ref="rpmVisual"
             class="rpm-visual relative z-10 h-[340px] w-full max-w-[440px] xl:h-[380px]"
@@ -455,13 +457,21 @@ onUnmounted(() => {
                 class="rpm-spark"
                 r="4"
                 fill="#11d3d3"
-                style="offset-path: path('M95 190 C 160 120, 220 120, 280 190 C 320 230, 340 210, 355 190')"
+                style="
+                  offset-path: path(
+                    'M95 190 C 160 120, 220 120, 280 190 C 320 230, 340 210, 355 190'
+                  );
+                "
               />
               <circle
                 class="rpm-spark"
                 r="3"
                 fill="#11d3d3"
-                style="offset-path: path('M95 190 C 160 120, 220 120, 280 190 C 320 230, 340 210, 355 190')"
+                style="
+                  offset-path: path(
+                    'M95 190 C 160 120, 220 120, 280 190 C 320 230, 340 210, 355 190'
+                  );
+                "
               />
             </svg>
 
@@ -474,7 +484,9 @@ onUnmounted(() => {
               >
                 <Home :size="36" class="text-primary" stroke-width="1.8" />
               </div>
-              <div class="rpm-float flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-primary">
+              <div
+                class="rpm-float flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-primary"
+              >
                 <HeartPulse :size="20" stroke-width="2" />
               </div>
             </div>
@@ -497,7 +509,9 @@ onUnmounted(() => {
               >
                 <Stethoscope :size="36" class="text-primary" stroke-width="1.8" />
               </div>
-              <div class="rpm-float flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-primary">
+              <div
+                class="rpm-float flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-primary"
+              >
                 <ShieldCheck :size="20" stroke-width="2" />
               </div>
             </div>
@@ -521,25 +535,21 @@ onUnmounted(() => {
     <!-- ── DEFINITION ── -->
     <section
       ref="definitionSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-white w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
           <div class="animate-in flex flex-col gap-5">
-            <span
-              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-            >
+            <span class="eyebrow eyebrow--light">
               {{ t('whatIsRpm.definition.badge') }}
             </span>
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(24px,3vw,36px)] tracking-tight leading-tight"
-            >
+            <h2 class="display-2 text-black">
               {{ t('whatIsRpm.definition.title') }}
             </h2>
-            <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed">
+            <p class="text-[15px] leading-relaxed text-gray-500">
               {{ t('whatIsRpm.definition.paragraph1') }}
             </p>
-            <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed">
+            <p class="text-[15px] leading-relaxed text-gray-500">
               {{ t('whatIsRpm.definition.paragraph2') }}
             </p>
           </div>
@@ -549,16 +559,26 @@ onUnmounted(() => {
               class="monitor-card relative rounded-2xl overflow-hidden aspect-4/3 bg-linear-to-br from-dark to-dark-2 shadow-[0_28px_72px_rgba(0,0,0,.18)] p-6 sm:p-8 flex flex-col justify-between gap-4"
             >
               <div class="hero-grid absolute inset-0 pointer-events-none opacity-40" />
-              <div class="monitor-vignette absolute inset-0 pointer-events-none" aria-hidden="true" />
+              <div
+                class="monitor-vignette absolute inset-0 pointer-events-none"
+                aria-hidden="true"
+              />
 
               <div class="relative z-10 flex flex-col gap-3">
                 <div class="flex items-center justify-between gap-3">
-                  <span class="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-bold uppercase text-primary tracking-[2px]">
+                  <span
+                    class="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-bold uppercase text-primary tracking-[2px]"
+                  >
                     <span class="live-dot" aria-hidden="true" />
                     RPM · Live
                   </span>
-                  <div class="flex items-center gap-2 text-[9px] sm:text-[10px] uppercase tracking-[1.5px] text-white/35 font-semibold">
-                    <span class="rounded px-1.5 py-0.5 border border-white/10 bg-white/5 text-primary/80">Lead II</span>
+                  <div
+                    class="flex items-center gap-2 text-[9px] sm:text-[10px] uppercase tracking-[1.5px] text-white/35 font-semibold"
+                  >
+                    <span
+                      class="rounded px-1.5 py-0.5 border border-white/10 bg-white/5 text-primary/80"
+                      >Lead II</span
+                    >
                     <span>25 mm/s</span>
                     <span>10 mm/mV</span>
                   </div>
@@ -566,15 +586,22 @@ onUnmounted(() => {
 
                 <div class="flex items-end justify-between gap-4">
                   <div>
-                    <div class="text-[10px] font-bold uppercase tracking-[2px] text-primary/70 mb-1">HR</div>
+                    <div
+                      class="text-[10px] font-bold uppercase tracking-[2px] text-primary/70 mb-1"
+                    >
+                      HR
+                    </div>
                     <div class="flex items-baseline gap-2">
                       <span
                         class="monitor-hr font-display font-extrabold text-5xl sm:text-[52px] leading-none tabular-nums tracking-tight"
                         :class="{ 'is-beat': beatPulse }"
-                      >{{ liveBpm }}</span>
+                        >{{ liveBpm }}</span
+                      >
                       <span class="text-white/45 text-sm font-medium">bpm</span>
                     </div>
-                    <p class="text-white/45 text-xs mt-1.5">{{ t('whatIsRpm.definition.cardLabel') }}</p>
+                    <p class="text-white/45 text-xs mt-1.5">
+                      {{ t('whatIsRpm.definition.cardLabel') }}
+                    </p>
                   </div>
                   <div class="flex flex-col items-end gap-1.5 pb-1">
                     <Heart
@@ -584,19 +611,32 @@ onUnmounted(() => {
                       fill="currentColor"
                       aria-hidden="true"
                     />
-                    <span class="rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary/80">
+                    <span
+                      class="rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary/80"
+                    >
                       Sinusal
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div class="monitor-scope relative z-10 w-full h-[96px] sm:h-[104px] rounded-xl overflow-hidden border border-primary/15">
+              <div
+                class="monitor-scope relative z-10 w-full h-[96px] sm:h-[104px] rounded-xl overflow-hidden border border-primary/15"
+              >
                 <div class="monitor-scope-bg absolute inset-0" aria-hidden="true" />
                 <div class="monitor-scope-grid absolute inset-0" aria-hidden="true" />
-                <div class="monitor-scope-fade absolute inset-0 pointer-events-none" aria-hidden="true" />
-                <canvas ref="ecgCanvas" class="relative z-[1] block w-full h-full" aria-hidden="true" />
-                <div class="absolute left-2 top-1.5 z-[2] text-[8px] font-bold tracking-[1.5px] uppercase text-primary/55">
+                <div
+                  class="monitor-scope-fade absolute inset-0 pointer-events-none"
+                  aria-hidden="true"
+                />
+                <canvas
+                  ref="ecgCanvas"
+                  class="relative z-[1] block w-full h-full"
+                  aria-hidden="true"
+                />
+                <div
+                  class="absolute left-2 top-1.5 z-[2] text-[8px] font-bold tracking-[1.5px] uppercase text-primary/55"
+                >
                   ECG
                 </div>
               </div>
@@ -609,12 +649,16 @@ onUnmounted(() => {
                 </div>
                 <div class="monitor-vital">
                   <div class="monitor-vital-label text-primary/80">SpO₂</div>
-                  <div class="monitor-vital-value text-white">{{ liveSpo2 }}<span class="text-[0.7em] text-white/50">%</span></div>
+                  <div class="monitor-vital-value text-white">
+                    {{ liveSpo2 }}<span class="text-[0.7em] text-white/50">%</span>
+                  </div>
                   <div class="monitor-vital-unit">sat</div>
                 </div>
                 <div class="monitor-vital">
                   <div class="monitor-vital-label text-primary/80">TEMP</div>
-                  <div class="monitor-vital-value text-white">{{ liveTemp.toFixed(1) }}<span class="text-[0.7em] text-white/50">°</span></div>
+                  <div class="monitor-vital-value text-white">
+                    {{ liveTemp.toFixed(1) }}<span class="text-[0.7em] text-white/50">°</span>
+                  </div>
                   <div class="monitor-vital-unit">°C</div>
                 </div>
               </div>
@@ -625,20 +669,16 @@ onUnmounted(() => {
     </section>
 
     <!-- ── PROCESS ── -->
-    <section class="py-16 sm:py-24 bg-mid w-full flex items-center justify-center">
+    <section class="py-20 sm:py-24 lg:py-28 bg-mid w-full flex items-center justify-center">
       <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16 flex flex-col items-center gap-5">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
+          <span class="eyebrow eyebrow--light">
             {{ t('whatIsRpm.process.badge') }}
           </span>
-          <h2
-            class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight leading-tight"
-          >
+          <h2 class="display-2 text-black">
             {{ t('whatIsRpm.process.title') }}
           </h2>
-          <p class="text-gray-500 text-[14px] sm:text-[16px] leading-relaxed max-w-2xl">
+          <p class="lead max-w-2xl text-gray-500">
             {{ t('whatIsRpm.process.subtitle') }}
           </p>
         </div>
@@ -683,85 +723,57 @@ onUnmounted(() => {
     <!-- ── COMO USAR ── -->
     <section
       ref="whoSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-white w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <!-- Esquerda: texto -->
-          <div class="text-left">
-            <span
-              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary mb-4"
-            >
-              {{ t('whatIsRpm.who.badge') }}
-            </span>
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(26px,3vw,36px)] tracking-tight leading-tight mb-4"
-            >
-              {{ t('whatIsRpm.who.title') }}
-            </h2>
-            <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed">
-              {{
-                t('whatIsRpm.who.subtitle') || 'Solução adaptável para diferentes perfis de saúde.'
-              }}
-            </p>
-          </div>
+      <div class="mx-auto w-full max-w-6xl px-6 sm:px-8 lg:px-10">
+        <div class="flex max-w-3xl flex-col items-start gap-6">
+          <span class="eyebrow eyebrow--light">{{ t('whatIsRpm.who.badge') }}</span>
+          <h2 class="display-2 text-black">{{ t('whatIsRpm.who.title') }}</h2>
+          <p class="lead max-w-[62ch] text-gray-500">{{ t('whatIsRpm.who.subtitle') }}</p>
+        </div>
 
-          <!-- Direita: lista horizontal tipo 'pills' -->
-          <div class="flex flex-col gap-3">
-            <div
-              v-for="(w, i) in whoData"
-              :key="w.label"
-              class="who-item group flex items-center gap-4 p-4 rounded-xl bg-mid border border-transparent hover:border-primary/30 hover:shadow-[0_4px_20px_rgba(17,211,211,0.15)] transition-all duration-300"
-              :style="{ animationDelay: `${i * 100}ms` }"
+        <!-- Cartões informativos: sem seta e sem hover de botão — não são clicáveis -->
+        <div class="mt-14 grid grid-cols-1 items-stretch gap-5 md:grid-cols-2 lg:gap-6">
+          <article
+            v-for="(w, i) in whoData"
+            :key="w.label"
+            class="who-item relative flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-7"
+          >
+            <span
+              class="pointer-events-none absolute right-6 top-5 font-display text-[13px] font-extrabold tracking-[0.12em] text-gray-200"
+              aria-hidden="true"
             >
-              <!-- Ícone com fundo gradiente -->
-              <div
-                class="w-14 h-14 rounded-xl bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center text-primary shrink-0 group-hover:scale-110 transition-transform duration-300"
+              {{ String(i + 1).padStart(2, '0') }}
+            </span>
+
+            <div class="flex items-center gap-4">
+              <span
+                class="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary"
               >
-                <component :is="w.icon" :size="24" stroke-width="2" />
-              </div>
-              <!-- Label com highlight -->
-              <div class="flex-1">
-                <span class="font-display font-bold text-gray-900 text-[15px] block">
-                  {{ w.label }}
-                </span>
-                <span class="text-gray-400 text-[12px]">Perfil apto para RPM</span>
-              </div>
-              <!-- Setinha -->
-              <div
-                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-300 group-hover:text-primary group-hover:bg-primary/10 transition-all duration-300"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  class="transform group-hover:translate-x-0.5 transition-transform"
-                >
-                  <path
-                    d="M6 12L10 8L6 4"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
+                <component :is="w.icon" :size="24" stroke-width="2.1" aria-hidden="true" />
+              </span>
+              <h3 class="font-display text-[17px] font-bold tracking-tight text-black">
+                {{ w.label }}
+              </h3>
             </div>
-          </div>
+
+            <p class="mt-5 text-[14.5px] leading-relaxed text-muted">{{ w.desc }}</p>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- ── CTA ── -->
     <section
-      class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full flex items-center justify-center"
+      class="relative flex w-full items-center justify-center overflow-hidden bg-dark py-20 sm:py-24 lg:py-28"
     >
       <div
-        class="absolute -top-48 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full pointer-events-none cta-glow"
+        class="cta-glow pointer-events-none absolute -top-48 left-1/2 h-[320px] w-[320px] -translate-x-1/2 rounded-full sm:h-[500px] sm:w-[500px] lg:h-[680px] lg:w-[680px]"
+        aria-hidden="true"
       />
+      <div class="hero-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
       <div
-        class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
+        class="pointer-events-none absolute inset-0 flex select-none items-center justify-center overflow-hidden"
         aria-hidden="true"
       >
         <span
@@ -771,34 +783,30 @@ onUnmounted(() => {
         </span>
       </div>
       <div
-        class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center items-center justify-center relative z-10 flex flex-col gap-5"
+        class="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center gap-6 px-6 text-center sm:px-8"
       >
-        <span
-          class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-        >
-          {{ t('whatIsRpm.cta.badge') }}
-        </span>
-        <h2
-          class="font-display font-extrabold text-white mt-2 mb-4 text-[clamp(24px,2.5vw,40px)] leading-tight tracking-tight"
-        >
-          {{ t('whatIsRpm.cta.title') }}
-        </h2>
-        <p
-          class="text-white/45 text-[14px] sm:text-[16px] leading-relaxed mb-8 max-w-2xl mx-auto text-center"
-        >
-          {{ t('whatIsRpm.cta.subtitle') }}
-        </p>
-        <div class="flex gap-4 justify-center flex-wrap">
-          <a :href="calendlyUrl" target="_blank" rel="noopener noreferrer">
-            <Button
-              :label="t('whatIsRpm.cta.button.primary')"
-              unstyled
-              class="btn-primary font-display px-8 py-3"
+        <span class="eyebrow eyebrow--dark">{{ t('whatIsRpm.cta.badge') }}</span>
+        <h2 class="display-2 text-white">{{ t('whatIsRpm.cta.title') }}</h2>
+        <p class="lead max-w-2xl text-white/50">{{ t('whatIsRpm.cta.subtitle') }}</p>
+        <div class="mt-3 flex flex-wrap justify-center gap-4">
+          <a
+            :href="calendlyUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary font-display"
+          >
+            <CalendarClock :size="17" stroke-width="2.3" aria-hidden="true" />
+            {{ t('whatIsRpm.cta.button.primary') }}
+          </a>
+          <RouterLink to="/benefits" class="btn-ghost font-display group">
+            {{ t('whatIsRpm.cta.button.secondary') }}
+            <ArrowRight
+              :size="16"
+              stroke-width="2.5"
+              aria-hidden="true"
+              class="transition-transform duration-300 group-hover:translate-x-1"
             />
-          </a>
-          <a href="/benefits">
-            <Button :label="t('whatIsRpm.cta.button.secondary')" unstyled class="btn-ghost font-display px-8 py-3" />
-          </a>
+          </RouterLink>
         </div>
       </div>
     </section>
@@ -808,9 +816,16 @@ onUnmounted(() => {
 <style scoped>
 .hero-grid {
   background-image:
-    linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(17, 211, 211, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 211, 211, 0.045) 1px, transparent 1px);
   background-size: 64px 64px;
+}
+
+/* mesma assinatura de fundo da hero da home */
+.page-hero-aurora {
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
 }
 
 .cta-glow {
@@ -977,48 +992,5 @@ onUnmounted(() => {
     animation: none;
     transition: none;
   }
-}
-
-:deep(.btn-primary),
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700 !important;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    box-shadow 0.25s,
-    transform 0.25s;
-}
-:deep(.btn-primary:hover),
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
-}
-
-:deep(.btn-ghost),
-.btn-ghost {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.75);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 700 !important;
-  font-size: 13px;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    border-color 0.25s,
-    color 0.25s;
-}
-:deep(.btn-ghost:hover),
-.btn-ghost:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
 }
 </style>

@@ -307,29 +307,22 @@ onUnmounted(() => {
   <div class="font-body text-black overflow-x-hidden w-full">
     <!-- ── HERO ── -->
     <section
-      class="min-h-[50vh] sm:min-h-[55vh] bg-dark relative overflow-hidden w-full flex items-center justify-center"
+      class="min-h-[60vh] sm:min-h-[70vh] bg-dark relative overflow-hidden w-full flex items-center justify-center"
     >
+      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
       <div class="hero-grid absolute inset-0 pointer-events-none" />
       <HeroLogoMark variant="section" />
 
       <div
-        class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col items-center text-center gap-5 z-10 relative justify-center"
+        class="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-6 px-6 py-24 text-center sm:px-8 lg:px-10 lg:py-32"
       >
-        <span
-          class="inline-block text-[11px] font-bold uppercase text-primary font-display tracking-[2px]"
-        >
+        <span class="eyebrow eyebrow--dark">
           {{ t('blogPage.hero.badge') }}
         </span>
-        <h1
-          ref="heroTitle"
-          class="font-display font-extrabold text-white leading-[1.08] tracking-tight text-2xl sm:text-3xl lg:text-[44px]"
-        >
+        <h1 ref="heroTitle" class="display-2 text-white">
           {{ t('blogPage.hero.title') }}
         </h1>
-        <p
-          ref="heroSub"
-          class="text-white/55 text-[14px] sm:text-[16px] leading-relaxed max-w-2xl font-light"
-        >
+        <p ref="heroSub" class="lead max-w-2xl text-white/55">
           {{ t('blogPage.hero.subtitle') }}
         </p>
       </div>
@@ -338,13 +331,11 @@ onUnmounted(() => {
     <!-- ── FEATURED ARTICLES (carrossel) ── -->
     <section
       ref="featuredSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-white w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="flex items-center justify-between pb-8">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
+          <span class="eyebrow eyebrow--light">
             {{ t('blogPage.featured.badge') }}
           </span>
         </div>
@@ -404,9 +395,7 @@ onUnmounted(() => {
                     </div>
                   </div>
                   <div class="lg:col-span-2 p-6 lg:p-10 flex flex-col gap-4 justify-center">
-                    <h2
-                      class="font-display font-extrabold text-black text-[clamp(20px,2.5vw,30px)] tracking-tight leading-tight"
-                    >
+                    <h2 class="display-3 text-black">
                       {{ post.title }}
                     </h2>
                     <p class="text-gray-500 text-[14px] leading-relaxed">{{ post.excerpt }}</p>
@@ -458,18 +447,14 @@ onUnmounted(() => {
     <section
       id="blog-articles"
       ref="articlesSection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center scroll-mt-[72px]"
+      class="py-20 sm:py-24 lg:py-28 bg-mid w-full flex items-center justify-center scroll-mt-[72px]"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="flex flex-col items-center text-center gap-5 mb-10">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
+          <span class="eyebrow eyebrow--light">
             {{ t('blogPage.articles.badge') }}
           </span>
-          <h2
-            class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight"
-          >
+          <h2 class="display-2 text-black">
             {{ t('blogPage.articles.title') }}
           </h2>
         </div>
@@ -569,13 +554,13 @@ onUnmounted(() => {
     <!-- ── PRÉ-VISUALIZAÇÃO (após a grelha, antes do newsletter) ── -->
     <section
       ref="previewSection"
-      class="relative border-t border-gray-200/80 bg-linear-to-b from-white to-mid py-16 sm:py-20 w-full flex items-center justify-center"
+      class="relative border-t border-gray-200/80 bg-linear-to-b from-white to-mid py-20 sm:py-24 lg:py-28 w-full flex items-center justify-center"
     >
       <div
         class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/25 to-transparent"
         aria-hidden="true"
       />
-      <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div
           class="pb-5 flex flex-col gap-5 text-center sm:mb-20 md:mb-24 md:flex-row md:items-end md:justify-between md:text-left"
         >
@@ -677,7 +662,7 @@ onUnmounted(() => {
     <!-- ── NEWSLETTER CTA ── -->
     <section
       ref="newsletterSection"
-      class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full flex items-center justify-center"
+      class="bg-dark py-20 sm:py-24 lg:py-28 relative overflow-hidden w-full flex items-center justify-center"
     >
       <div
         class="absolute -top-48 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full pointer-events-none cta-glow"
@@ -695,14 +680,10 @@ onUnmounted(() => {
       <div
         class="w-full max-w-3xl mx-auto px-4 sm:px-6 text-center relative z-10 flex flex-col gap-5 animate-in items-center justify-center"
       >
-        <span
-          class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-        >
+        <span class="eyebrow eyebrow--dark">
           {{ t('blogPage.cta.badge') }}
         </span>
-        <h2
-          class="font-display font-extrabold text-white mt-2 mb-2 text-[clamp(24px,2.5vw,40px)] leading-tight tracking-tight"
-        >
+        <h2 class="display-2 mt-2 mb-2 text-white">
           {{ t('blogPage.cta.title') }}
         </h2>
         <p class="text-white/45 text-[14px] sm:text-[16px] leading-relaxed mb-6 max-w-2xl mx-auto">
@@ -726,6 +707,13 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* mesma assinatura de fundo da hero da home */
+.page-hero-aurora {
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
+}
+
 .hero-grid {
   background-image:
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
@@ -765,26 +753,5 @@ onUnmounted(() => {
   border-color: #11d3d3;
   color: #11d3d3;
   box-shadow: 0 8px 24px rgba(17, 211, 211, 0.22);
-}
-
-:deep(.btn-primary),
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700 !important;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    box-shadow 0.25s,
-    transform 0.25s;
-}
-:deep(.btn-primary:hover),
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
 }
 </style>

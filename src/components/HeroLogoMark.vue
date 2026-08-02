@@ -3,10 +3,10 @@ import logoMarkImg from '@/assets/about/EMMITEC.png'
 
 withDefaults(
   defineProps<{
-    /** panel = preenche o painel direito; section = ancora à direita do hero inteiro */
+    /** section = ancora à direita do hero inteiro (padrão do site); panel = preenche o painel direito */
     variant?: 'panel' | 'section'
   }>(),
-  { variant: 'panel' },
+  { variant: 'section' },
 )
 </script>
 

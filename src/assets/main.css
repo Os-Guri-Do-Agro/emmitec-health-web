@@ -1,74 +1,268 @@
-@import './base.css';
+/* base.css entra em @layer base: sem isso o reset `* { margin: 0 }` fica fora de
+   qualquer layer e vence TODAS as utilities do Tailwind (mt-*, mb-*, font-bold…) */
+@import './base.css' layer(base);
 @import 'tailwindcss';
 
 @theme {
   --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
 
+  /* Marca */
   --color-primary: #11d3d3;
+  --color-primary-soft: #5ee8e8;
+  --color-primary-deep: #0aa3a8;
+  --color-accent: #4aa8ff;
+
+  /* Neutros */
   --color-secondary: #4c666d;
   --color-background: #ffffff;
   --color-black: #202220;
+  --color-ink: #090d13;
   --color-dark: #0e1117;
   --color-dark-2: #161c26;
   --color-mid: #f4f6f7;
-  --color-muted: #7a9099;
+  --color-muted: #5f7681;
 }
 
-/* Reset #app to allow full-width landing page */
-#app {
-  font-weight: normal;
-  max-width: none;
-  margin: 0;
-  padding: 0;
+@layer base {
+  /* Reset #app para permitir landing full-width */
+  #app {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+  }
 }
 
-/* Global font: Plus Jakarta Sans */
-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 15px;
-}
+/* Tudo abaixo vai em @layer components: as utilities do Tailwind vêm depois e
+   podem sobrescrever (ex.: `btn-primary px-8` funciona). */
+@layer components {
+  /* ─────────────────────────────────────────────
+   Fallbacks de cor (garantia caso @theme não processe)
+   ───────────────────────────────────────────── */
+  .bg-primary {
+    background-color: #11d3d3;
+  }
+  .text-primary {
+    color: #11d3d3;
+  }
+  .border-primary {
+    border-color: #11d3d3;
+  }
+  .bg-dark {
+    background-color: #0e1117;
+  }
+  .bg-dark-2 {
+    background-color: #161c26;
+  }
+  .bg-mid {
+    background-color: #f4f6f7;
+  }
+  .text-muted {
+    color: #5f7681;
+  }
+  .text-black {
+    color: #202220;
+  }
+  .font-display {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .font-display.font-medium {
+    font-weight: 500;
+  }
+  .font-display.font-semibold {
+    font-weight: 600;
+  }
+  .font-display.font-bold {
+    font-weight: 700;
+  }
+  .font-display.font-extrabold {
+    font-weight: 800;
+  }
+  .font-body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
 
-/* Color utility fallbacks (garantia caso Tailwind v4 não processe @theme) */
-.bg-primary {
-  background-color: #11d3d3;
-}
-.text-primary {
-  color: #11d3d3;
-}
-.border-primary {
-  border-color: #11d3d3;
-}
-.bg-dark {
-  background-color: #0e1117;
-}
-.bg-dark-2 {
-  background-color: #161c26;
-}
-.bg-mid {
-  background-color: #f4f6f7;
-}
-.text-muted {
-  color: #7a9099;
-}
-.text-black {
-  color: #202220;
-}
-.font-display {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-.font-display.font-medium {
-  font-weight: 500;
-}
-.font-display.font-semibold {
-  font-weight: 600;
-}
-.font-display.font-bold {
-  font-weight: 700;
-}
-.font-display.font-extrabold {
-  font-weight: 800;
-}
-.font-body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  /* ─────────────────────────────────────────────
+   Tipografia editorial compartilhada
+   ───────────────────────────────────────────── */
+  .display-1 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.9rem, 4.6vw, 3.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+  .display-2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.75rem, 3.6vw, 2.9rem);
+    line-height: 1.1;
+    letter-spacing: -0.028em;
+  }
+  .display-3 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+  }
+  .lead {
+    font-size: clamp(0.98rem, 1.15vw, 1.13rem);
+    line-height: 1.68;
+  }
+
+  /* Texto com gradiente da marca */
+  .text-gradient-brand {
+    background-image: linear-gradient(100deg, #11d3d3 0%, #5ee8e8 42%, #7cc4ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    /* garante que cada fragmento de linha receba o próprio gradiente ao quebrar */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* Eyebrow / pill de seção */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    /* impede que o `align-items: stretch` de um flex-col pai estique o pill */
+    width: fit-content;
+    max-width: 100%;
+    gap: 0.5rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    padding: 0.5625rem 0.9375rem;
+    border-radius: 999px;
+  }
+  .eyebrow--dark {
+    color: #5ee8e8;
+    background: rgba(17, 211, 211, 0.1);
+    border: 1px solid rgba(17, 211, 211, 0.28);
+  }
+  .eyebrow--light {
+    color: #0aa3a8;
+    background: rgba(17, 211, 211, 0.09);
+    border: 1px solid rgba(17, 211, 211, 0.24);
+  }
+
+  /* ─────────────────────────────────────────────
+   Botões globais
+   ───────────────────────────────────────────── */
+  /* .btn-ghost-light / .btn-ghost-dark são nomes legados usados nas views internas
+     e apontam para a mesma variante clara */
+  .btn-primary,
+  .btn-ghost,
+  .btn-light,
+  .btn-ghost-light,
+  .btn-ghost-dark {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 13px 26px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* mesmo motivo do .eyebrow — `w-full` (utilities) ainda sobrescreve quando preciso */
+    width: fit-content;
+    max-width: 100%;
+    gap: 0.5rem;
+    white-space: nowrap;
+    text-decoration: none;
+    transition:
+      box-shadow 0.28s ease,
+      transform 0.28s ease,
+      background-color 0.28s ease,
+      border-color 0.28s ease,
+      color 0.28s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #11d3d3 0%, #0aa3a8 100%);
+    color: #061014;
+    border: none;
+    box-shadow: 0 10px 30px -10px rgba(17, 211, 211, 0.65);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 18px 44px -12px rgba(17, 211, 211, 0.75);
+    transform: translateY(-2px);
+  }
+  .btn-primary--sm {
+    padding: 10px 20px;
+    font-size: 12.5px;
+  }
+
+  .btn-ghost {
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .btn-ghost:hover {
+    border-color: rgba(17, 211, 211, 0.7);
+    color: #5ee8e8;
+    background: rgba(17, 211, 211, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .btn-light,
+  .btn-ghost-light,
+  .btn-ghost-dark {
+    background: #ffffff;
+    color: #0e1117;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    box-shadow: 0 6px 20px -10px rgba(15, 23, 42, 0.35);
+  }
+  .btn-light:hover,
+  .btn-ghost-light:hover,
+  .btn-ghost-dark:hover {
+    border-color: rgba(17, 211, 211, 0.55);
+    color: #0aa3a8;
+    transform: translateY(-2px);
+  }
+
+  .btn-primary:focus-visible,
+  .btn-ghost:focus-visible,
+  .btn-light:focus-visible,
+  .btn-ghost-light:focus-visible,
+  .btn-ghost-dark:focus-visible {
+    outline: 2px solid #11d3d3;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary:hover,
+    .btn-ghost:hover,
+    .btn-light:hover,
+    .btn-ghost-light:hover,
+    .btn-ghost-dark:hover {
+      transform: none;
+    }
+  }
+
+  /* ─────────────────────────────────────────────
+   Padrões de fundo reutilizáveis
+   ───────────────────────────────────────────── */
+  .bg-grid-lines {
+    background-image:
+      linear-gradient(rgba(17, 211, 211, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(17, 211, 211, 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.035;
+  }
 }

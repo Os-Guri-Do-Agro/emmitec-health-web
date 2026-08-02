@@ -16,7 +16,7 @@ import {
   Crown,
 } from 'lucide-vue-next'
 
-import emilioImg from '@/assets/about/emillio.png'
+import emilioImg from '@/assets/about/emillio.jpg'
 import missaoImg from '@/assets/about/nossaMissão-img.jpg'
 import logoCircleImg from '@/assets/about/logo-emmitec-circle.png'
 import HeroLogoMark from '@/components/HeroLogoMark.vue'
@@ -31,8 +31,6 @@ const calendlyUrl = computed(() => {
 })
 
 gsap.registerPlugin(ScrollTrigger)
-
-const bioExpanded = ref(false)
 
 // Refs para animações
 const heroTitle = ref<HTMLElement | null>(null)
@@ -211,32 +209,26 @@ onUnmounted(() => {
   <div class="font-body text-black overflow-x-hidden w-full">
     <!-- ── HERO ── -->
     <section class="min-h-[60vh] sm:min-h-[70vh] bg-dark relative overflow-hidden w-full">
+      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
       <div class="hero-grid absolute inset-0 pointer-events-none" />
+      <HeroLogoMark variant="section" />
       <!-- Abstract visual elements -->
 
       <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] sm:min-h-[70vh] w-full">
         <!-- Left content -->
         <div
-          class="flex flex-col justify-center items-end px-4 sm:px-6 lg:px-12 xl:px-20 py-20 lg:py-0 z-10"
+          class="z-10 flex flex-col justify-center px-6 pb-16 pt-28 sm:px-8 sm:pt-32 lg:items-end lg:px-12 lg:pb-20 lg:pt-32 xl:px-20"
         >
           <div class="w-full max-w-xl flex flex-col gap-5">
-            <span
-              class="inline-block text-[11px] font-bold uppercase text-primary font-display tracking-[2px]"
-            >
+            <span class="eyebrow eyebrow--dark">
               {{ t('about.hero.badge') }}
             </span>
 
-            <h1
-              ref="heroTitle"
-              class="font-display font-extrabold text-white leading-[1.08] tracking-tight text-xl sm:text-2xl lg:text-[34px]"
-            >
+            <h1 ref="heroTitle" class="display-2 text-white">
               {{ t('about.hero.title') }}
             </h1>
 
-            <p
-              ref="heroSub"
-              class="text-white/50 text-[12px] sm:text-[14px] leading-relaxed max-w-md font-light"
-            >
+            <p ref="heroSub" class="lead max-w-xl text-white/55">
               {{ t('about.hero.subtitle') }}
             </p>
 
@@ -248,19 +240,18 @@ onUnmounted(() => {
                   class="btn-primary font-display font-bold"
                 />
               </a>
-              <Button
-                :label="t('about.hero.button.careers') + ' →'"
-                unstyled
-                class="btn-ghost font-display font-bold"
-              />
             </div>
           </div>
         </div>
 
         <!-- Right visual - Logo -->
-        <div class="hidden lg:flex relative h-full items-center justify-center p-12 overflow-visible">
-          <HeroLogoMark />
-          <div ref="heroLogo" class="hero-logo-wrap relative z-10 flex items-center justify-center opacity-0">
+        <div
+          class="hidden lg:flex relative h-full items-center justify-center p-12 overflow-visible"
+        >
+          <div
+            ref="heroLogo"
+            class="hero-logo-wrap relative z-10 flex items-center justify-center opacity-0"
+          >
             <div class="hero-logo-glow absolute rounded-full" aria-hidden="true" />
             <div class="hero-logo-pulse absolute rounded-full" aria-hidden="true" />
             <div class="hero-logo-pulse absolute rounded-full" aria-hidden="true" />
@@ -280,82 +271,82 @@ onUnmounted(() => {
     <!-- ── NOSSA HISTÓRIA (GALERIA) ── -->
     <section
       ref="storySection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-white w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-          <!-- Imagem Emílio -->
-          <div class="story-animate relative">
-            <div
-              class="relative rounded-2xl overflow-hidden aspect-4/3 shadow-[0_24px_64px_rgba(0,0,0,.12)]"
-            >
-              <img :src="emilioImg" alt="Emílio - Fundador" class="w-full h-full object-cover" />
-            </div>
-            <div
-              class="absolute -bottom-4 -right-4 bg-primary text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3"
-            >
+      <div class="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
+        <!-- abertura -->
+        <div class="story-animate flex max-w-3xl flex-col items-start gap-6">
+          <span class="eyebrow eyebrow--light">{{ t('about.story.badge') }}</span>
+          <h2 class="display-2 text-black">{{ t('about.story.title') }}</h2>
+        </div>
+
+        <!-- Duas colunas de altura parecida: retrato + citação à esquerda, narrativa à direita -->
+        <div class="mt-12 grid grid-cols-1 gap-12 lg:mt-14 lg:grid-cols-12 lg:gap-14 xl:gap-16">
+          <!-- coluna esquerda: retrato -->
+          <figure class="story-animate m-0 lg:col-span-5">
+            <div class="story-portrait relative aspect-4/5 overflow-hidden rounded-2xl">
+              <img
+                :src="emilioImg"
+                alt="Emílio Machado, fundador da Emmitec Health"
+                class="h-full w-full object-cover"
+              />
               <div
-                class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center shrink-0"
-              >
-                <Crown :size="20" class="text-white" />
-              </div>
-              <div>
-                <div class="font-display font-bold text-sm">Emílio</div>
-                <div class="text-xs text-white/80">{{ t('about.stats.founder') }}</div>
-              </div>
+                class="pointer-events-none absolute inset-0 bg-linear-to-t from-dark/55 via-transparent to-transparent"
+                aria-hidden="true"
+              />
             </div>
+          </figure>
+
+          <!-- coluna direita: a narrativa em fluxo contínuo -->
+          <div class="story-animate lg:col-span-7">
+            <p class="story-body story-body--lead">{{ t('about.story.intro') }}</p>
+            <p class="story-body mt-6">{{ t('about.story.paragraph1') }}</p>
+            <p class="story-body mt-6">{{ t('about.story.paragraph2') }}</p>
+          </div>
+        </div>
+
+        <!-- Assinatura + citação: faixa de largura cheia, para não sobrar
+             um vazio ao lado quando as duas colunas fecham em alturas diferentes -->
+        <div
+          class="story-animate mt-12 flex flex-col gap-8 border-t border-gray-200/80 pt-10 md:flex-row md:items-center md:gap-14 lg:mt-14 lg:pt-12"
+        >
+          <div class="flex shrink-0 items-center gap-3.5">
+            <span
+              class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20"
+            >
+              <Crown :size="20" aria-hidden="true" />
+            </span>
+            <span class="min-w-0">
+              <span class="block font-display text-[15.5px] font-bold text-black">
+                Emílio Machado
+              </span>
+              <span class="block text-[12.5px] text-gray-500">
+                {{ t('about.stats.founder') }}
+              </span>
+            </span>
           </div>
 
-          <!-- Text content -->
-          <div class="story-animate flex flex-col gap-5">
-            <span
-              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-            >
-              {{ t('about.story.badge') }}
-            </span>
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(24px,3vw,36px)] tracking-tight leading-tight"
-            >
-              {{ t('about.story.title') }}
-            </h2>
-            <div class="flex flex-col gap-2">
-              <div
-                class="relative overflow-hidden transition-[max-height] duration-500 ease-in-out"
-                :style="{ maxHeight: bioExpanded ? '900px' : '190px' }"
-              >
-                <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed">
-                  {{ t('about.story.intro') }}
-                </p>
-                <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed mt-3">
-                  {{ t('about.story.paragraph1') }}
-                </p>
-                <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed mt-3">
-                  {{ t('about.story.paragraph2') }}
-                </p>
-                <div
-                  v-if="!bioExpanded"
-                  class="absolute bottom-0 left-0 right-0 h-10 bg-linear-to-t from-white to-transparent pointer-events-none"
-                />
-              </div>
-              <button
-                @click="bioExpanded = !bioExpanded"
-                class="text-primary text-[11px] font-semibold self-start hover:opacity-70 transition-opacity flex items-center gap-1.5 mt-1 cursor-pointer"
-              >
-                {{ bioExpanded ? t('about.hero.bio.less') : t('about.hero.bio.more') }}
-                <ArrowRight
-                  :size="11"
-                  class="transition-transform duration-300"
-                  :class="bioExpanded ? '-rotate-90' : 'rotate-90'"
-                />
-              </button>
-            </div>
-            <div class="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100">
-              <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Quote :size="20" class="text-primary" />
-              </div>
-              <p class="text-gray-600 text-sm italic">"{{ t('about.story.quote') }}"</p>
-            </div>
-          </div>
+          <blockquote class="story-quote">
+            <Quote :size="20" class="story-quote__mark" aria-hidden="true" />
+            <p class="story-quote__text">{{ t('about.story.quote') }}</p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── NÚMEROS (quebra de ritmo entre a história e a missão) ── -->
+    <section ref="statsSection" class="relative w-full overflow-hidden bg-dark py-14 sm:py-16">
+      <div class="hero-grid pointer-events-none absolute inset-0 opacity-70" aria-hidden="true" />
+      <div
+        class="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-2 gap-x-8 gap-y-10 px-6 sm:px-8 lg:grid-cols-4 lg:px-10"
+      >
+        <div
+          v-for="s in statsData"
+          :key="s.label"
+          class="stat-item flex flex-col items-center text-center"
+        >
+          <div class="about-stat-num">{{ s.num }}</div>
+          <div class="mt-2.5 text-[12.5px] font-medium text-white/55">{{ s.label }}</div>
         </div>
       </div>
     </section>
@@ -363,38 +354,36 @@ onUnmounted(() => {
     <!-- ── MISSÃO ── -->
     <section
       ref="missionSection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-mid w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <!-- Conteúdo — esquerda -->
           <div class="animate-in flex flex-col gap-6">
-            <span
-              class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-            >
+            <span class="eyebrow eyebrow--light">
               {{ t('about.mission.badge') }}
             </span>
-            <h2
-              class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight leading-tight"
-            >
+            <h2 class="display-2 text-black">
               {{ t('about.mission.title') }}
             </h2>
-            <p class="text-gray-500 text-[14px] sm:text-[15px] leading-relaxed">
+            <p class="story-body max-w-[62ch]">
               {{ t('about.mission.description') }}
             </p>
-            <div class="flex flex-col gap-4 mt-1">
-              <div
+            <ul class="m-0 mt-2 flex list-none flex-col gap-4 p-0">
+              <li
                 v-for="(item, i) in [
                   t('about.mission.item1'),
                   t('about.mission.item2'),
                   t('about.mission.item3'),
                 ]"
                 :key="i"
-                class="flex items-start gap-3 pl-4 border-l-2 border-primary"
+                class="mission-item flex items-start gap-4 rounded-r-xl border-l-[3px] border-primary bg-white/70 py-3.5 pl-5 pr-4"
               >
-                <p class="text-gray-600 text-[14px] leading-relaxed">{{ item }}</p>
-              </div>
-            </div>
+                <span class="font-display text-[15px] font-semibold leading-relaxed text-gray-800">
+                  {{ item }}
+                </span>
+              </li>
+            </ul>
           </div>
 
           <!-- Imagem — direita -->
@@ -423,23 +412,61 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- ── APLICAÇÕES CLÍNICAS ── -->
+    <section ref="valuesSection" class="w-full bg-white py-20 sm:py-24 lg:py-28">
+      <div class="mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
+        <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
+          <span class="eyebrow eyebrow--light">{{ t('about.values.badge') }}</span>
+          <h2 class="display-2 text-black">{{ t('about.values.title') }}</h2>
+          <p class="lead max-w-2xl text-gray-500">{{ t('about.values.subtitle') }}</p>
+        </div>
+
+        <!-- 2 colunas: em 4 a medida cai para ~28 caracteres por linha, ruim de ler -->
+        <div class="mt-16 grid grid-cols-1 items-stretch gap-5 lg:grid-cols-2 lg:gap-6">
+          <article
+            v-for="(v, i) in valuesData"
+            :key="v.title"
+            class="value-card group relative flex h-full gap-5 overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-6 sm:gap-6 sm:p-7"
+          >
+            <div
+              class="pointer-events-none absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              :class="v.color"
+              aria-hidden="true"
+            />
+            <div class="relative flex shrink-0 flex-col items-center gap-3">
+              <span
+                class="flex h-13 w-13 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary transition-all duration-400 group-hover:bg-primary group-hover:text-dark"
+              >
+                <component :is="v.icon" :size="24" stroke-width="2.1" aria-hidden="true" />
+              </span>
+              <span
+                class="font-display text-[11px] font-extrabold tracking-[0.12em] text-gray-300 transition-colors duration-400 group-hover:text-primary/60"
+                aria-hidden="true"
+              >
+                {{ String(i + 1).padStart(2, '0') }}
+              </span>
+            </div>
+
+            <div class="relative min-w-0">
+              <h3 class="display-3 text-black">{{ v.title }}</h3>
+              <p class="mt-3 text-[14.5px] leading-relaxed text-muted">
+                {{ v.description }}
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- ── TIMELINE ── -->
     <section
       ref="teamSection"
-      class="py-16 sm:py-20 bg-white w-full flex items-center justify-center"
+      class="timeline-section flex w-full items-center justify-center py-20 sm:py-24 lg:py-28"
     >
-      <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary mb-4"
-          >
-            {{ t('about.timeline.badge') }}
-          </span>
-          <h2
-            class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)] tracking-tight"
-          >
-            {{ t('about.timeline.title') }}
-          </h2>
+      <div class="mx-auto w-full max-w-5xl px-6 sm:px-8 lg:px-10">
+        <div class="mb-16 flex flex-col items-center gap-6 text-center">
+          <span class="eyebrow eyebrow--light">{{ t('about.timeline.badge') }}</span>
+          <h2 class="display-2 text-black">{{ t('about.timeline.title') }}</h2>
         </div>
 
         <!-- Mobile: cards empilhados com linha lateral -->
@@ -458,13 +485,9 @@ onUnmounted(() => {
             </div>
             <!-- Conteúdo -->
             <div class="flex-1 min-w-0">
-              <div
-                class="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold mb-2"
-              >
-                {{ m.year }}
-              </div>
-              <h3 class="font-display font-bold text-black text-lg mb-1">{{ m.title }}</h3>
-              <p class="text-gray-500 text-sm leading-relaxed">{{ m.desc }}</p>
+              <div class="timeline-year mb-1.5">{{ m.year }}</div>
+              <h3 class="display-3 mb-2 text-black">{{ m.title }}</h3>
+              <p class="text-[14.5px] leading-relaxed text-gray-500">{{ m.desc }}</p>
             </div>
           </div>
         </div>
@@ -472,26 +495,23 @@ onUnmounted(() => {
         <!-- Desktop: timeline alternado -->
         <div class="hidden sm:block relative">
           <div
-            class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-linear-to-b from-primary via-primary/50 to-primary/20 -translate-x-1/2"
+            class="absolute left-1/2 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-primary/45 to-transparent -translate-x-1/2"
           />
-          <div class="space-y-8">
+          <div class="space-y-12">
             <div
               v-for="(m, i) in milestones"
               :key="m.year"
               class="timeline-item relative flex items-center gap-8"
               :class="i % 2 === 0 ? 'flex-row' : 'flex-row-reverse'"
             >
-              <div
-                class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary border-4 border-white shadow-lg z-10"
+              <span
+                class="timeline-dot absolute left-1/2 top-1/2 z-10 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary ring-4 ring-white"
+                aria-hidden="true"
               />
-              <div class="w-[45%]" :class="i % 2 === 0 ? 'text-right pr-12' : 'text-left pl-12'">
-                <div
-                  class="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold mb-2"
-                >
-                  {{ m.year }}
-                </div>
-                <h3 class="font-display font-bold text-black text-lg mb-1">{{ m.title }}</h3>
-                <p class="text-gray-500 text-sm leading-relaxed">{{ m.desc }}</p>
+              <div class="w-[45%]" :class="i % 2 === 0 ? 'text-right pr-14' : 'text-left pl-14'">
+                <div class="timeline-year mb-2">{{ m.year }}</div>
+                <h3 class="display-3 mb-2.5 text-black">{{ m.title }}</h3>
+                <p class="text-[14.5px] leading-relaxed text-gray-500">{{ m.desc }}</p>
               </div>
               <div class="w-[45%]" />
             </div>
@@ -502,7 +522,7 @@ onUnmounted(() => {
 
     <!-- ── CTA ── -->
     <section
-      class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full flex items-center justify-center"
+      class="bg-dark py-20 sm:py-24 lg:py-28 relative overflow-hidden w-full flex items-center justify-center"
     >
       <div
         class="absolute -top-48 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full pointer-events-none cta-glow"
@@ -522,14 +542,10 @@ onUnmounted(() => {
       <div
         class="w-full max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10 flex flex-col gap-5 items-center justify-center"
       >
-        <span
-          class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-        >
+        <span class="eyebrow eyebrow--dark">
           {{ t('about.cta.badge') }}
         </span>
-        <h2
-          class="font-display font-extrabold text-white mt-2 mb-4 text-[clamp(24px,2.5vw,40px)] leading-tight tracking-tight"
-        >
+        <h2 class="display-2 mt-2 mb-4 text-white">
           {{ t('about.cta.title') }}
         </h2>
         <p class="text-white/45 text-[14px] sm:text-[16px] leading-relaxed mb-8 max-w-2xl mx-auto">
@@ -543,9 +559,15 @@ onUnmounted(() => {
               class="btn-primary font-display px-8 py-3"
             />
           </a>
-          <a href="/what-is-rpm">
-            <Button :label="t('about.cta.button.secondary')" unstyled class="btn-ghost font-display px-8 py-3" />
-          </a>
+          <RouterLink to="/what-is-rpm" class="btn-ghost font-display group">
+            {{ t('about.cta.button.secondary') }}
+            <ArrowRight
+              :size="16"
+              stroke-width="2.5"
+              aria-hidden="true"
+              class="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </RouterLink>
         </div>
       </div>
     </section>
@@ -553,6 +575,150 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/* ─── História: ritmo editorial ───
+   Medida de linha curta (~64ch): o texto longo precisa convidar à leitura. */
+.story-body {
+  max-width: 64ch;
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: #4b5563;
+}
+/* parágrafo de abertura: um degrau acima do corpo, sem virar outro título */
+.story-body--lead {
+  font-size: 17px;
+  line-height: 1.72;
+  color: #374151;
+}
+/* capitular no parágrafo de abertura — âncora visual de onde a leitura começa.
+   Fica aqui e não no seguinte porque "A jornada…" começaria com artigo de uma letra. */
+.story-body--lead::first-letter {
+  float: left;
+  margin: 0.05em 0.08em 0 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 3.2em;
+  font-weight: 800;
+  line-height: 0.84;
+  color: #0aa3a8;
+}
+
+.story-portrait {
+  box-shadow:
+    0 30px 70px -30px rgba(15, 23, 42, 0.42),
+    0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+/* Citação na faixa de assinatura: ocupa a largura restante ao lado do autor */
+.story-quote {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  border-left: 3px solid #11d3d3;
+  padding: 0.15rem 0 0.15rem 1.5rem;
+}
+.story-quote__mark {
+  color: rgba(17, 211, 211, 0.5);
+  margin-bottom: 0.5rem;
+}
+.story-quote__text {
+  margin: 0;
+  max-width: 46ch;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.12rem, 1.9vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: -0.018em;
+  color: #0e1117;
+}
+.story-quote__text::before {
+  content: '\201C';
+}
+.story-quote__text::after {
+  content: '\201D';
+}
+
+/* ─── Missão ─── */
+.mission-item {
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+@media (hover: hover) {
+  .mission-item:hover {
+    transform: translateX(4px);
+  }
+}
+
+/* ─── Números ─── */
+.about-stat-num {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background-image: linear-gradient(100deg, #11d3d3, #7cc4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Aplicações clínicas ─── */
+.value-card {
+  transition:
+    transform 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+@media (hover: hover) {
+  .value-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(17, 211, 211, 0.35);
+    box-shadow: 0 26px 58px -28px rgba(17, 211, 211, 0.5);
+  }
+}
+
+/* ─── Linha do tempo ─── */
+.timeline-section {
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9fa 50%, #ffffff 100%);
+}
+.timeline-year {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background-image: linear-gradient(100deg, #11d3d3, #7cc4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.timeline-dot {
+  box-shadow: 0 0 0 0 rgba(17, 211, 211, 0.5);
+  animation: timeline-pulse 2.6s ease-out infinite;
+}
+@keyframes timeline-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(17, 211, 211, 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 12px rgba(17, 211, 211, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline-dot {
+    animation: none;
+  }
+}
+
+/* mesma assinatura de fundo da hero da home */
+.page-hero-aurora {
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
+    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
+}
+
 .hero-grid {
   background-image:
     linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
@@ -567,7 +733,12 @@ onUnmounted(() => {
 
 .hero-logo-glow {
   inset: 18%;
-  background: radial-gradient(circle, rgba(17, 211, 211, 0.4) 0%, rgba(17, 211, 211, 0.08) 45%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(17, 211, 211, 0.4) 0%,
+    rgba(17, 211, 211, 0.08) 45%,
+    transparent 70%
+  );
   filter: blur(8px);
   opacity: 0.65;
 }
@@ -585,16 +756,15 @@ onUnmounted(() => {
   box-shadow:
     0 0 0 10px rgba(17, 211, 211, 0.03),
     inset 0 0 40px rgba(17, 211, 211, 0.05);
-  background:
-    conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      rgba(17, 211, 211, 0.55) 40deg,
-      transparent 90deg,
-      transparent 180deg,
-      rgba(17, 211, 211, 0.35) 220deg,
-      transparent 280deg
-    );
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(17, 211, 211, 0.55) 40deg,
+    transparent 90deg,
+    transparent 180deg,
+    rgba(17, 211, 211, 0.35) 220deg,
+    transparent 280deg
+  );
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
 }
@@ -608,48 +778,5 @@ onUnmounted(() => {
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
   letter-spacing: -0.05em;
-}
-
-:deep(.btn-primary),
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700 !important;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    box-shadow 0.25s,
-    transform 0.25s;
-}
-:deep(.btn-primary:hover),
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
-}
-
-:deep(.btn-ghost),
-.btn-ghost {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.75);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 700 !important;
-  font-size: 13px;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    border-color 0.25s,
-    color 0.25s;
-}
-:deep(.btn-ghost:hover),
-.btn-ghost:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
 }
 </style>

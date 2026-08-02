@@ -1,57 +1,82 @@
 {
   "hero": {
-    "title": "Transforming Healthcare with Innovation and Technology.",
-    "subtitle": "Emmitec Health connects patients, clinics, and healthcare professionals through intelligent remote monitoring with real-time data and cutting-edge AI.",
+    "eyebrow": "Remote patient monitoring",
+    "titleLead": "Continuous care",
+    "titleHighlight": "can't wait",
+    "titleTail": "for the next appointment.",
+    "title": "Continuous care can't wait for the next appointment.",
+    "subtitle": "Emmitec Health tracks vital signs in real time, runs every reading through AI, and alerts the clinical team before a case turns into an emergency — with the patient safely at home.",
     "badge": "New",
     "button": {
-      "demo": "Schedule demo",
-      "solutions": "Explore solutions"
+      "demo": "Schedule a demo",
+      "solutions": "See the platform"
+    },
+    "trust": {
+      "devices": "200+ integrated devices",
+      "security": "Data protected: LGPD & HIPAA",
+      "support": "Clinical team on call 24/7"
     },
     "stats": {
-      "accuracy": "Diagnostic accuracy",
-      "clinics": "Partner clinics",
-      "support": "Continuous support"
+      "accuracy": "Clinical alert accuracy",
+      "clinics": "Partner clinics and payers",
+      "support": "Uninterrupted monitoring"
     },
-    "imageAlt": "Medical monitoring"
+    "live": {
+      "status": "Live",
+      "patient": "Reading received just now",
+      "hr": "Heart rate",
+      "spo2": "O₂ saturation",
+      "bp": "Blood pressure",
+      "alert": "Predictive alert sent to the clinical team"
+    },
+    "imageAlt": "Healthcare professional following patients on the Emmitec Health platform"
+  },
+  "marquee": {
+    "a": "Remote patient monitoring",
+    "b": "AI predictive alerts",
+    "c": "EHR integration",
+    "d": "200+ certified devices",
+    "e": "LGPD & HIPAA",
+    "f": "Clinical support 24/7"
   },
   "intro": {
-    "badge": "Our mission",
-    "title": "Discover how Emmitec Health is transforming healthcare through innovation and technology",
-    "description": "We combine smart devices, digital platforms, and artificial intelligence to deliver more efficient, accessible, and human healthcare."
+    "badge": "Why we exist",
+    "title": "Technology that gives time back to the clinical team and peace of mind to the family",
+    "description": "Connected devices, our own platform, and predictive AI working together — so no one has to wait for a case to worsen before receiving care."
   },
   "homeBlogStrip": {
     "badge": "Blog",
-    "title": "Reads on digital health and RPM",
-    "subtitle": "Articles from Emmitec and guests — trends, cases, and regulation.",
+    "title": "Content for the people deciding on digital health",
+    "subtitle": "Trends, real cases, and regulation — written by the Emmitec team and invited specialists.",
     "cta": "Open the blog"
   },
   "cards": {
     "rpm": {
-      "label": "RPM DEVICES",
-      "title": "RPM Monitoring",
-      "description": "Real-time tracking of patient vital signs with connected devices and automatic alerts for the clinical team."
+      "label": "RPM devices",
+      "title": "Vital signs in real time",
+      "description": "Oximeter, scale, blood pressure monitor, and wearables send readings on their own. No spreadsheets, no phone calls, no relying on the patient's memory."
     },
     "ai": {
-      "label": "AI PLATFORM",
-      "title": "AI Platform",
-      "description": "Machine learning algorithms that analyze clinical patterns and suggest preventive interventions with high accuracy."
+      "label": "Predictive intelligence",
+      "title": "An AI that notices first",
+      "description": "Every reading is compared against the patient's own history. When the pattern drifts, the alert reaches the team with clinical context — not just a number."
     },
     "dashboard": {
-      "label": "TELEHEALTH DASHBOARD",
-      "title": "Clinical Dashboard",
-      "description": "Centralized panel for doctors and healthcare teams to manage patients, appointments, and clinical reports in one place."
+      "label": "Clinical dashboard",
+      "title": "The whole operation on one screen",
+      "description": "See who needs attention right now, record decisions, and generate EHR-ready reports in a few clicks."
     },
     "cta": "Learn more"
   },
   "features": {
     "monitoring": {
       "tag": "Smart care",
-      "title": "Continuous monitoring that saves lives in real time",
-      "body": "Our RPM platform collects data from wearables and medical devices, processes it with AI, and alerts doctors before critical situations worsen.",
+      "title": "Continuous monitoring that acts before the emergency",
+      "body": "The platform collects data from wearables and certified medical devices, processes everything with AI, and calls the team the moment the picture starts to change — not once it already has.",
       "items": [
-        "Integration with +200 certified medical devices",
-        "AI predictive alerts to reduce hospitalizations",
-        "Automatic reports for electronic medical records"
+        "Integration with more than 200 certified medical devices",
+        "Predictive alerts that anticipate avoidable hospitalizations",
+        "Automatic reports, ready for the electronic health record"
       ],
       "button": "See how it works",
       "imageAlt": "Doctor consulting platform",
@@ -61,50 +86,52 @@
       }
     },
     "services": {
-      "tag": "SERVICES",
-      "title": "Revolutionizing Medical Care with RPM",
-      "body": "At EmmiTec, we help clinics, hospitals, and health insurers evolve their services with Remote Patient Monitoring (RPM). Our platform was designed to make care more efficient, humane, and sustainable — even amid healthcare professional shortages.",
+      "tag": "Services",
+      "title": "RPM that holds the operation together when there aren't enough hands",
+      "body": "Clinics, hospitals, and payers use Emmitec to expand care capacity without expanding headcount — looking after more patients, with the same team and greater safety.",
       "items": [
-        "Monitor vital signs and clinical indicators in real time",
+        "Follow vital signs and clinical indicators in real time",
         "Anticipate complications before they become emergencies",
-        "Reduce administrative and operational costs",
-        "Improve patient experience and engagement"
+        "Cut administrative and operational costs",
+        "Increase patient engagement and adherence"
       ],
       "button": "Discover our apps",
       "imageAlt": "Patient at home with device"
     }
   },
   "benefits": {
-    "title": "Real-Time Monitoring: Hospital Care in the Comfort of Home",
-    "subtitle": "More autonomy for patients. More efficiency for professionals. All in a single platform.",
+    "badge": "Benefits",
+    "title": "Hospital-grade care, in the living room",
+    "subtitle": "More autonomy for the patient. More predictability for the clinical team. All in a single platform.",
     "items": {
       "home": {
-        "title": "Home Care with Hospital Quality",
-        "desc": "With EmmiTec's RPM, patients are monitored in real time in the comfort of home, receiving continuous and humanized care."
+        "title": "Hospital at home",
+        "desc": "The patient is monitored continuously where they feel best — with the same clinical vigilance as an inpatient bed."
       },
       "flexible": {
-        "title": "Flexible and Customizable Solution",
-        "desc": "We adapt the interface to your institution's look and are compatible with various medical devices and workflows."
+        "title": "Tailored to your operation",
+        "desc": "An interface carrying your institution's identity, compatible with the devices and workflows you already use."
       },
       "access": {
-        "title": "Healthcare Access Anywhere",
-        "desc": "Our platform breaks geographical barriers, making medical care accessible wherever the patient is."
+        "title": "Care without distance",
+        "desc": "The platform dissolves the geographic barrier: follow-up travels with the patient, wherever they are."
       },
       "partnership": {
-        "title": "Partnership for a New Era in Healthcare",
-        "desc": "We offer complete support and tailored features to ensure greater efficiency and better clinical outcomes."
+        "title": "A partner, not a vendor",
+        "desc": "Guided rollout, features built on demand, and support that answers at the pace of your clinical routine."
       }
     }
   },
   "cta": {
     "badge": "Next step",
-    "title": "Schedule your personalized demonstration",
-    "subtitle": "Show your team how Emmitec Health can transform patient management and the quality of care in your clinic.",
+    "title": "See the platform running on your own operation's data",
+    "subtitle": "In 30 minutes we walk through the full flow: from the device on the patient to the alert on your team's screen.",
+    "note": "No commitment · We reply within 1 business day",
     "button": {
       "specialist": "Talk to a specialist",
       "cases": "See success stories",
-      "primary": "Request demo",
-      "secondary": "View equipment →"
+      "primary": "Schedule a demo",
+      "secondary": "View equipment"
     }
   },
   "about": {
@@ -147,29 +174,27 @@
       "button2": "Request a demo"
     },
     "values": {
-      "badge": "Principles",
-      "title": "How Remote Patient Monitoring Improves Health and Efficiency",
-      "subtitle": "Remote Patient Monitoring (RPM) is an innovative solution that transforms medical care, enabling continuous and personalized patient monitoring. This proactive approach improves health, reduces complications, and increases hospital efficiency, promoting greater safety and satisfaction.",
+      "badge": "Clinical applications",
+      "title": "Four scenarios where RPM changes the outcome",
+      "subtitle": "Continuous monitoring is not a generic feature — it weighs far more in some clinical journeys than in others.",
       "card1": {
         "title": "Cardiovascular Health",
-        "description": "RPM enables remote monitoring of blood pressure and other vital signs important for the care of patients with cardiovascular diseases. The technology helps detect early changes, promoting faster interventions and reducing avoidable hospital admissions."
+        "description": "Blood pressure and heart rhythm followed every day, not only at the appointment. Early changes become an alert before they become an admission."
       },
       "card2": {
         "title": "Post-Operative Care",
-        "description": "Monitoring vital signs after surgery helps prevent complications and readmissions. Patients report less pain, greater security, and a smoother recovery during the critical post-operative period."
+        "description": "The first weeks after surgery are the most critical — and the least supervised. RPM covers that gap and cuts readmissions."
       },
       "card3": {
         "title": "Diabetes Monitoring",
-        "description": "Connected devices track glucose levels and blood pressure, alerting about changes and offering personalized guidance. This ensures effective control and improves quality of life."
+        "description": "Glucose and blood pressure reach the team on their own, with no reliance on the patient's logbook. Treatment is adjusted within the week, not the quarter."
       },
       "card4": {
         "title": "Cancer Treatment",
-        "description": "RPM enables close monitoring of treatment progress and vital signs, promoting continuous support. This approach improves care and provides more comfort to cancer patients."
+        "description": "Between one session and the next, the patient stays monitored at home. Adverse effects surface early, with fewer emergency-room trips."
       }
     },
     "timeline": {
-      "badge": "Our journey",
-      "title": "Emmitec Evolution",
       "2006": {
         "title": "EMMI Technologies",
         "desc": "Founding of EMMI Technologies, developing cutting-edge technology for finance and retail in partnership with major innovators"
@@ -189,7 +214,9 @@
       "2024": {
         "title": "Artificial Intelligence",
         "desc": "Integration of predictive AI for preventive diagnostics"
-      }
+      },
+      "badge": "Our journey",
+      "title": "Emmitec Evolution"
     },
     "stats": {
       "founded": "Founded",
@@ -270,12 +297,16 @@
     },
     "who": {
       "badge": "For whom",
-      "title": "RPM serves varied care profiles",
-      "subtitle": "Adaptable solution for different health profiles, from chronic patients to post-operative care.",
+      "title": "Who benefits most from remote monitoring",
+      "subtitle": "RPM does not replace the appointment — it covers the gap between appointments. Four profiles account for most of the cases where that gap matters.",
       "item1": "Cardiac patients",
       "item2": "Post-operative",
       "item3": "Diabetics",
-      "item4": "Elderly"
+      "item4": "Elderly",
+      "item1desc": "Hypertension, heart failure, and arrhythmias need frequent pressure and rhythm readings — data a quarterly appointment never captures.",
+      "item2desc": "In the weeks after discharge, most complications show up at home, far from the team that performed the surgery.",
+      "item3desc": "Glycemic control depends on continuous adjustment. With readings arriving on their own, treatment changes in days, not months.",
+      "item4desc": "Multiple comorbidities and medications, combined with limited mobility, make remote follow-up the safest route."
     },
     "cta": {
       "badge": "Next step",
@@ -327,7 +358,17 @@
       "item3": "Optimized medical schedule with focus on critical cases",
       "item4": "Clinical decisions based on real, up-to-date data",
       "item5": "Competitive edge in the healthcare market",
-      "button": "Request proposal"
+      "button": "Request proposal",
+      "dashboard": {
+        "subtitle": "RPM dashboard",
+        "live": "Live",
+        "active": "Active patients",
+        "activeDelta": "+12% this week",
+        "saved": "Savings generated",
+        "savedNote": "Year to date",
+        "weekly": "Readings received this week",
+        "adherence": "Treatment adherence"
+      }
     },
     "stats": {
       "badge": "Proven impact",
@@ -340,13 +381,24 @@
     "comparison": {
       "badge": "Comparison",
       "title": "Traditional care vs. RPM-enabled care",
-      "feature": "Feature",
-      "traditional": "Traditional",
-      "row1": "Continuous monitoring",
-      "row2": "Automatic alerts",
-      "row3": "Real-time data",
-      "row4": "Medical care",
-      "row5": "Early intervention"
+      "feature": "What changes",
+      "traditional": "Traditional care",
+      "row1": "Measurement frequency",
+      "row2": "When the problem surfaces",
+      "row3": "Where the data comes from",
+      "row4": "Time until action",
+      "row5": "Reach of follow-up",
+      "subtitle": "The difference is not in what each model promises — it is in the gap between one piece of information and the next.",
+      "row1trad": "Once per appointment, every 30 to 90 days",
+      "row1rpm": "Daily and automatic, with nothing for the patient to remember",
+      "row2trad": "On deterioration, once symptoms are already there",
+      "row2rpm": "On the first deviation from the pattern, before symptoms",
+      "row3trad": "The patient's recollection at the visit",
+      "row3rpm": "The device reading, straight into the platform",
+      "row4trad": "Weeks, until a slot opens in the schedule",
+      "row4rpm": "Hours — the alert lands on the team's screen",
+      "row5trad": "Only those who can travel to the clinic",
+      "row5rpm": "Every monitored patient, wherever they are"
     },
     "cta": {
       "badge": "Next step",
@@ -623,7 +675,9 @@
       "equipment": "Integrated equipment",
       "login": "Login",
       "language": "Language"
-    }
+    },
+    "cta": "Book a demo",
+    "menu": "Open menu"
   },
   "footer": {
     "tagline": "Transforming lives with health technology. Intelligent remote monitoring for more humane and efficient care.",
