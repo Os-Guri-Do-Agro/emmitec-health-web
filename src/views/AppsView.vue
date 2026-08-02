@@ -307,11 +307,6 @@ onUnmounted(() => {
                   class="btn-primary font-display font-bold"
                 />
               </a>
-              <Button
-                :label="t('appsPage.hero.button.secondary') + ' →'"
-                unstyled
-                class="btn-ghost font-display font-bold"
-              />
             </div>
           </div>
         </div>

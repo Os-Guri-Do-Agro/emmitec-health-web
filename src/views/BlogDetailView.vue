@@ -4,8 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Button from 'primevue/button'
-import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, User, Share2 } from 'lucide-vue-next'
+import { Calendar, Clock, ArrowLeft, ArrowRight, Tag } from 'lucide-vue-next'
 import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t } = useI18n()
@@ -356,22 +355,6 @@ onUnmounted(() => {
           class="animate-in prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-headings:text-black prose-p:text-gray-600 prose-p:leading-relaxed prose-li:text-gray-600 prose-strong:text-black prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-6 prose-li:mb-2"
           v-html="article.content"
         />
-
-        <!-- Actions -->
-        <div
-          class="animate-in mt-12 pt-8 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4"
-        >
-          <Button
-            :label="t('blogPage.detail.share') || 'Compartilhar'"
-            unstyled
-            class="btn-ghost-light font-display text-sm flex items-center gap-2 px-4 py-2"
-          >
-            <template #default>
-              <Share2 :size="16" />
-              <span>{{ t('blogPage.detail.share') || 'Compartilhar' }}</span>
-            </template>
-          </Button>
-        </div>
       </div>
     </section>
 
@@ -393,7 +376,7 @@ onUnmounted(() => {
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <article
-            v-for="(a, i) in relatedArticles"
+            v-for="a in relatedArticles"
             :key="a.id"
             @click="goToArticle(a.id)"
             class="related-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
