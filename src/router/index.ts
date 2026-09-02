@@ -49,7 +49,18 @@ const router = createRouter({
       name: 'equipment-detail',
       component: () => import('../views/EquipmentDetailView.vue'),
     },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('../views/PrivacyView.vue'),
+    },
   ],
+  // Toda navegação começa no topo (exceto voltar/avançar, que restaura a posição)
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    return { top: 0 }
+  },
 })
 
 export default router

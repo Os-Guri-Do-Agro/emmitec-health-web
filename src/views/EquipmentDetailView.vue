@@ -355,12 +355,12 @@ onUnmounted(() => {
     <section
       v-if="device"
       ref="heroSection"
-      class="bg-dark w-full pt-20 pb-12 flex items-center justify-center relative overflow-hidden"
+      class="bg-dark w-full min-h-[60vh] sm:min-h-[70vh] pt-28 pb-16 flex items-center justify-center relative overflow-hidden"
     >
       <!-- Grid Pattern -->
       <div class="hero-grid absolute inset-0 pointer-events-none opacity-40" />
       <HeroLogoMark variant="section" />
-      <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-5">
+      <div class="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 flex flex-col gap-5">
         <!-- Voltar -->
         <button
           @click="goBack"
@@ -465,13 +465,15 @@ onUnmounted(() => {
                   class="btn-primary font-display font-bold px-8 py-3"
                 />
               </a>
-              <a href="/equipment">
-                <Button
-                  :label="t('equipmentPage.detail.viewAllEquipment') + ' →'"
-                  unstyled
-                  class="btn-ghost-light font-display font-bold px-6 py-3 flex items-center gap-2"
+              <RouterLink to="/equipment" class="btn-ghost-light font-display group">
+                {{ t('equipmentPage.detail.viewAllEquipment') }}
+                <ArrowRight
+                  :size="16"
+                  stroke-width="2.5"
+                  aria-hidden="true"
+                  class="transition-transform duration-300 group-hover:translate-x-1"
                 />
-              </a>
+              </RouterLink>
             </div>
           </div>
         </div>
@@ -481,20 +483,16 @@ onUnmounted(() => {
     <!-- ── RELATED DEVICES ── -->
     <section
       ref="relatedSection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-mid w-full flex items-center justify-center"
     >
       <div
         class="w-full max-w-7xl flex flex-col items-center justify-center mx-auto px-4 sm:px-6 lg:px-8"
       >
         <div class="flex flex-col items-center text-center gap-5 pb-12">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
+          <span class="eyebrow eyebrow--light">
             {{ t('equipmentPage.detail.relatedBadge') || 'Continue Explorando' }}
           </span>
-          <h2
-            class="font-display font-extrabold text-black text-[clamp(24px,3vw,36px)] tracking-tight"
-          >
+          <h2 class="display-2 text-black">
             {{ t('equipmentPage.detail.relatedTitle') || 'Outros Equipamentos' }}
           </h2>
         </div>
@@ -579,71 +577,5 @@ onUnmounted(() => {
   -webkit-box-orient: vertical;
   box-orient: vertical;
   overflow: hidden;
-}
-
-:deep(.btn-primary),
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700 !important;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    box-shadow 0.25s,
-    transform 0.25s;
-}
-:deep(.btn-primary:hover),
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
-}
-
-:deep(.btn-ghost-light),
-.btn-ghost-light {
-  background: transparent;
-  color: #6b7280;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 600 !important;
-  font-size: 13px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.25s;
-}
-:deep(.btn-ghost-light:hover),
-.btn-ghost-light:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
-}
-
-:deep(.btn-ghost-dark),
-.btn-ghost-dark {
-  background: transparent;
-  color: #0e1117;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 700 !important;
-  font-size: 13px;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: 1px solid #0e1117;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.25s;
-}
-:deep(.btn-ghost-dark:hover),
-.btn-ghost-dark:hover {
-  border-color: #11d3d3;
-  background: #11d3d3;
-  color: #0e1117;
 }
 </style>

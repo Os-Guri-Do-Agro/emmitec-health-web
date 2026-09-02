@@ -25,13 +25,20 @@ Guia completo para manter consistência visual e arquitetural ao criar novas tel
 | Token | Valor | Uso |
 |-------|-------|-----|
 | `--color-primary` | `#11d3d3` (ciano/turquesa) | CTAs, destaques, hover states |
+| `--color-primary-soft` | `#5ee8e8` | Texto de destaque sobre fundo escuro |
+| `--color-primary-deep` | `#0aa3a8` | Gradiente do botão / texto sobre fundo claro |
+| `--color-accent` | `#4aa8ff` | Só em gradientes/glows (nunca sozinho) |
 | `--color-secondary` | `#4c666d` | Elementos secundários |
 | `--color-dark` | `#0e1117` | Background escuro (Hero, CTA) |
 | `--color-dark-2` | `#161c26` | Background escuro alternativo |
+| `--color-ink` | `#090d13` | Preto mais profundo (bordas/sombras) |
 | `--color-mid` | `#f4f6f7` | Background cinza claro |
 | `--color-black` | `#202220` | Texto principal |
-| `--color-muted` | `#7a9099` | Texto secundário/descrições |
+| `--color-muted` | `#5f7681` | Texto secundário (contraste AA: 4.78:1 no branco) |
 | `--color-background` | `#ffffff` | Background branco |
+
+> **Contraste mínimo:** texto pequeno sobre `bg-dark` deve usar no mínimo `text-white/55`.
+> `text-white/45` não passa em WCAG AA abaixo de 16px.
 
 ### 2.2 Tipografia
 
@@ -42,11 +49,26 @@ Guia completo para manter consistência visual e arquitetural ao criar novas tel
 
 **Pesos disponíveis:** `font-medium` (500), `font-semibold` (600), `font-bold` (700), `font-extrabold` (800)
 
-**Tamanhos de títulos:**
-- Hero: `text-[clamp(20px,2vw,30px)]` ou `text-xl sm:text-2xl lg:text-3xl`
-- Seções: `text-[clamp(22px,4vw,28px)]`
-- Cards: `text-[17px]`
-- Body: `text-[13px]` a `text-[16px]`
+**Escala editorial (classes globais no `main.css`) — use estas em vez de `text-[...]` ad hoc:**
+
+| Classe | Tamanho | Uso |
+|--------|---------|-----|
+| `.display-1` | `clamp(2rem, 5.2vw, 4.1rem)` | H1 do Hero (só um por página) |
+| `.display-2` | `clamp(1.75rem, 3.6vw, 2.9rem)` | Títulos de seção (H2) |
+| `.display-3` | `clamp(1.35rem, 2.4vw, 1.85rem)` | Títulos de card (H3) |
+| `.lead` | `clamp(0.98rem, 1.15vw, 1.13rem)` | Parágrafo de apoio abaixo do título |
+
+Corpo de texto comum: `text-[14px]` a `text-[15px]`. Micro-labels: `text-[10px]`–`text-[12.5px]`.
+
+### 2.3 Classes utilitárias globais
+
+| Classe | O que faz |
+|--------|-----------|
+| `.eyebrow` + `.eyebrow--dark` / `.eyebrow--light` | Pill de rótulo acima do título. `--dark` para fundo escuro |
+| `.text-gradient-brand` | Texto com gradiente ciano→azul (para destacar 2–4 palavras de um título) |
+| `.btn-primary` / `.btn-ghost` / `.btn-light` | Botões — ver seção 5.1 |
+| `.btn-primary--sm` | Modificador compacto (usado no header) |
+| `.bg-grid-lines` / `.bg-noise` | Padrões de fundo reutilizáveis |
 
 ### 2.3 Espaçamento & Layout
 
@@ -273,42 +295,33 @@ onUnmounted(() => {
 
 ### 5.1 Botões
 
-**Primary Button:**
+As três variantes são **classes globais** em `main.css` — não redeclare em `<style scoped>`,
+senão a view fica fora de sincronia com o resto do site.
+
+| Classe | Onde usar |
+|--------|-----------|
+| `.btn-primary` | Ação principal (gradiente ciano). Funciona em fundo claro e escuro |
+| `.btn-ghost` | Ação secundária **sobre fundo escuro** |
+| `.btn-light` | Ação secundária **sobre fundo claro** |
+
+Todas são `inline-flex` com `gap`, então aceitam ícone + texto direto:
+
 ```vue
-<Button :label="t('button.text')" unstyled class="btn-primary font-display font-bold" />
-```
-```css
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 10px 24px;
-  border-radius: 8px;
-  transition: box-shadow 0.25s, transform 0.25s;
-}
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
-}
+<!-- link interno: sempre RouterLink (evita full reload da SPA) -->
+<RouterLink to="/what-is-rpm" class="btn-ghost font-display group">
+  {{ t('hero.button.solutions') }}
+  <ArrowRight :size="16" stroke-width="2.5" aria-hidden="true"
+    class="transition-transform duration-300 group-hover:translate-x-1" />
+</RouterLink>
+
+<!-- link externo -->
+<a :href="calendlyUrl" target="_blank" rel="noopener noreferrer" class="btn-primary font-display">
+  <CalendarClock :size="17" stroke-width="2.3" aria-hidden="true" />
+  {{ t('hero.button.demo') }}
+</a>
 ```
 
-**Ghost Button (para fundos escuros):**
-```vue
-<Button :label="t('button.text')" unstyled class="btn-ghost font-display font-bold" />
-```
-```css
-.btn-ghost {
-  background: transparent;
-  color: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  /* ... mesmo padding/border-radius do primary */
-}
-.btn-ghost:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
-}
-```
+> Não use `<Button unstyled>` do PrimeVue para navegação — um link deve ser um `<a>`/`RouterLink`.
 
 ### 5.2 Cards
 
@@ -431,6 +444,9 @@ const { t } = useI18n()
 
 - [ ] Usar `<script setup lang="ts">` com imports explícitos
 - [ ] Configurar `useI18n()` e adicionar chaves nos 3 arquivos de locale
+- [ ] Usar `.display-1/2/3`, `.lead` e `.eyebrow` em vez de tamanhos ad hoc
+- [ ] Navegação interna com `RouterLink` (nunca `<a href="/rota">`)
+- [ ] Envolver as animações de entrada em um guard de `prefers-reduced-motion`
 - [ ] Registrar `ScrollTrigger` no `gsap.registerPlugin(ScrollTrigger)`
 - [ ] Criar refs para elementos animáveis
 - [ ] Implementar `onMounted` com animações GSAP

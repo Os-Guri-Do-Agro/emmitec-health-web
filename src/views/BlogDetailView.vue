@@ -4,8 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Button from 'primevue/button'
-import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, User, Share2 } from 'lucide-vue-next'
+import { Calendar, Clock, ArrowLeft, ArrowRight, Tag } from 'lucide-vue-next'
 import HeroLogoMark from '@/components/HeroLogoMark.vue'
 
 const { t } = useI18n()
@@ -268,7 +267,7 @@ onUnmounted(() => {
     <section
       v-if="article"
       ref="heroSection"
-      class="min-h-[60vh] sm:min-h-[55vh] relative overflow-hidden w-full flex items-center justify-center"
+      class="min-h-[60vh] sm:min-h-[70vh] relative overflow-hidden w-full flex items-center justify-center"
     >
       <!-- Background Image/Gradient -->
       <div :class="`absolute inset-0 bg-linear-to-br ${article.gradient}`" />
@@ -280,7 +279,7 @@ onUnmounted(() => {
 
       <!-- Content -->
       <div
-        class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 flex flex-col items-center text-center gap-6 z-10 relative"
+        class="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center gap-6 px-6 py-24 text-center sm:px-8 lg:px-10 lg:py-28"
       >
         <!-- Voltar -->
         <button
@@ -347,7 +346,7 @@ onUnmounted(() => {
     <!-- ── CONTENT ── -->
     <section
       ref="contentSection"
-      class="py-12 sm:py-16 bg-white w-full flex items-center justify-center"
+      class="py-16 sm:py-20 lg:py-24 bg-white w-full flex items-center justify-center"
     >
       <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Article Content -->
@@ -356,40 +355,20 @@ onUnmounted(() => {
           class="animate-in prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-headings:text-black prose-p:text-gray-600 prose-p:leading-relaxed prose-li:text-gray-600 prose-strong:text-black prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-6 prose-li:mb-2"
           v-html="article.content"
         />
-
-        <!-- Actions -->
-        <div
-          class="animate-in mt-12 pt-8 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4"
-        >
-          <Button
-            :label="t('blogPage.detail.share') || 'Compartilhar'"
-            unstyled
-            class="btn-ghost-light font-display text-sm flex items-center gap-2 px-4 py-2"
-          >
-            <template #default>
-              <Share2 :size="16" />
-              <span>{{ t('blogPage.detail.share') || 'Compartilhar' }}</span>
-            </template>
-          </Button>
-        </div>
       </div>
     </section>
 
     <!-- ── RELATED ARTICLES ── -->
     <section
       ref="relatedSection"
-      class="py-16 sm:py-20 bg-mid w-full flex items-center justify-center"
+      class="py-20 sm:py-24 lg:py-28 bg-mid w-full flex items-center justify-center"
     >
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
         <div class="flex flex-col items-center text-center gap-5 pb-12">
-          <span
-            class="inline-block font-display text-[11px] font-bold tracking-[2px] uppercase text-primary"
-          >
+          <span class="eyebrow eyebrow--light">
             {{ t('blogPage.detail.relatedBadge') || 'Continue Lendo' }}
           </span>
-          <h2
-            class="font-display font-extrabold text-black text-[clamp(24px,3vw,36px)] tracking-tight"
-          >
+          <h2 class="display-2 text-black">
             {{ t('blogPage.detail.relatedTitle') || 'Artigos Relacionados' }}
           </h2>
         </div>
@@ -397,7 +376,7 @@ onUnmounted(() => {
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <article
-            v-for="(a, i) in relatedArticles"
+            v-for="a in relatedArticles"
             :key="a.id"
             @click="goToArticle(a.id)"
             class="related-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
@@ -470,48 +449,5 @@ onUnmounted(() => {
   -webkit-box-orient: vertical;
   box-orient: vertical;
   overflow: hidden;
-}
-
-:deep(.btn-primary),
-.btn-primary {
-  background: #11d3d3;
-  color: #0e1117;
-  font-size: 13px;
-  font-weight: 700 !important;
-  padding: 10px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition:
-    box-shadow 0.25s,
-    transform 0.25s;
-}
-:deep(.btn-primary:hover),
-.btn-primary:hover {
-  box-shadow: 0 8px 32px rgba(17, 211, 211, 0.35);
-  transform: translateY(-2px);
-}
-
-:deep(.btn-ghost-light),
-.btn-ghost-light {
-  background: transparent;
-  color: #6b7280;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 600 !important;
-  font-size: 13px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.25s;
-}
-:deep(.btn-ghost-light:hover),
-.btn-ghost-light:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
 }
 </style>

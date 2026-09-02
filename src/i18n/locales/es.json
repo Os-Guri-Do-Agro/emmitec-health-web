@@ -1,57 +1,82 @@
 {
   "hero": {
-    "title": "Transformando la Salud con Innovación y Tecnología.",
-    "subtitle": "Emmitec Health conecta pacientes, clínicas y profesionales de la salud a través de monitoreo remoto inteligente con datos en tiempo real e IA de última generación.",
+    "eyebrow": "Monitoreo remoto de pacientes",
+    "titleLead": "El cuidado continuo",
+    "titleHighlight": "no puede esperar",
+    "titleTail": "a la próxima consulta.",
+    "title": "El cuidado continuo no puede esperar a la próxima consulta.",
+    "subtitle": "Emmitec Health sigue los signos vitales en tiempo real, cruza cada lectura con IA y avisa al equipo clínico antes de que un cuadro se convierta en emergencia — con el paciente en casa, seguro y acompañado.",
     "badge": "Nuevo",
     "button": {
       "demo": "Agendar demostración",
-      "solutions": "Conocer soluciones"
+      "solutions": "Ver la plataforma"
+    },
+    "trust": {
+      "devices": "+200 dispositivos integrados",
+      "security": "Datos protegidos: LGPD y HIPAA",
+      "support": "Equipo clínico activo 24/7"
     },
     "stats": {
-      "accuracy": "Precisión diagnóstica",
-      "clinics": "Clínicas asociadas",
-      "support": "Soporte continuo"
+      "accuracy": "Precisión de las alertas clínicas",
+      "clinics": "Clínicas y aseguradoras asociadas",
+      "support": "Monitoreo ininterrumpido"
     },
-    "imageAlt": "Monitoreo médico"
+    "live": {
+      "status": "En vivo",
+      "patient": "Lectura recibida ahora",
+      "hr": "Frecuencia cardíaca",
+      "spo2": "Saturación de O₂",
+      "bp": "Presión arterial",
+      "alert": "Alerta predictiva enviada al equipo clínico"
+    },
+    "imageAlt": "Profesional de la salud siguiendo pacientes en la plataforma Emmitec Health"
+  },
+  "marquee": {
+    "a": "Monitoreo remoto de pacientes",
+    "b": "Alertas predictivas con IA",
+    "c": "Integración con historia clínica electrónica",
+    "d": "+200 dispositivos certificados",
+    "e": "LGPD y HIPAA",
+    "f": "Soporte clínico 24/7"
   },
   "intro": {
-    "badge": "Nuestra misión",
-    "title": "Descubre cómo Emmitec Health está transformando la salud a través de la innovación y la tecnología",
-    "description": "Unimos dispositivos inteligentes, plataformas digitales e inteligencia artificial para ofrecer cuidados de salud más eficientes, accesibles y humanos."
+    "badge": "Por qué existimos",
+    "title": "Tecnología que devuelve tiempo al equipo clínico y tranquilidad a la familia",
+    "description": "Dispositivos conectados, plataforma propia e IA predictiva trabajando juntos — para que nadie tenga que esperar a que el cuadro empeore para recibir cuidado."
   },
   "homeBlogStrip": {
     "badge": "Blog",
-    "title": "Lecturas sobre salud digital y RPM",
-    "subtitle": "Artículos del equipo Emmitec e invitados — tendencias, casos y regulación.",
+    "title": "Contenido para quien decide sobre salud digital",
+    "subtitle": "Tendencias, casos reales y regulación — escrito por el equipo Emmitec y por especialistas invitados.",
     "cta": "Ir al blog"
   },
   "cards": {
     "rpm": {
-      "label": "RPM DEVICES",
-      "title": "Monitoreo RPM",
-      "description": "Seguimiento en tiempo real de los signos vitales de los pacientes con dispositivos conectados y alertas automáticas para el equipo clínico."
+      "label": "Dispositivos RPM",
+      "title": "Signos vitales en tiempo real",
+      "description": "Oxímetro, balanza, tensiómetro y wearables envían las lecturas solos. Sin planillas, sin llamadas, sin depender de la memoria del paciente."
     },
     "ai": {
-      "label": "IA PLATFORM",
-      "title": "Plataforma de IA",
-      "description": "Algoritmos de aprendizaje automático que analizan patrones clínicos y sugieren intervenciones preventivas con alta precisión."
+      "label": "Inteligencia predictiva",
+      "title": "Una IA que se da cuenta antes",
+      "description": "Cada lectura se compara con el historial del propio paciente. Cuando el patrón se desvía, la alerta llega al equipo con contexto clínico — no solo con un número."
     },
     "dashboard": {
-      "label": "TELEHEALTH DASHBOARD",
-      "title": "Dashboard Clínico",
-      "description": "Panel centralizado para médicos y equipos de salud para gestionar pacientes, consultas e informes clínicos en un solo lugar."
+      "label": "Panel clínico",
+      "title": "Toda la operación en una pantalla",
+      "description": "Vea primero a quien necesita atención ahora, registre conductas y genere informes listos para la historia clínica electrónica en pocos clics."
     },
     "cta": "Saber más"
   },
   "features": {
     "monitoring": {
       "tag": "Cuidado inteligente",
-      "title": "Monitoreo continuo que salva vidas en tiempo real",
-      "body": "Nuestra plataforma RPM recopila datos de wearables y dispositivos médicos, los procesa con IA y alerta a los médicos antes de que las situaciones críticas empeoren.",
+      "title": "Monitoreo continuo que actúa antes de la emergencia",
+      "body": "La plataforma recopila datos de wearables y dispositivos médicos certificados, los procesa con IA y activa al equipo apenas el cuadro empieza a cambiar — no cuando ya cambió.",
       "items": [
-        "Integración con +200 dispositivos médicos certificados",
-        "Alertas predictivas con IA para reducir internaciones",
-        "Informes automáticos para historial médico electrónico"
+        "Integración con más de 200 dispositivos médicos certificados",
+        "Alertas predictivas que anticipan internaciones evitables",
+        "Informes automáticos listos para la historia clínica electrónica"
       ],
       "button": "Ver cómo funciona",
       "imageAlt": "Médico consultando plataforma",
@@ -61,50 +86,52 @@
       }
     },
     "services": {
-      "tag": "SERVICIOS",
-      "title": "Revolucionando la Asistencia Médica con RPM",
-      "body": "En EmmiTec, ayudamos a clínicas, hospitales y aseguradoras de salud a evolucionar sus servicios con el Monitoreo Remoto de Pacientes (RPM). Nuestra plataforma fue diseñada para hacer el cuidado más eficiente, humano y sostenible — incluso ante la escasez de profesionales de la salud.",
+      "tag": "Servicios",
+      "title": "RPM que sostiene la operación cuando falta gente para cuidar",
+      "body": "Clínicas, hospitales y aseguradoras usan Emmitec para ampliar la capacidad de atención sin ampliar el equipo — cuidando a más pacientes, con la misma gente y más seguridad.",
       "items": [
-        "Monitorear signos vitales e indicadores clínicos en tiempo real",
-        "Anticipar complicaciones antes de que se conviertan en emergencias",
-        "Reducir costos administrativos y operativos",
-        "Mejorar la experiencia y el compromiso de los pacientes"
+        "Siga signos vitales e indicadores clínicos en tiempo real",
+        "Anticipe complicaciones antes de que se vuelvan emergencias",
+        "Reduzca costos administrativos y operativos",
+        "Aumente el compromiso y la adherencia de los pacientes"
       ],
       "button": "Conocer las apps",
       "imageAlt": "Paciente en casa con dispositivo"
     }
   },
   "benefits": {
-    "title": "Monitoreo en Tiempo Real: Cuidados Hospitalarios en la Comodidad del Hogar",
-    "subtitle": "Más autonomía para los pacientes. Más eficiencia para los profesionales. Todo en una única plataforma.",
+    "badge": "Beneficios",
+    "title": "Cuidado de nivel hospitalario, en la sala de casa",
+    "subtitle": "Más autonomía para el paciente. Más previsibilidad para el equipo clínico. Todo en una única plataforma.",
     "items": {
       "home": {
-        "title": "Cuidados en Casa con Calidad Hospitalaria",
-        "desc": "Con el RPM de EmmiTec, los pacientes son monitoreados en tiempo real en la comodidad de casa, recibiendo atención continua y humanizada."
+        "title": "Hospital en casa",
+        "desc": "El paciente es monitoreado de forma continua donde se siente bien — con la misma vigilancia clínica de una cama de internación."
       },
       "flexible": {
-        "title": "Solución Flexible y Personalizable",
-        "desc": "Adaptamos la interfaz al visual de su institución y somos compatibles con diversos dispositivos médicos y flujos de trabajo."
+        "title": "A la medida de su operación",
+        "desc": "Interfaz con la identidad de su institución y compatibilidad con los dispositivos y flujos que ya utiliza."
       },
       "access": {
-        "title": "Acceso a la Salud en Cualquier Lugar",
-        "desc": "Nuestra plataforma rompe barreras geográficas, haciendo la asistencia médica accesible dondequiera que el paciente esté."
+        "title": "Cuidado sin distancia",
+        "desc": "La plataforma disuelve la barrera geográfica: el seguimiento acompaña al paciente, esté donde esté."
       },
       "partnership": {
-        "title": "Alianza para una Nueva Era en la Salud",
-        "desc": "Ofrecemos soporte completo y funcionalidades a medida para garantizar mayor eficiencia y mejores resultados clínicos."
+        "title": "Socio, no proveedor",
+        "desc": "Implantación acompañada, funcionalidades a demanda y soporte que responde al ritmo de su rutina clínica."
       }
     }
   },
   "cta": {
     "badge": "Próximo paso",
-    "title": "Agenda tu demostración personalizada",
-    "subtitle": "Muestra a tu equipo cómo Emmitec Health puede transformar la gestión de pacientes y la calidad del cuidado en tu clínica.",
+    "title": "Vea la plataforma funcionando con datos de su operación",
+    "subtitle": "En 30 minutos recorremos el flujo completo: del dispositivo en el paciente a la alerta en la pantalla de su equipo.",
+    "note": "Sin compromiso · Respuesta en hasta 1 día hábil",
     "button": {
       "specialist": "Hablar con especialista",
       "cases": "Ver casos de éxito",
-      "primary": "Solicitar demostración",
-      "secondary": "Ver equipos →"
+      "primary": "Agendar demostración",
+      "secondary": "Ver equipos"
     }
   },
   "about": {
@@ -147,29 +174,27 @@
       "button2": "Solicitar demo"
     },
     "values": {
-      "badge": "Principios",
-      "title": "Cómo el Monitoreo Remoto de Pacientes Mejora la Salud y la Eficiencia",
-      "subtitle": "El Monitoreo Remoto de Pacientes (RPM) es una solución innovadora que transforma la atención médica, permitiendo el seguimiento continuo y personalizado de los pacientes. Este enfoque proactivo mejora la salud, reduce complicaciones y aumenta la eficiencia hospitalaria, promoviendo mayor seguridad y satisfacción.",
+      "badge": "Aplicaciones clínicas",
+      "title": "Cuatro escenarios en los que el RPM cambia el desenlace",
+      "subtitle": "El seguimiento continuo no es un recurso genérico — pesa mucho más en unos trayectos clínicos que en otros.",
       "card1": {
         "title": "Salud Cardiovascular",
-        "description": "El RPM permite el monitoreo remoto de la presión arterial y otros signos vitales importantes para el cuidado de pacientes con enfermedades cardiovasculares. La tecnología ayuda a detectar cambios precoces, promoviendo intervenciones más rápidas y reduciendo las admisiones hospitalarias evitables."
+        "description": "Presión arterial y ritmo cardíaco seguidos todos los días, no solo en la consulta. Las alteraciones tempranas se vuelven alerta antes de volverse internación."
       },
       "card2": {
         "title": "Cuidados Post-Operatorios",
-        "description": "Monitorear los signos vitales después de cirugías ayuda a prevenir complicaciones y readmisiones. Los pacientes reportan menos dolor, mayor seguridad y una recuperación más tranquila durante el período crítico post-operatorio."
+        "description": "Las primeras semanas tras la cirugía son las más críticas — y las menos vigiladas. El RPM cubre ese intervalo y reduce las readmisiones."
       },
       "card3": {
         "title": "Monitoreo de Diabetes",
-        "description": "Los dispositivos conectados rastrean los niveles de glucosa y presión arterial, alertando sobre cambios y ofreciendo orientación personalizada. Esto garantiza un control efectivo y mejora la calidad de vida."
+        "description": "Glucemia y presión llegan solas al equipo, sin depender del diario del paciente. La conducta se ajusta en la semana, no en el trimestre."
       },
       "card4": {
         "title": "Tratamiento del Cáncer",
-        "description": "El RPM permite el seguimiento cercano del progreso del tratamiento y signos vitales, promoviendo apoyo continuo. Este enfoque mejora la atención y proporciona más comodidad a los pacientes con cáncer."
+        "description": "Entre una sesión y otra, el paciente sigue acompañado en casa. Los efectos adversos aparecen temprano, con menos idas a urgencias."
       }
     },
     "timeline": {
-      "badge": "Nuestro viaje",
-      "title": "Evolución Emmitec",
       "2006": {
         "title": "EMMI Technologies",
         "desc": "Fundación de EMMI Technologies, desarrollando tecnología de vanguardia para finanzas y retail en asociación con grandes innovadores"
@@ -189,7 +214,9 @@
       "2024": {
         "title": "Inteligencia Artificial",
         "desc": "Integración de IA predictiva para diagnósticos preventivos"
-      }
+      },
+      "badge": "Nuestro viaje",
+      "title": "Evolución Emmitec"
     },
     "stats": {
       "founded": "Fundación",
@@ -270,12 +297,16 @@
     },
     "who": {
       "badge": "Para quién",
-      "title": "RPM atiende perfiles variados de cuidado",
-      "subtitle": "Solución adaptable para diferentes perfiles de salud, desde pacientes crónicos hasta post-operatorios.",
+      "title": "Quién se beneficia más del monitoreo remoto",
+      "subtitle": "El RPM no sustituye la consulta — cubre el intervalo entre ellas. Cuatro perfiles concentran la mayor parte de los casos en que ese intervalo pesa.",
       "item1": "Cardíacos",
       "item2": "Post-operatorio",
       "item3": "Diabéticos",
-      "item4": "Adultos mayores"
+      "item4": "Adultos mayores",
+      "item1desc": "Hipertensión, insuficiencia cardíaca y arritmias exigen lecturas frecuentes de presión y ritmo — datos que la consulta trimestral no capta.",
+      "item2desc": "En las semanas posteriores al alta, la mayoría de las complicaciones aparece en casa, lejos del equipo que operó.",
+      "item3desc": "El control glucémico depende de ajuste continuo. Con las lecturas llegando solas, la conducta cambia en días, no en meses.",
+      "item4desc": "Múltiples comorbilidades y medicaciones, sumadas a la dificultad de desplazamiento, hacen del seguimiento remoto la vía más segura."
     },
     "cta": {
       "badge": "Próximo paso",
@@ -327,7 +358,17 @@
       "item3": "Optimización de la agenda médica y foco en casos críticos",
       "item4": "Decisiones clínicas basadas en datos reales y actualizados",
       "item5": "Diferencial competitivo en el mercado de salud",
-      "button": "Solicitar propuesta"
+      "button": "Solicitar propuesta",
+      "dashboard": {
+        "subtitle": "Panel RPM",
+        "live": "En vivo",
+        "active": "Pacientes activos",
+        "activeDelta": "+12% en la semana",
+        "saved": "Ahorro generado",
+        "savedNote": "En el año",
+        "weekly": "Lecturas recibidas en la semana",
+        "adherence": "Adherencia al tratamiento"
+      }
     },
     "stats": {
       "badge": "Impacto comprobado",
@@ -340,13 +381,24 @@
     "comparison": {
       "badge": "Comparativo",
       "title": "Cuidado tradicional vs. cuidado con RPM",
-      "feature": "Característica",
-      "traditional": "Tradicional",
-      "row1": "Monitoreo continuo",
-      "row2": "Alertas automáticas",
-      "row3": "Datos en tiempo real",
-      "row4": "Atención médica",
-      "row5": "Intervención temprana"
+      "feature": "Qué cambia",
+      "traditional": "Cuidado tradicional",
+      "row1": "Frecuencia de medición",
+      "row2": "Cuándo aparece el problema",
+      "row3": "Origen del dato",
+      "row4": "Tiempo hasta la conducta",
+      "row5": "Alcance del seguimiento",
+      "subtitle": "La diferencia no está en lo que cada modelo promete — está en el intervalo entre una información y la siguiente.",
+      "row1trad": "Una vez por consulta, cada 30 o 90 días",
+      "row1rpm": "Diaria y automática, sin depender de que el paciente recuerde",
+      "row2trad": "Al agravarse, con el síntoma ya instalado",
+      "row2rpm": "En la primera desviación del patrón, antes del síntoma",
+      "row3trad": "El relato del paciente, de memoria, en la consulta",
+      "row3rpm": "La lectura del dispositivo, directo en la plataforma",
+      "row4trad": "Semanas, hasta que se abra un turno",
+      "row4rpm": "Horas — la alerta llega a la pantalla del equipo",
+      "row5trad": "Solo quien logra desplazarse a la clínica",
+      "row5rpm": "Todo paciente monitoreado, esté donde esté"
     },
     "cta": {
       "badge": "Próximo paso",
@@ -623,7 +675,9 @@
       "equipment": "Equipos integrados",
       "login": "Iniciar sesión",
       "language": "Idioma"
-    }
+    },
+    "cta": "Agendar demo",
+    "menu": "Abrir menú"
   },
   "footer": {
     "tagline": "Transformando vidas con tecnología en salud. Monitoreo remoto inteligente para una atención más humana y eficiente.",
@@ -634,7 +688,7 @@
       "benefits": "Beneficios",
       "blog": "Blog",
       "contact": "Contacto",
-      "certificates": "Certificados",
+      "certificates": "Aplicaciones",
       "privacyTerms": "Términos de Privacidad"
     },
     "blogCol": {
@@ -653,8 +707,51 @@
       "submit": "Enviar",
       "privacy": "Tus datos están seguros. No enviamos spam."
     },
-    "addresses": ["USA - 105 Boniface Drive, Rochester, NY 14620"],
+    "addresses": [
+      "USA - 105 Boniface Drive, Rochester, NY 14620"
+    ],
     "backToTop": "Volver arriba",
     "copyright": "Todos los derechos reservados."
+  },
+  "privacyPage": {
+    "badge": "Legal",
+    "title": "Términos de Privacidad",
+    "subtitle": "Cómo Emmitec Health recopila, usa y protege su información.",
+    "updated": "Última actualización: julio de 2026",
+    "contactNote": "¿Dudas sobre privacidad? Contáctenos en contato@emmitec.health o por los canales oficiales del sitio.",
+    "sections": [
+      {
+        "title": "1. Quiénes somos",
+        "body": "Emmitec Health desarrolla soluciones de Monitoreo Remoto de Pacientes (RPM), aplicaciones y plataforma clínica. Este documento describe cómo tratamos datos personales y de salud en el uso del sitio y de los servicios."
+      },
+      {
+        "title": "2. Datos que podemos recopilar",
+        "body": "Podemos recopilar datos de identificación y contacto (nombre, email, teléfono), datos profesionales, información enviada en formularios o agendamientos, y datos técnicos de navegación (IP, dispositivo, páginas visitadas) para seguridad y mejora de la experiencia."
+      },
+      {
+        "title": "3. Cómo usamos los datos",
+        "body": "Utilizamos los datos para responder solicitudes, agendar demostraciones, enviar comunicaciones cuando estén autorizadas, operar y mejorar el sitio y los servicios, cumplir obligaciones legales y proteger la seguridad de la plataforma."
+      },
+      {
+        "title": "4. Compartición",
+        "body": "No vendemos datos personales. Podemos compartir información con proveedores esenciales (hosting, email, analytics) bajo contrato, o cuando lo exija la ley. Los datos de salud en entornos clínicos siguen controles y acuerdos específicos con las instituciones asociadas."
+      },
+      {
+        "title": "5. Seguridad y retención",
+        "body": "Adoptamos medidas técnicas y organizativas alineadas con buenas prácticas y requisitos aplicables. Conservamos los datos solo el tiempo necesario para las finalidades informadas o exigencias legales."
+      },
+      {
+        "title": "6. Sus derechos",
+        "body": "Puede solicitar acceso, corrección, anonimización, portabilidad o eliminación de datos personales, así como revocar consentimientos, dentro de la legislación aplicable. Responderemos por los canales oficiales de contacto."
+      },
+      {
+        "title": "7. Cookies y sitio",
+        "body": "El sitio puede usar cookies y tecnologías similares para funcionamiento, preferencias de idioma y métricas de uso. Puede gestionar cookies en la configuración del navegador."
+      },
+      {
+        "title": "8. Cambios",
+        "body": "Podemos actualizar estos Términos de Privacidad periódicamente. La fecha de revisión se indicará en esta página. El uso continuado del sitio tras los cambios implica conocimiento de la versión vigente."
+      }
+    ]
   }
 }
