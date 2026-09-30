@@ -27,6 +27,18 @@
    `smooth` aqui faria cada quadro virar uma animação própria e travaria o scroll. */
 html {
   scroll-behavior: auto;
+  /* sem barra de rolagem visível (a rolagem continua; a barra fina no topo mostra o progresso) */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+body {
+  scrollbar-width: none;
 }
 
 body {

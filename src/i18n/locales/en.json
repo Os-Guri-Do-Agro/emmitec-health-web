@@ -347,7 +347,8 @@
       "button": {
         "primary": "Request demo",
         "secondary": "View cases"
-      }
+      },
+      "titleEm": "transform"
     },
     "patient": {
       "badge": "For the patient",
@@ -368,7 +369,8 @@
       "card4": {
         "title": "Humanized care",
         "desc": "Technology connects patient and team, strengthening the therapeutic bond."
-      }
+      },
+      "titleEm": "home"
     },
     "clinic": {
       "badge": "For the institution",
@@ -388,8 +390,12 @@
         "saved": "Savings generated",
         "savedNote": "Year to date",
         "weekly": "Readings received this week",
-        "adherence": "Treatment adherence"
-      }
+        "adherence": "Treatment adherence",
+        "readings": "readings",
+        "avg": "avg",
+        "target": "Target"
+      },
+      "titleEm": "outcomes"
     },
     "stats": {
       "badge": "Proven impact",
@@ -397,7 +403,8 @@
       "readmissions": "Fewer readmissions",
       "adherence": "More adherence",
       "satisfaction": "Satisfaction",
-      "monitoring": "Monitoring"
+      "monitoring": "Monitoring",
+      "titleEm": "speak"
     },
     "comparison": {
       "badge": "Comparison",
@@ -419,7 +426,8 @@
       "row4trad": "Weeks, until a slot opens in the schedule",
       "row4rpm": "Hours — the alert lands on the team's screen",
       "row5trad": "Only those who can travel to the clinic",
-      "row5rpm": "Every monitored patient, wherever they are"
+      "row5rpm": "Every monitored patient, wherever they are",
+      "titleEm": "RPM"
     },
     "cta": {
       "badge": "Next step",
@@ -428,14 +436,16 @@
       "button": {
         "primary": "Request demo",
         "secondary": "Meet Emmitec →"
-      }
+      },
+      "titleEm": "reap"
     }
   },
   "appsPage": {
     "suite": {
       "badge": "Our suite",
       "title": "Explore the EmmiTec apps",
-      "subtitle": "Built for different care scenarios, all under the same international standards of quality, security, and interoperability."
+      "subtitle": "Built for different care scenarios, all under the same international standards of quality, security, and interoperability.",
+      "titleEm": "apps"
     },
     "hero": {
       "badge": "Apps",
@@ -444,7 +454,8 @@
       "button": {
         "primary": "Request Demo",
         "secondary": "Explore the platform"
-      }
+      },
+      "titleEm": "digital health"
     },
     "patient": {
       "badge": "International standard",
@@ -453,7 +464,8 @@
       "feature1": "Compatible with FDA, ANVISA, CE, and MHRA certified devices",
       "feature2": "Compliant with HIPAA, LGPD, and international privacy standards",
       "feature3": "Native interoperability with HL7 and FHIR standards",
-      "feature4": "End-to-end encryption and secure access authentication"
+      "feature4": "End-to-end encryption and secure access authentication",
+      "titleEm": "rigorous"
     },
     "clinical": {
       "badge": "Modular platform",
@@ -463,7 +475,8 @@
       "feature2": "Integration with major electronic health record systems",
       "feature3": "Modular architecture that scales to your needs",
       "feature4": "Open APIs to connect custom solutions",
-      "button": "Request access"
+      "button": "Request access",
+      "titleEm": "adaptable"
     },
     "features": {
       "badge": "Differentiators",
@@ -492,14 +505,16 @@
       "card6": {
         "title": "Specialized support",
         "desc": "Dedicated technical team to ensure safe deployment and continuous operation."
-      }
+      },
+      "titleEm": "unique"
     },
     "cta": {
       "badge": "Available now",
       "title": "Ready to raise the standard of care at your institution?",
       "subtitle": "Our platform is modular, compatible with leading certified medical devices, and adaptable to the reality of your clinic or hospital.",
       "appStore": "App Store",
-      "googlePlay": "Google Play"
+      "googlePlay": "Google Play",
+      "titleEm": "standard"
     }
   },
   "blogPage": {
@@ -507,14 +522,16 @@
       "badge": "Blog",
       "title": "Content on digital health, RPM, and clinical innovation",
       "subtitle": "Articles, cases, and analyses produced by the Emmitec team and guest experts. Everything about the present and future of connected healthcare.",
-      "searchPlaceholder": "Search articles..."
+      "searchPlaceholder": "Search articles...",
+      "titleEm": "clinical innovation"
     },
     "preview": {
       "badge": "Preview",
       "title": "Articles to start with",
       "subtitle": "A quick pick of our best reads — focused pieces before you explore the full library.",
       "ctaScroll": "Browse all posts",
-      "readArticle": "Read article"
+      "readArticle": "Read article",
+      "titleEm": "start with"
     },
     "categories": {
       "all": "All",
@@ -564,21 +581,29 @@
         "title": "Patient engagement: the factor that defines RPM success",
         "excerpt": "Practical strategies to increase adherence and clinical outcomes.",
         "date": "Mar 10, 2026"
-      }
+      },
+      "titleEm": "read",
+      "count": "No posts | 1 post | {n} posts",
+      "clear": "Clear filters"
     },
     "cta": {
       "badge": "Newsletter",
       "title": "Get our best content in your inbox",
       "subtitle": "Once a week, no spam. Trends, cases, and analyses on digital health straight to your inbox.",
       "placeholder": "Enter your email",
-      "button": "Subscribe"
+      "button": "Subscribe",
+      "titleEm": "best content"
     },
     "detail": {
       "backToBlog": "Back to Blog",
       "relatedBadge": "Continue Reading",
       "relatedTitle": "Related Articles",
       "share": "Share",
-      "requestDemo": "Request Demo"
+      "requestDemo": "Request Demo",
+      "relatedTitleEm": "Related",
+      "toc": "In this article",
+      "copied": "Link copied",
+      "readTime": "read"
     }
   },
   "equipmentPage": {
@@ -599,7 +624,9 @@
       "cardio": "Cardiovascular",
       "metabolic": "Metabolic",
       "respiratory": "Respiratory",
-      "wearables": "Wearables"
+      "wearables": "Wearables",
+      "titleEm": "clinical need",
+      "count": "No devices | 1 device | {n} devices"
     },
     "devices": {
       "d1": {
@@ -644,7 +671,8 @@
       "item3": "HL7 and FHIR for integration with electronic health records",
       "item4": "REST APIs and webhooks to connect custom systems",
       "button": "View technical docs",
-      "devices": "Devices"
+      "devices": "Devices",
+      "titleEm": "industry standards"
     },
     "cert": {
       "badge": "Certifications",
@@ -652,7 +680,8 @@
       "c1": "Brazil",
       "c2": "United States",
       "c3": "European Union",
-      "c4": "Medical quality"
+      "c4": "Medical quality",
+      "titleEm": "Certified"
     },
     "cta": {
       "badge": "Next step",
@@ -661,7 +690,8 @@
       "button": {
         "primary": "Request demo",
         "secondary": "Meet Emmitec →"
-      }
+      },
+      "titleEm": "device"
     },
     "detail": {
       "backToEquipment": "Back to Equipment",
@@ -675,14 +705,19 @@
       "relatedBadge": "Continue Exploring",
       "relatedTitle": "Other Equipment",
       "searchPlaceholder": "Search devices...",
-      "viewAllEquipment": "View all equipment"
+      "viewAllEquipment": "View all equipment",
+      "relatedTitleEm": "Equipment",
+      "aboutEm": "device",
+      "empty": "No equipment found.",
+      "ctaTitleEm": "know more"
     }
   },
   "aria": {
     "goToCard": "Go to card {index}",
     "goToSlide": "Go to page {index}",
     "prevSlide": "Previous page",
-    "nextSlide": "Next page"
+    "nextSlide": "Next page",
+    "breadcrumb": "You are here"
   },
   "header": {
     "nav": {
@@ -746,7 +781,7 @@
     "title": "Privacy Terms",
     "subtitle": "How Emmitec Health collects, uses, and protects your information.",
     "updated": "Last updated: July 2026",
-    "contactNote": "Privacy questions? Contact us at contato@emmitec.health or through the official channels on this site.",
+    "contactNote": "Privacy questions? Contact us at contato{'@'}emmitec.health or through the official channels on this site.",
     "sections": [
       {
         "title": "1. Who we are",
@@ -780,7 +815,9 @@
         "title": "8. Changes",
         "body": "We may update these Privacy Terms periodically. The revision date will appear on this page. Continued use of the site after changes means you acknowledge the current version."
       }
-    ]
+    ],
+    "titleEm": "Privacy",
+    "toc": "On this page"
   },
   "loader": {
     "places": "Brazil · USA · United Kingdom",

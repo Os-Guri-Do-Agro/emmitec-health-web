@@ -1,757 +1,513 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
+/**
+ * Blog — Design System Emmitec.health, com o conteúdo de sempre (pt/en/es).
+ * Destaques num carrossel com barras de progresso, uma lista editorial para
+ * começar, a grade com busca e categorias (?category=) e a newsletter.
+ */
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter, useRoute } from 'vue-router'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Button from 'primevue/button'
+import { useRoute, useRouter } from 'vue-router'
+import { ArrowLeft, ArrowRight, Calendar, Clock, Search, Tag, X } from 'lucide-vue-next'
 
+import EmPageHero from '@/components/em/EmPageHero.vue'
+import EmButton from '@/components/em/EmButton.vue'
+import EmSplit from '@/components/em/EmSplit.vue'
+import EmCta from '@/components/em/EmCta.vue'
+import { RM, scrollToEl } from '@/lib/motion'
+import { afterPageEnter } from '@/lib/pageTransition'
 import {
-  Calendar,
-  Clock,
-  ArrowRight,
-  Search,
-  Tag,
-  BookOpen,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-vue-next'
-
-import HeroLogoMark from '@/components/HeroLogoMark.vue'
+  CATEGORY_IDS,
+  featuredImg,
+  resolveCategory,
+  useArticles,
+  type CategoryId,
+} from '@/lib/blog'
 
 const { t } = useI18n()
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
+const { articles } = useArticles()
 
-const calendlyUrl = computed(() => {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = String(now.getMonth() + 1).padStart(2, '0')
-  return `https://calendly.com/emilio-machado-emmitec-health/vamos-nos-reunir-agende-sua-reuniao-online?month=${year}-${month}`
-})
+const pad = (n: number) => String(n).padStart(2, '0')
+const initial = (name: string) => name.replace(/^(Dra?|Profa?|Psic)\.\s*/i, '').charAt(0)
 
-gsap.registerPlugin(ScrollTrigger)
-
-const heroTitle = ref<HTMLElement | null>(null)
-const heroSub = ref<HTMLElement | null>(null)
-
-const previewSection = ref<HTMLElement | null>(null)
-const featuredSection = ref<HTMLElement | null>(null)
-const articlesSection = ref<HTMLElement | null>(null)
-const newsletterSection = ref<HTMLElement | null>(null)
-
-const categoryIds = ['all', 'rpm', 'tech', 'cases', 'laws'] as const
-type CategoryId = (typeof categoryIds)[number]
-
-function resolveCategory(raw: unknown): CategoryId {
-  const value = Array.isArray(raw) ? raw[0] : raw
-  if (typeof value === 'string' && categoryIds.includes(value as CategoryId)) {
-    return value as CategoryId
-  }
-  return 'all'
+function toSection(id: string) {
+  const el = document.getElementById(id)
+  if (el) scrollToEl(el, 24)
 }
 
+/* ════════ (01) Destaques: carrossel ════════ */
+const featured = computed(() => [
+  {
+    id: 0,
+    img: featuredImg,
+    catLabel: t('blogPage.categories.rpm'),
+    title: t('blogPage.featured.title'),
+    excerpt: t('blogPage.featured.excerpt'),
+    date: t('blogPage.featured.date'),
+    readTime: '8 min',
+    tone: 'var(--cyan-100)',
+    author: t('blogPage.featured.author'),
+    role: t('blogPage.featured.role'),
+  },
+  ...articles.value.slice(0, 4),
+])
+
+/** Tempo de cada destaque (a barra enche nesse ritmo). */
+const AUTOPLAY_MS = 6000
+const cur = ref(0)
+const featEl = ref<HTMLElement | null>(null)
+const hovering = ref(false)
+const inView = ref(false)
+const docVisible = ref(true)
+const playing = computed(() => !RM && inView.value && docVisible.value && !hovering.value)
+
+function go(i: number) {
+  const n = featured.value.length
+  cur.value = (i + n) % n
+}
+/** A barra ativa terminou de encher: próximo destaque. */
+function onBarEnd(i: number) {
+  if (i === cur.value) go(cur.value + 1)
+}
+function onFeatKey(e: KeyboardEvent) {
+  if (e.key === 'ArrowRight') go(cur.value + 1)
+  else if (e.key === 'ArrowLeft') go(cur.value - 1)
+}
+
+let touchX = 0
+function onTouchStart(e: TouchEvent) {
+  touchX = e.changedTouches[0]?.clientX ?? 0
+}
+function onTouchEnd(e: TouchEvent) {
+  const dx = (e.changedTouches[0]?.clientX ?? 0) - touchX
+  if (Math.abs(dx) > 50) go(cur.value + (dx < 0 ? 1 : -1))
+}
+
+let io: IntersectionObserver | null = null
+const onVisibility = () => (docVisible.value = !document.hidden)
+
+/* ════════ (02) Para começar: lista editorial ════════ */
+const previewPosts = computed(() => articles.value.slice(0, 3))
+const hoverRead = ref(-1)
+
+/* ════════ (03) Todas as publicações: busca + categorias ════════ */
 const activeCategory = ref<CategoryId>(resolveCategory(route.query.category))
 const searchQuery = ref('')
 
+const categories = computed(() =>
+  CATEGORY_IDS.map((id) => ({
+    id,
+    label: t(`blogPage.categories.${id}`),
+    count: id === 'all' ? articles.value.length : articles.value.filter((a) => a.cat === id).length,
+  })),
+)
+
+const filtered = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase()
+  return articles.value.filter(
+    (a) =>
+      (activeCategory.value === 'all' || a.cat === activeCategory.value) &&
+      (!q || a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q)),
+  )
+})
+
 function setCategory(id: CategoryId) {
   activeCategory.value = id
-  const query = { ...route.query } as Record<string, string | string[] | undefined>
+  const query = { ...route.query }
   if (id === 'all') delete query.category
   else query.category = id
   router.replace({ path: '/blog', query })
 }
-
-async function applyCategoryFromRoute(scroll = false) {
-  activeCategory.value = resolveCategory(route.query.category)
-  if (!scroll || activeCategory.value === 'all') return
-  await nextTick()
-  articlesSection.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+function clearFilters() {
+  searchQuery.value = ''
+  setCategory('all')
 }
 
+/* indicador que desliza até a categoria ativa */
+const tabsEl = ref<HTMLElement | null>(null)
+const ind = ref({ x: 0, w: 0, on: false })
+function placeIndicator() {
+  const btn = tabsEl.value?.querySelector<HTMLElement>('.em-tabs__btn.is-active')
+  if (!btn) return
+  ind.value = { x: btn.offsetLeft, w: btn.offsetWidth, on: true }
+}
+watch([activeCategory, categories], () => nextTick(placeIndicator))
+
+// chegou (ou trocou) com ?category=…: vai direto para a grade
 watch(
   () => route.query.category,
-  () => {
-    applyCategoryFromRoute(true)
+  (c) => {
+    activeCategory.value = resolveCategory(c)
+    if (activeCategory.value !== 'all') toSection('artigos')
   },
 )
 
-const categories = computed(() => [
-  { id: 'all', label: t('blogPage.categories.all') },
-  { id: 'rpm', label: t('blogPage.categories.rpm') },
-  { id: 'tech', label: t('blogPage.categories.tech') },
-  { id: 'cases', label: t('blogPage.categories.cases') },
-  { id: 'laws', label: t('blogPage.categories.laws') },
-])
-
-const featuredArticle = computed(() => ({
-  category: t('blogPage.categories.rpm'),
-  title: t('blogPage.featured.title'),
-  excerpt: t('blogPage.featured.excerpt'),
-  author: t('blogPage.featured.author'),
-  date: t('blogPage.featured.date'),
-  readTime: '8 min',
-  gradient: 'from-primary/30 via-primary/10 to-transparent',
-}))
-
-const articles = computed(() => [
-  {
-    id: 1,
-    cat: 'tech',
-    catLabel: t('blogPage.categories.tech'),
-    title: t('blogPage.articles.a1.title'),
-    excerpt: t('blogPage.articles.a1.excerpt'),
-    date: t('blogPage.articles.a1.date'),
-    readTime: '5 min',
-    gradient: 'from-blue-500/30 via-blue-400/10 to-transparent',
-  },
-  {
-    id: 2,
-    cat: 'rpm',
-    catLabel: t('blogPage.categories.rpm'),
-    title: t('blogPage.articles.a2.title'),
-    excerpt: t('blogPage.articles.a2.excerpt'),
-    date: t('blogPage.articles.a2.date'),
-    readTime: '6 min',
-    gradient: 'from-primary/30 via-primary/10 to-transparent',
-  },
-  {
-    id: 3,
-    cat: 'cases',
-    catLabel: t('blogPage.categories.cases'),
-    title: t('blogPage.articles.a3.title'),
-    excerpt: t('blogPage.articles.a3.excerpt'),
-    date: t('blogPage.articles.a3.date'),
-    readTime: '4 min',
-    gradient: 'from-emerald-500/30 via-emerald-400/10 to-transparent',
-  },
-  {
-    id: 4,
-    cat: 'laws',
-    catLabel: t('blogPage.categories.laws'),
-    title: t('blogPage.articles.a4.title'),
-    excerpt: t('blogPage.articles.a4.excerpt'),
-    date: t('blogPage.articles.a4.date'),
-    readTime: '7 min',
-    gradient: 'from-amber-500/30 via-amber-400/10 to-transparent',
-  },
-  {
-    id: 5,
-    cat: 'tech',
-    catLabel: t('blogPage.categories.tech'),
-    title: t('blogPage.articles.a5.title'),
-    excerpt: t('blogPage.articles.a5.excerpt'),
-    date: t('blogPage.articles.a5.date'),
-    readTime: '5 min',
-    gradient: 'from-rose-500/30 via-rose-400/10 to-transparent',
-  },
-  {
-    id: 6,
-    cat: 'rpm',
-    catLabel: t('blogPage.categories.rpm'),
-    title: t('blogPage.articles.a6.title'),
-    excerpt: t('blogPage.articles.a6.excerpt'),
-    date: t('blogPage.articles.a6.date'),
-    readTime: '6 min',
-    gradient: 'from-purple-500/30 via-purple-400/10 to-transparent',
-  },
-])
-
-const filteredArticles = computed(() => {
-  let list = articles.value
-  if (activeCategory.value !== 'all') {
-    list = list.filter((a) => a.cat === activeCategory.value)
-  }
-  if (searchQuery.value.trim()) {
-    const q = searchQuery.value.toLowerCase()
-    list = list.filter(
-      (a) => a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q),
-    )
-  }
-  return list
-})
-
-/** Três posts para pré-visualização (convite à leitura). */
-const previewPosts = computed(() => articles.value.slice(0, 3))
-
-/** Até 5 posts no carrossel Em destaque. */
-const FEATURED_MAX = 5
-const featuredPosts = computed(() => {
-  const main = {
-    id: 0,
-    catLabel: featuredArticle.value.category,
-    title: featuredArticle.value.title,
-    excerpt: featuredArticle.value.excerpt,
-    date: featuredArticle.value.date,
-    readTime: featuredArticle.value.readTime,
-    gradient: featuredArticle.value.gradient,
-    author: featuredArticle.value.author,
-  }
-  const rest = articles.value.slice(0, FEATURED_MAX - 1).map((a) => ({
-    id: a.id,
-    catLabel: a.catLabel,
-    title: a.title,
-    excerpt: a.excerpt,
-    date: a.date,
-    readTime: a.readTime,
-    gradient: a.gradient,
-    author: t('blogPage.featured.author'),
-  }))
-  return [main, ...rest]
-})
-
-const currentFeaturedPage = ref(0)
-const touchStartX = ref(0)
-const touchEndX = ref(0)
-
-const AUTOPLAY_MS = 3000
-let autoplayTimer: ReturnType<typeof setInterval> | null = null
-
-function stopAutoplay() {
-  if (autoplayTimer) {
-    clearInterval(autoplayTimer)
-    autoplayTimer = null
-  }
-}
-
-function startAutoplay() {
-  stopAutoplay()
-  if (featuredPosts.value.length <= 1) return
-  autoplayTimer = setInterval(() => {
-    nextFeaturedPage()
-  }, AUTOPLAY_MS)
-}
-
-function goToFeaturedPage(index: number) {
-  currentFeaturedPage.value = index
-  startAutoplay()
-}
-
-function nextFeaturedPage() {
-  const total = featuredPosts.value.length
-  if (total === 0) return
-  currentFeaturedPage.value = (currentFeaturedPage.value + 1) % total
-}
-
-function prevFeaturedPage() {
-  const total = featuredPosts.value.length
-  if (total === 0) return
-  currentFeaturedPage.value = (currentFeaturedPage.value - 1 + total) % total
-}
-
-function goNextFeaturedPage() {
-  nextFeaturedPage()
-  startAutoplay()
-}
-
-function goPrevFeaturedPage() {
-  prevFeaturedPage()
-  startAutoplay()
-}
-
-function onFeaturedTouchStart(e: TouchEvent) {
-  touchStartX.value = e.changedTouches[0]?.screenX ?? 0
-}
-
-function onFeaturedTouchEnd(e: TouchEvent) {
-  touchEndX.value = e.changedTouches[0]?.screenX ?? 0
-  const swipeThreshold = 50
-  const diff = touchStartX.value - touchEndX.value
-  if (Math.abs(diff) > swipeThreshold) {
-    if (diff > 0) goNextFeaturedPage()
-    else goPrevFeaturedPage()
-  }
-}
-
-const goToArticle = (id: number) => {
-  router.push(`/blog/${id}`)
+/* ════════ Newsletter ════════ */
+const email = ref('')
+function subscribe() {
+  // TODO: integrar com o serviço de newsletter (o formulário original ainda não enviava).
 }
 
 onMounted(() => {
-  applyCategoryFromRoute(Boolean(route.query.category))
-
-  gsap
-    .timeline({ defaults: { ease: 'power3.out', clearProps: 'opacity,transform' } })
-    .from(heroTitle.value, { opacity: 0, y: 34, duration: 0.8 })
-    .from(heroSub.value, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
-
-  const animate = (el: HTMLElement | null, selector: string, opts: gsap.TweenVars = {}) => {
-    if (!el) return
-    gsap.from(el.querySelectorAll(selector), {
-      opacity: 0,
-      y: 30,
-      stagger: 0.1,
-      duration: 0.7,
-      ease: 'power3.out',
-      clearProps: 'opacity,transform',
-      scrollTrigger: { trigger: el, start: 'top 80%', once: true },
-      ...opts,
+  if (featEl.value && 'IntersectionObserver' in window) {
+    io = new IntersectionObserver(([e]) => (inView.value = !!e?.isIntersecting), {
+      threshold: 0.35,
     })
+    io.observe(featEl.value)
   }
-
-  animate(previewSection.value, '.preview-card', { stagger: 0.1 })
-  animate(featuredSection.value, '.featured-carousel', { stagger: 0.1 })
-  animate(articlesSection.value, '.article-card', { stagger: 0.08 })
-  animate(newsletterSection.value, '.animate-in')
-
-  startAutoplay()
+  document.addEventListener('visibilitychange', onVisibility)
+  window.addEventListener('resize', placeIndicator)
+  // fontes podem mudar a largura das pílulas depois da montagem
+  document.fonts?.ready.then(placeIndicator)
+  placeIndicator()
+  if (activeCategory.value !== 'all') afterPageEnter(() => toSection('artigos'))
 })
-
-onUnmounted(() => {
-  stopAutoplay()
-  ScrollTrigger.getAll().forEach((t) => t.kill())
+onBeforeUnmount(() => {
+  io?.disconnect()
+  document.removeEventListener('visibilitychange', onVisibility)
+  window.removeEventListener('resize', placeIndicator)
 })
 </script>
 
 <template>
-  <div class="font-body text-black overflow-x-hidden w-full">
-    <!-- ── HERO ── -->
-    <section
-      class="min-h-[60vh] sm:min-h-[70vh] bg-dark relative overflow-hidden w-full flex items-center justify-center"
+  <div class="em-blog-page">
+    <!-- ════════ HERO ════════ -->
+    <EmPageHero
+      :eyebrow="t('blogPage.hero.badge')"
+      :title="t('blogPage.hero.title')"
+      :em="t('blogPage.hero.titleEm')"
+      :subtitle="t('blogPage.hero.subtitle')"
     >
-      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div class="hero-grid absolute inset-0 pointer-events-none" />
-      <HeroLogoMark variant="section" />
+      <template #actions>
+        <EmButton :label="t('blogPage.preview.ctaScroll')" @click="toSection('artigos')" />
+        <EmButton
+          variant="ghost"
+          :label="t('blogPage.cta.badge')"
+          @click="toSection('newsletter')"
+        />
+      </template>
+    </EmPageHero>
 
-      <div
-        class="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-6 px-6 py-24 text-center sm:px-8 lg:px-10 lg:py-32"
-      >
-        <span class="eyebrow eyebrow--dark">
-          {{ t('blogPage.hero.badge') }}
-        </span>
-        <h1 ref="heroTitle" class="display-2 text-white">
-          {{ t('blogPage.hero.title') }}
-        </h1>
-        <p ref="heroSub" class="lead max-w-2xl text-white/55">
-          {{ t('blogPage.hero.subtitle') }}
-        </p>
-      </div>
-    </section>
-
-    <!-- ── FEATURED ARTICLES (carrossel) ── -->
-    <section
-      ref="featuredSection"
-      class="py-20 sm:py-24 lg:py-28 bg-white w-full flex items-center justify-center"
-    >
-      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-        <div class="flex items-center justify-between pb-8">
-          <span class="eyebrow eyebrow--light">
-            {{ t('blogPage.featured.badge') }}
-          </span>
+    <!-- ════════ (01) EM DESTAQUE ════════ -->
+    <section id="destaque" class="em-section">
+      <div class="em-wrap">
+        <div class="em-feat__head">
+          <span v-reveal class="em-eyebrow">(01) {{ t('blogPage.featured.badge') }}</span>
+          <div v-reveal="120" class="em-feat__ctrl">
+            <span class="em-feat__count" aria-hidden="true"
+              ><b>{{ pad(cur + 1) }}</b> / {{ pad(featured.length) }}</span
+            >
+            <button
+              type="button"
+              class="em-round"
+              :aria-label="t('aria.prevSlide')"
+              @click="go(cur - 1)"
+            >
+              <ArrowLeft :stroke-width="1.8" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              class="em-round"
+              :aria-label="t('aria.nextSlide')"
+              @click="go(cur + 1)"
+            >
+              <ArrowRight :stroke-width="1.8" aria-hidden="true" />
+            </button>
+          </div>
         </div>
 
         <div
-          class="featured-carousel flex flex-col gap-5"
-          @touchstart="onFeaturedTouchStart"
-          @touchend="onFeaturedTouchEnd"
+          ref="featEl"
+          v-reveal:scale="100"
+          class="em-feat"
+          :class="{ 'is-paused': !playing }"
+          role="region"
+          aria-roledescription="carousel"
+          :aria-label="t('blogPage.featured.badge')"
+          @pointerenter="hovering = true"
+          @pointerleave="hovering = false"
+          @focusin="hovering = true"
+          @focusout="hovering = false"
+          @keydown="onFeatKey"
+          @touchstart.passive="onTouchStart"
+          @touchend="onTouchEnd"
         >
-          <div class="relative">
-            <button
-              type="button"
-              class="carousel-nav absolute top-1/2 left-3 z-20 hidden -translate-y-1/2 sm:flex"
-              :aria-label="t('aria.prevSlide')"
-              @click.stop="goPrevFeaturedPage"
-            >
-              <ChevronLeft :size="22" stroke-width="2.5" />
-            </button>
-
-            <div class="overflow-hidden rounded-2xl">
-              <div
-                class="flex transition-transform duration-500 ease-out"
-                :style="{ transform: `translateX(-${currentFeaturedPage * 100}%)` }"
+          <div class="em-feat__viewport">
+            <div class="em-feat__track" :style="{ '--cur': cur }">
+              <article
+                v-for="(p, i) in featured"
+                :key="p.id"
+                class="em-feat__slide"
+                :class="{ 'is-on': i === cur }"
+                aria-roledescription="slide"
+                :aria-label="`${i + 1} / ${featured.length}`"
+                :aria-hidden="i === cur ? undefined : 'true'"
+                :inert="i === cur ? undefined : true"
               >
-                <article
-                  v-for="post in featuredPosts"
-                  :key="post.id"
-                  class="grid w-full shrink-0 grid-cols-1 lg:grid-cols-5 gap-0 lg:gap-0 border border-gray-200/80 overflow-hidden bg-white transition-all duration-500 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
-                  @click="goToArticle(post.id)"
-                >
-                  <div
-                    class="lg:col-span-3 relative aspect-16/10 lg:aspect-auto overflow-hidden min-h-[220px] lg:min-h-[280px]"
-                  >
-                    <div :class="`absolute inset-0 bg-linear-to-br ${post.gradient}`" />
-                    <div
-                      class="absolute inset-0 bg-linear-to-t from-[#0a1218]/85 via-[#0a1218]/30 to-transparent"
+                <RouterLink :to="`/blog/${p.id}`" class="em-feat__card em-card">
+                  <div class="em-feat__art">
+                    <img
+                      class="em-feat__photo"
+                      :src="p.img"
+                      alt=""
+                      :loading="i === 0 ? 'eager' : 'lazy'"
+                      width="1400"
+                      height="1089"
                     />
-                    <div class="hero-grid absolute inset-0 pointer-events-none opacity-50" />
-                    <div class="absolute top-5 left-5 flex items-center gap-2">
-                      <span
-                        class="px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-[10px] font-bold uppercase tracking-wider"
-                      >
-                        {{ post.catLabel }}
-                      </span>
-                    </div>
-                    <div
-                      class="absolute bottom-5 left-5 right-5 flex items-center gap-4 text-white/70 text-xs"
+                    <span class="em-feat__shade" aria-hidden="true" />
+                    <span class="em-chip em-chip--glass"
+                      ><Tag :stroke-width="1.8" aria-hidden="true" />{{ p.catLabel }}</span
                     >
-                      <span class="flex items-center gap-1.5">
-                        <Calendar :size="12" />
-                        {{ post.date }}
-                      </span>
-                      <span class="flex items-center gap-1.5">
-                        <Clock :size="12" />
-                        {{ post.readTime }}
-                      </span>
-                    </div>
-                  </div>
-                  <div class="lg:col-span-2 p-6 lg:p-10 flex flex-col gap-4 justify-center">
-                    <h2 class="display-3 text-black">
-                      {{ post.title }}
-                    </h2>
-                    <p class="text-gray-500 text-[14px] leading-relaxed">{{ post.excerpt }}</p>
-                    <div class="flex items-center gap-3 mt-2 pt-4 border-t border-gray-100">
-                      <div
-                        class="w-10 h-10 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-display font-bold text-sm"
+                    <span class="em-feat__meta">
+                      <span class="em-chip em-chip--glass"
+                        ><Calendar :stroke-width="1.8" aria-hidden="true" />{{ p.date }}</span
                       >
-                        {{ post.author.charAt(0) }}
-                      </div>
-                      <div class="flex-1">
-                        <div class="text-gray-700 font-semibold text-sm">{{ post.author }}</div>
-                        <div class="text-gray-400 text-xs">{{ t('blogPage.featured.role') }}</div>
-                      </div>
-                      <ArrowRight :size="20" class="text-primary" />
+                      <span class="em-chip em-chip--glass"
+                        ><Clock :stroke-width="1.8" aria-hidden="true" />{{ p.readTime }}</span
+                      >
+                    </span>
+                  </div>
+                  <div class="em-feat__body">
+                    <h3>{{ p.title }}</h3>
+                    <p>{{ p.excerpt }}</p>
+                    <div class="em-feat__author">
+                      <span class="em-avatar" aria-hidden="true">{{ initial(p.author) }}</span>
+                      <span>
+                        <b>{{ p.author }}</b>
+                        <small>{{ p.role }}</small>
+                      </span>
+                      <span class="em-corner" aria-hidden="true">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M7 17L17 7M8 7h9v9" />
+                        </svg>
+                      </span>
                     </div>
                   </div>
-                </article>
-              </div>
+                </RouterLink>
+              </article>
             </div>
-
-            <button
-              type="button"
-              class="carousel-nav absolute top-1/2 right-3 z-20 hidden -translate-y-1/2 sm:flex"
-              :aria-label="t('aria.nextSlide')"
-              @click.stop="goNextFeaturedPage"
-            >
-              <ChevronRight :size="22" stroke-width="2.5" />
-            </button>
           </div>
 
-          <div v-if="featuredPosts.length > 1" class="flex justify-center gap-2.5">
+          <!-- uma barra por destaque: a ativa enche e passa para o próximo -->
+          <div class="em-feat__bars">
             <button
-              v-for="(_, index) in featuredPosts"
-              :key="index"
+              v-for="(p, i) in featured"
+              :key="p.id"
               type="button"
-              class="h-2 rounded-full transition-all duration-300"
-              :class="
-                index === currentFeaturedPage ? 'w-6 bg-primary' : 'w-2 bg-dark/20 hover:bg-dark/35'
-              "
-              :aria-label="t('aria.goToSlide', { index: index + 1 })"
-              @click="goToFeaturedPage(index)"
-            />
+              class="em-feat__bar"
+              :class="{ 'is-on': i === cur, 'is-done': i < cur }"
+              :style="{ '--ms': `${AUTOPLAY_MS}ms` }"
+              :aria-label="t('aria.goToSlide', { index: i + 1 })"
+              :aria-current="i === cur ? 'true' : undefined"
+              @click="go(i)"
+            >
+              <i @animationend="onBarEnd(i)" />
+            </button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ── ARTICLES GRID ── -->
-    <section
-      id="blog-articles"
-      ref="articlesSection"
-      class="py-20 sm:py-24 lg:py-28 bg-mid w-full flex items-center justify-center scroll-mt-[72px]"
-    >
-      <div class="w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-        <div class="flex flex-col items-center text-center gap-5 mb-10">
-          <span class="eyebrow eyebrow--light">
-            {{ t('blogPage.articles.badge') }}
-          </span>
-          <h2 class="display-2 text-black">
-            {{ t('blogPage.articles.title') }}
-          </h2>
-        </div>
-
-        <!-- Search + Categories filter -->
-        <div class="pb-5 flex flex-col items-center gap-5">
-          <div class="relative w-full max-w-md">
-            <Search
-              :size="16"
-              class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              v-model="searchQuery"
-              type="search"
-              :placeholder="t('blogPage.hero.searchPlaceholder')"
-              class="w-full rounded-full border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm text-dark outline-none placeholder:text-gray-400 shadow-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/15"
+    <!-- ════════ (02) PARA COMEÇAR ════════ -->
+    <section id="comece" class="em-section em-section--tint">
+      <div class="em-wrap">
+        <div class="em-head">
+          <div>
+            <span v-reveal class="em-eyebrow">(02) {{ t('blogPage.preview.badge') }}</span>
+            <EmSplit :text="t('blogPage.preview.title')" :em="t('blogPage.preview.titleEm')" />
+          </div>
+          <div v-reveal="150" class="em-head__side">
+            <p>{{ t('blogPage.preview.subtitle') }}</p>
+            <EmButton
+              variant="ghost"
+              :label="t('blogPage.preview.ctaScroll')"
+              @click="toSection('artigos')"
             />
           </div>
-          <div class="flex flex-wrap items-center justify-center gap-2">
+        </div>
+
+        <ol class="em-reads" :class="{ 'is-hover': hoverRead >= 0 }">
+          <li v-for="(p, i) in previewPosts" :key="p.id" v-reveal="i * 90">
+            <RouterLink
+              :to="`/blog/${p.id}`"
+              class="em-read"
+              :class="{ 'is-active': hoverRead === i }"
+              @pointerenter="hoverRead = i"
+              @pointerleave="hoverRead = -1"
+              @focus="hoverRead = i"
+              @blur="hoverRead = -1"
+            >
+              <span class="em-read__n">({{ pad(i + 1) }})</span>
+              <span class="em-read__thumb" :style="{ '--tone': p.tone }" aria-hidden="true">{{
+                pad(p.id)
+              }}</span>
+              <span class="em-read__main">
+                <small>{{ p.catLabel }} · {{ p.readTime }}</small>
+                <strong>{{ p.title }}</strong>
+                <span class="em-read__ex">{{ p.excerpt }}</span>
+              </span>
+              <time class="em-read__date">{{ p.date }}</time>
+              <span class="em-read__go">
+                <span class="sr-only">{{ t('blogPage.preview.readArticle') }}</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M7 17L17 7M8 7h9v9" />
+                </svg>
+              </span>
+            </RouterLink>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ════════ (03) TODAS AS PUBLICAÇÕES ════════ -->
+    <section id="artigos" class="em-section">
+      <div class="em-wrap">
+        <div class="em-head">
+          <div>
+            <span v-reveal class="em-eyebrow">(03) {{ t('blogPage.articles.badge') }}</span>
+            <EmSplit :text="t('blogPage.articles.title')" :em="t('blogPage.articles.titleEm')" />
+          </div>
+          <div v-reveal="150" class="em-head__side em-head__side--wide">
+            <label class="em-search">
+              <Search :stroke-width="1.8" aria-hidden="true" />
+              <span class="sr-only">{{ t('blogPage.hero.searchPlaceholder') }}</span>
+              <input
+                v-model="searchQuery"
+                type="search"
+                autocomplete="off"
+                :placeholder="t('blogPage.hero.searchPlaceholder')"
+              />
+              <button
+                v-if="searchQuery"
+                type="button"
+                class="em-search__clear"
+                :aria-label="t('blogPage.articles.clear')"
+                @click="searchQuery = ''"
+              >
+                <X :stroke-width="2" aria-hidden="true" />
+              </button>
+            </label>
+          </div>
+        </div>
+
+        <div v-reveal class="em-filterbar">
+          <div ref="tabsEl" class="em-tabs" role="group" :aria-label="t('blogPage.articles.badge')">
+            <span
+              class="em-tabs__ind"
+              :class="{ 'is-on': ind.on }"
+              :style="{ '--x': `${ind.x}px`, '--w': `${ind.w}px` }"
+              aria-hidden="true"
+            />
             <button
               v-for="c in categories"
               :key="c.id"
               type="button"
-              @click="setCategory(c.id as CategoryId)"
-              :class="[
-                'px-4 py-2 rounded-full text-[12px] font-display font-semibold transition-all',
-                activeCategory === c.id
-                  ? 'bg-primary text-dark border border-primary shadow-[0_8px_24px_rgba(17,211,211,0.25)]'
-                  : 'bg-white border border-gray-200 text-gray-600 hover:border-primary/40 hover:text-primary',
-              ]"
+              class="em-tabs__btn"
+              :class="{ 'is-active': activeCategory === c.id }"
+              :aria-pressed="activeCategory === c.id ? 'true' : 'false'"
+              @click="setCategory(c.id)"
             >
-              {{ c.label }}
+              {{ c.label }}<small>{{ c.count }}</small>
             </button>
           </div>
+          <span class="em-filterbar__count" aria-live="polite">{{
+            t('blogPage.articles.count', filtered.length)
+          }}</span>
         </div>
 
-        <!-- Empty state -->
-        <div v-if="filteredArticles.length === 0" class="text-center py-10 text-gray-400 text-sm">
-          {{ t('blogPage.articles.empty') }}
-        </div>
-
-        <!-- Grid -->
-        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <article
-            v-for="(a, i) in filteredArticles"
+        <!-- trocar de categoria refaz a grade, e os cards entram de novo em sequência -->
+        <div v-if="filtered.length" :key="activeCategory" class="em-posts em-posts--grid">
+          <RouterLink
+            v-for="(a, i) in filtered"
             :key="a.id"
-            @click="goToArticle(a.id)"
-            class="article-card group relative rounded-2xl border border-gray-200/80 bg-white overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)] cursor-pointer"
+            v-reveal="(i % 3) * 90"
+            v-spot
+            :to="`/blog/${a.id}`"
+            class="em-post em-card em-card--lift"
           >
-            <div class="relative overflow-hidden aspect-16/10">
-              <div :class="`absolute inset-0 bg-linear-to-br ${a.gradient}`" />
-              <div
-                class="absolute inset-0 bg-linear-to-t from-[#0a1218]/85 via-[#0a1218]/30 to-transparent"
-              />
-              <div class="hero-grid absolute inset-0 pointer-events-none opacity-50" />
-              <span
-                class="absolute top-4 right-4 font-mono text-[10px] tracking-[3px] text-white/80 bg-white/5 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1"
+            <div class="em-post__cover" :style="{ '--tone': a.tone }">
+              <span class="em-post__n" aria-hidden="true">{{ pad(a.id) }}</span>
+              <span class="em-chip em-chip--glass"
+                ><Tag :stroke-width="1.8" aria-hidden="true" />{{ a.catLabel }}</span
               >
-                0{{ i + 1 }}
-              </span>
-              <span
-                class="absolute bottom-4 left-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary text-[10px] font-bold uppercase tracking-wider"
-              >
-                <Tag :size="10" />
-                {{ a.catLabel }}
-              </span>
-            </div>
-            <div class="p-6 flex flex-col gap-3">
-              <h3
-                class="font-display font-bold text-black text-[17px] leading-tight group-hover:text-primary transition-colors"
-              >
-                {{ a.title }}
-              </h3>
-              <p class="text-gray-500 text-[13px] leading-relaxed">{{ a.excerpt }}</p>
-              <div
-                class="flex items-center gap-4 pt-3 border-t border-gray-100 text-gray-400 text-xs"
-              >
-                <span class="flex items-center gap-1.5">
-                  <Calendar :size="12" />
-                  {{ a.date }}
-                </span>
-                <span class="flex items-center gap-1.5">
-                  <Clock :size="12" />
-                  {{ a.readTime }}
-                </span>
-                <ArrowRight
-                  :size="16"
-                  class="ml-auto text-primary group-hover:translate-x-1 transition-transform"
-                />
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── PRÉ-VISUALIZAÇÃO (após a grelha, antes do newsletter) ── -->
-    <section
-      ref="previewSection"
-      class="relative border-t border-gray-200/80 bg-linear-to-b from-white to-mid py-20 sm:py-24 lg:py-28 w-full flex items-center justify-center"
-    >
-      <div
-        class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/25 to-transparent"
-        aria-hidden="true"
-      />
-      <div class="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
-        <div
-          class="pb-5 flex flex-col gap-5 text-center sm:mb-20 md:mb-24 md:flex-row md:items-end md:justify-between md:text-left"
-        >
-          <div class="flex max-w-2xl flex-col items-center gap-4 md:items-start">
-            <span
-              class="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-white px-3 py-1 font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary shadow-sm"
-            >
-              <BookOpen :size="12" class="shrink-0" stroke-width="2.5" aria-hidden="true" />
-              {{ t('blogPage.preview.badge') }}
-            </span>
-            <h2
-              class="font-display text-[clamp(1.25rem,2.8vw,1.75rem)] font-extrabold leading-tight tracking-tight text-black"
-            >
-              {{ t('blogPage.preview.title') }}
-            </h2>
-            <p class="text-[13px] leading-relaxed text-gray-500 sm:text-[14px]">
-              {{ t('blogPage.preview.subtitle') }}
-            </p>
-          </div>
-          <a
-            href="#blog-articles"
-            class="hidden shrink-0 items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 font-display text-[12px] font-bold text-gray-700 no-underline shadow-sm md:inline-flex md:hover:border-primary/40 md:hover:text-primary"
-          >
-            {{ t('blogPage.preview.ctaScroll') }}
-            <ArrowRight :size="14" class="text-primary" aria-hidden="true" />
-          </a>
-        </div>
-
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-7">
-          <a
-            v-for="(p, idx) in previewPosts"
-            :key="p.id"
-            :href="`/blog/${p.id}`"
-            class="preview-card group flex flex-col overflow-hidden rounded-2xl border border-gray-200/90 bg-white text-inherit no-underline shadow-[0_8px_32px_rgba(15,23,42,0.06)] outline-none ring-primary/0 focus-visible:ring-2 focus-visible:ring-primary md:hover:border-primary/35 md:hover:shadow-[0_20px_50px_-18px_rgba(17,211,211,0.28)]"
-            @click.prevent="goToArticle(p.id)"
-          >
-            <div
-              class="relative flex h-24 shrink-0 items-center justify-center overflow-hidden sm:h-28"
-            >
-              <div :class="`absolute inset-0 bg-linear-to-br ${p.gradient}`" />
-              <div class="absolute inset-0 bg-dark/55" />
-              <div class="hero-grid absolute inset-0 opacity-30" />
-              <BookOpen
-                :size="32"
-                stroke-width="2"
-                class="relative z-10 text-primary"
-                aria-hidden="true"
-              />
-              <span
-                class="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 font-display text-[9px] font-bold uppercase tracking-wider text-white/90 backdrop-blur-sm"
-              >
-                <Tag :size="10" class="shrink-0" aria-hidden="true" />
-                {{ p.catLabel }}
-              </span>
-              <span
-                class="absolute right-3 top-3 font-mono text-[10px] tracking-widest text-white/50"
-                >0{{ idx + 1 }}</span
-              >
-            </div>
-            <div class="flex flex-1 flex-col gap-3 p-5 sm:p-6">
-              <h3
-                class="font-display text-[16px] font-bold leading-snug tracking-tight text-black group-hover:text-primary sm:text-[17px]"
-              >
-                {{ p.title }}
-              </h3>
-              <p class="line-clamp-2 flex-1 text-[13px] leading-relaxed text-gray-500">
-                {{ p.excerpt }}
-              </p>
-              <div
-                class="mt-1 flex items-center justify-between border-t border-gray-100 pt-3 text-[11px] text-gray-400"
-              >
-                <span class="flex items-center gap-1.5">
-                  <Calendar :size="12" />
-                  {{ p.date }}
-                </span>
-                <span
-                  class="flex items-center gap-1 font-display text-[11px] font-semibold text-primary"
+              <span class="em-corner" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
                 >
-                  {{ t('blogPage.preview.readArticle') }}
-                  <ArrowRight :size="14" class="shrink-0" aria-hidden="true" />
-                </span>
-              </div>
+                  <path d="M7 17L17 7M8 7h9v9" />
+                </svg>
+              </span>
             </div>
-          </a>
+            <div class="em-post__body">
+              <span class="em-post__date"
+                ><time>{{ a.date }}</time> · {{ a.readTime }}</span
+              >
+              <h3>{{ a.title }}</h3>
+              <p>{{ a.excerpt }}</p>
+              <span class="em-post__more">{{ t('blogPage.preview.readArticle') }}</span>
+            </div>
+          </RouterLink>
         </div>
 
-        <div class="mt-10 flex justify-center md:hidden">
-          <a
-            href="#blog-articles"
-            class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 font-display text-[12px] font-bold text-gray-700 no-underline shadow-sm"
-          >
-            {{ t('blogPage.preview.ctaScroll') }}
-            <ArrowRight :size="14" class="text-primary" aria-hidden="true" />
-          </a>
+        <div v-else class="em-empty em-card">
+          <span class="em-ico" aria-hidden="true"><Search :stroke-width="1.7" /></span>
+          <p>{{ t('blogPage.articles.empty') }}</p>
+          <EmButton
+            variant="ghost"
+            size="sm"
+            :label="t('blogPage.articles.clear')"
+            @click="clearFilters"
+          />
         </div>
       </div>
     </section>
 
-    <!-- ── NEWSLETTER CTA ── -->
-    <section
-      ref="newsletterSection"
-      class="bg-dark py-20 sm:py-24 lg:py-28 relative overflow-hidden w-full flex items-center justify-center"
+    <!-- ════════ NEWSLETTER ════════ -->
+    <EmCta
+      id="newsletter"
+      :badge="t('blogPage.cta.badge')"
+      :title="t('blogPage.cta.title')"
+      :em="t('blogPage.cta.titleEm')"
+      :subtitle="t('blogPage.cta.subtitle')"
     >
-      <div
-        class="absolute -top-48 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full pointer-events-none cta-glow"
-      />
-      <div
-        class="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
-        aria-hidden="true"
-      >
-        <span
-          class="cta-ghost font-display font-extrabold tracking-[-0.05em] whitespace-nowrap leading-[0.8]"
-        >
-          EMMITEC&nbsp;HEALTH
-        </span>
-      </div>
-      <div
-        class="w-full max-w-3xl mx-auto px-4 sm:px-6 text-center relative z-10 flex flex-col gap-5 animate-in items-center justify-center"
-      >
-        <span class="eyebrow eyebrow--dark">
-          {{ t('blogPage.cta.badge') }}
-        </span>
-        <h2 class="display-2 mt-2 mb-2 text-white">
-          {{ t('blogPage.cta.title') }}
-        </h2>
-        <p class="text-white/45 text-[14px] sm:text-[16px] leading-relaxed mb-6 max-w-2xl mx-auto">
-          {{ t('blogPage.cta.subtitle') }}
-        </p>
-        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto w-full">
+      <form class="em-news em-news--cta" @submit.prevent="subscribe">
+        <label class="em-news__field">
+          <span class="sr-only">{{ t('blogPage.cta.placeholder') }}</span>
           <input
+            v-model="email"
             type="email"
+            required
+            autocomplete="email"
             :placeholder="t('blogPage.cta.placeholder')"
-            class="flex-1 bg-white/5 border border-white/15 rounded-full px-5 py-3 text-white text-sm outline-none focus:border-primary/50 placeholder:text-white/40"
           />
-          <Button
-            :label="t('blogPage.cta.button')"
-            unstyled
-            class="btn-primary font-display font-bold rounded-full!"
-          />
-        </form>
-      </div>
-    </section>
+          <EmButton type="submit" variant="dark" :label="t('blogPage.cta.button')" />
+        </label>
+        <p class="em-footer__note">
+          <span class="em-news__check" aria-hidden="true" />
+          {{ t('footer.newsletter.privacy') }}
+        </p>
+      </form>
+    </EmCta>
   </div>
 </template>
-
-<style scoped>
-/* mesma assinatura de fundo da hero da home */
-.page-hero-aurora {
-  background:
-    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
-    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
-}
-
-.hero-grid {
-  background-image:
-    linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-
-.cta-glow {
-  background: radial-gradient(circle, rgba(17, 211, 211, 0.08) 0%, transparent 70%);
-}
-
-.cta-ghost {
-  font-size: clamp(120px, 20vw, 340px);
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
-  letter-spacing: -0.05em;
-}
-
-.carousel-nav {
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 9999px;
-  border: 1px solid rgba(14, 17, 23, 0.12);
-  background: #fff;
-  color: #0e1117;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
-  transition:
-    border-color 0.25s,
-    color 0.25s,
-    background 0.25s,
-    box-shadow 0.25s;
-}
-.carousel-nav:hover {
-  border-color: #11d3d3;
-  color: #11d3d3;
-  box-shadow: 0 8px 24px rgba(17, 211, 211, 0.22);
-}
-</style>

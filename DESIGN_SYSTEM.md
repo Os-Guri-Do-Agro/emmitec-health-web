@@ -1,603 +1,193 @@
-# Emmitec Health - Design System & Estrutura do Projeto
+# Emmitec Health — Design System & Estrutura do Projeto
 
-Guia completo para manter consistência visual e arquitetural ao criar novas telas no projeto.
+Guia para manter a consistência ao criar ou alterar telas. Visual claro, tipografia
+grande, muito respiro, cards com borda em degradê e movimento suave (inspiração:
+estúdios como midu.design), com a paleta ciano da Emmitec.
 
 ---
 
-## 1. Tecnologias & Stack
+## 1. Stack
 
 | Tecnologia | Uso |
-|------------|-----|
-| **Vue 3** | Framework principal com `<script setup lang="ts">` |
-| **Vue Router** | Navegação SPA (`createWebHistory`) |
-| **Vue I18n** | Internacionalização (PT/EN/ES) |
-| **Tailwind CSS v4** | Estilização utility-first |
-| **PrimeVue** | Componentes UI (Button) |
-| **GSAP + ScrollTrigger** | Animações de scroll e entrada |
-| **Lucide Vue** | Ícones (`lucide-vue-next`) |
+| --- | --- |
+| Vue 3.5 (`<script setup lang="ts">`) | Framework |
+| Vue Router | SPA (`createWebHistory`), troca de página animada |
+| Vue I18n 9 | PT / EN / ES (`src/i18n/locales/*.json`) |
+| Tailwind CSS v4 | Base e utilities (o visual vive nas classes `em-*`) |
+| Lucide (`lucide-vue-next`) | Ícones, sempre com `:stroke-width="1.7"` |
+| WebGL próprio (`src/lib/gradient.ts`) | Gradiente líquido do hero e do rodapé |
+
+Sem GSAP e sem PrimeVue: todo o movimento está em `src/lib/motion.ts` (diretivas) e em CSS.
 
 ---
 
-## 2. Design Tokens
-
-### 2.1 Cores (definidas em `@theme` no `main.css`)
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--color-primary` | `#11d3d3` (ciano/turquesa) | CTAs, destaques, hover states |
-| `--color-primary-soft` | `#5ee8e8` | Texto de destaque sobre fundo escuro |
-| `--color-primary-deep` | `#0aa3a8` | Gradiente do botão / texto sobre fundo claro |
-| `--color-accent` | `#4aa8ff` | Só em gradientes/glows (nunca sozinho) |
-| `--color-secondary` | `#4c666d` | Elementos secundários |
-| `--color-dark` | `#0e1117` | Background escuro (Hero, CTA) |
-| `--color-dark-2` | `#161c26` | Background escuro alternativo |
-| `--color-ink` | `#090d13` | Preto mais profundo (bordas/sombras) |
-| `--color-mid` | `#f4f6f7` | Background cinza claro |
-| `--color-black` | `#202220` | Texto principal |
-| `--color-muted` | `#5f7681` | Texto secundário (contraste AA: 4.78:1 no branco) |
-| `--color-background` | `#ffffff` | Background branco |
-
-> **Contraste mínimo:** texto pequeno sobre `bg-dark` deve usar no mínimo `text-white/55`.
-> `text-white/45` não passa em WCAG AA abaixo de 16px.
-
-### 2.2 Tipografia
-
-| Classe | Fonte | Uso |
-|--------|-------|-----|
-| `font-display` | Plus Jakarta Sans | Títulos, botões, navegação |
-| `font-body` | Plus Jakarta Sans | Corpo de texto |
-
-**Pesos disponíveis:** `font-medium` (500), `font-semibold` (600), `font-bold` (700), `font-extrabold` (800)
-
-**Escala editorial (classes globais no `main.css`) — use estas em vez de `text-[...]` ad hoc:**
-
-| Classe | Tamanho | Uso |
-|--------|---------|-----|
-| `.display-1` | `clamp(2rem, 5.2vw, 4.1rem)` | H1 do Hero (só um por página) |
-| `.display-2` | `clamp(1.75rem, 3.6vw, 2.9rem)` | Títulos de seção (H2) |
-| `.display-3` | `clamp(1.35rem, 2.4vw, 1.85rem)` | Títulos de card (H3) |
-| `.lead` | `clamp(0.98rem, 1.15vw, 1.13rem)` | Parágrafo de apoio abaixo do título |
-
-Corpo de texto comum: `text-[14px]` a `text-[15px]`. Micro-labels: `text-[10px]`–`text-[12.5px]`.
-
-### 2.3 Classes utilitárias globais
-
-| Classe | O que faz |
-|--------|-----------|
-| `.eyebrow` + `.eyebrow--dark` / `.eyebrow--light` | Pill de rótulo acima do título. `--dark` para fundo escuro |
-| `.text-gradient-brand` | Texto com gradiente ciano→azul (para destacar 2–4 palavras de um título) |
-| `.btn-primary` / `.btn-ghost` / `.btn-light` | Botões — ver seção 5.1 |
-| `.btn-primary--sm` | Modificador compacto (usado no header) |
-| `.bg-grid-lines` / `.bg-noise` | Padrões de fundo reutilizáveis |
-
-### 2.3 Espaçamento & Layout
-
-- **Container máximo:** `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`
-- **Padding de seção:** `py-12 sm:py-16` ou `py-16 sm:py-20`
-- **Gap padrão:** `gap-4 sm:gap-6` para grids
-- **Hero min-height:** `min-h-[50vh] sm:min-h-[65vh] lg:min-h-[70vh]`
-
----
-
-## 3. Estrutura de Pastas
+## 2. Onde está cada coisa
 
 ```
 src/
 ├── assets/
-│   ├── main.css          # Configuração Tailwind + tokens CSS
-│   ├── base.css          # Estilos base
-│   └── home/             # Imagens específicas da Home
+│   ├── tokens.css      ← tokens do DS (cores, espaço, raios, sombras, durações, curvas)
+│   ├── emmitec.css     ← todas as classes em-* (componentes, seções, páginas, responsivo)
+│   ├── main.css        ← Tailwind + @theme + imports (emmitec.css entra em layer(components))
+│   ├── home/ about/ apps/ blog/   ← imagens
 ├── components/
-│   ├── AppHeader.vue     # Navegação fixa com scroll effect
-│   ├── AppFooter.vue     # Footer 4 colunas
-│   └── [componentes específicos]
-├── i18n/
-│   ├── index.ts          # Configuração Vue I18n
-│   └── locales/
-│       ├── pt.json       # Português (default)
-│       ├── en.json       # Inglês
-│       └── es.json       # Espanhol
-├── router/
-│   └── index.ts          # Rotas da aplicação
-├── views/                # Páginas completas
-│   ├── HomeView.vue
-│   └── AboutView.vue
-└── App.vue               # Layout root (Header + RouterView + Footer)
+│   ├── AppHeader.vue   ← navbar: logo + botão "Menu" (abre no hover/toque/foco)
+│   ├── AppFooter.vue   ← rodapé com newsletter (prop `newsletter`), links e marca gigante
+│   └── em/             ← componentes do DS (ver seção 5)
+├── lib/
+│   ├── motion.ts       ← rolagem amortecida, laço de efeitos, reveals e diretivas
+│   ├── pageTransition.ts ← troca de página em dois tempos + afterPageEnter()
+│   ├── gradient.ts     ← shaders (glGradient, softShader) e fallback (blobsField)
+│   ├── site.ts         ← calendlyUrl, idiomas, redes sociais, logo
+│   ├── blog.ts         ← artigos (useArticles) e categorias
+│   ├── equipment.ts    ← dispositivos (useDevices) e categorias
+│   └── useToc.ts       ← sumário que acompanha a leitura (artigo, privacidade)
+└── views/              ← uma view por rota
 ```
 
 ---
 
-## 4. Padrão de Views
+## 3. Tokens (`tokens.css`)
 
-### 4.1 Estrutura Base de uma View
+**Cores**
+
+| Token | Valor | Uso |
+| --- | --- | --- |
+| `--surface-000` | `#ffffff` | cards |
+| `--surface-100` | `#f4f6f7` | fundo da página |
+| `--surface-200` / `--cyan-50` | `#eafbfb` | chips, seções `--tint` |
+| `--line` | `#eaecef` | divisórias, bordas |
+| `--cyan-100` | `#d8f8f8` | fundos suaves de marca |
+| `--cyan-300` | `#67ddef` | ícones sobre escuro, foco |
+| `--cyan-500` | `#11d3d3` | botão primário, destaques |
+| `--cyan-600` | `#0db7ba` | traçados, sparklines |
+| `--cyan-700` | `#08777b` | texto de marca sobre claro (palavra em serif) |
+| `--ink` / `--ink-muted` | `#202220` / `#4a5565` | texto |
+| `--night-900` | `#0e1117` | botão escuro, avatar, ícones fortes |
+| `--pastel-mint/blue/peach/rose/lilac` | — | capas e telas (um tom por item) |
+
+**Tipografia** — `Instrument Sans` (tudo) + `Instrument Serif` itálico (a palavra de destaque
+do título, em `--cyan-700`). Títulos 500, `letter-spacing: -0.045em`, `line-height: 1`.
+
+**Forma** — `--em-radius-sm/md/lg` (10/18/32px), `--radius-pill`. Cards grandes usam 26–30px.
+
+**Movimento** — `--em-ease-out: cubic-bezier(0.19, 1, 0.22, 1)` (entradas),
+`--em-ease-in-out: cubic-bezier(0.76, 0, 0.24, 1)` (troca de página, bob).
+Durações `--dur-fast/base/slow/enter` = 320/640/1000/1400ms.
+
+---
+
+## 4. Anatomia de uma página
 
 ```vue
-<script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Button from 'primevue/button'
-import { IconName } from 'lucide-vue-next'
-
-const { t } = useI18n()
-gsap.registerPlugin(ScrollTrigger)
-
-// Refs para animações
-const sectionRef = ref<HTMLElement | null>(null)
-
-onMounted(() => {
-  // Animações de scroll
-  if (sectionRef.value) {
-    gsap.from(sectionRef.value.querySelectorAll('.animate-in'), {
-      opacity: 0,
-      y: 30,
-      stagger: 0.12,
-      duration: 0.72,
-      ease: 'power3.out',
-      scrollTrigger: { 
-        trigger: sectionRef.value, 
-        start: 'top 80%', 
-        once: true 
-      },
-    })
-  }
-})
-
-onUnmounted(() => {
-  ScrollTrigger.getAll().forEach((t) => t.kill())
-})
-</script>
-
 <template>
-  <div class="font-body text-black overflow-x-hidden w-full">
-    <!-- Seções aqui -->
-  </div>
-</template>
+  <div class="em-xxx-page">
+    <EmPageHero :eyebrow :title :em :subtitle>          <!-- gradiente vivo -->
+      <template #actions>…EmButton…</template>
+      <template #visual>…arte opcional à direita…</template>
+    </EmPageHero>
 
-<style scoped>
-/* Estilos específicos do componente */
-</style>
-```
-
-### 4.2 Seções Comuns
-
-#### Hero Section (Escura)
-```vue
-<section class="min-h-[60vh] bg-dark relative overflow-hidden w-full">
-  <!-- Grid background pattern -->
-  <div class="hero-grid absolute inset-0 pointer-events-none" />
-  
-  <!-- Layout grid 2 colunas -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] w-full">
-    <!-- Conteúdo -->
-    <div class="flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-20 lg:py-0 z-10">
-      <span class="text-[11px] font-bold uppercase text-primary tracking-[2px]">
-        {{ t('section.badge') }}
-      </span>
-      <h1 class="font-display font-extrabold text-white text-xl sm:text-2xl lg:text-[34px]">
-        {{ t('section.title') }}
-      </h1>
-      <p class="text-white/50 text-[12px] sm:text-[14px]">
-        {{ t('section.subtitle') }}
-      </p>
-      <div class="flex gap-4 flex-wrap">
-        <Button :label="t('button.primary')" unstyled class="btn-primary" />
-        <Button :label="t('button.secondary')" unstyled class="btn-ghost" />
-      </div>
-    </div>
-    
-    <!-- Imagem/Visual (hidden em mobile) -->
-    <div class="hidden lg:block relative h-full">
-      <img :src="imageSrc" class="absolute inset-0 w-full h-full object-cover" />
-    </div>
-  </div>
-</section>
-```
-
-#### Content Section (Clara)
-```vue
-<section class="py-16 sm:py-20 bg-white w-full">
-  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header da seção -->
-    <div class="text-center mb-12">
-      <span class="text-[11px] font-bold uppercase text-primary tracking-[2px]">
-        {{ t('section.badge') }}
-      </span>
-      <h2 class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)]">
-        {{ t('section.title') }}
-      </h2>
-      <p class="text-gray-500 text-[14px] max-w-2xl mx-auto">
-        {{ t('section.subtitle') }}
-      </p>
-    </div>
-    
-    <!-- Grid de cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <!-- Cards aqui -->
-    </div>
-  </div>
-</section>
-```
-
-#### Split Section (Imagem + Texto)
-```vue
-<section class="py-12 sm:py-16 bg-mid w-full" :class="dark ? 'bg-dark-2' : 'bg-mid'">
-  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 
-              grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center">
-    <!-- Texto -->
-    <div class="flex flex-col gap-5">
-      <span class="text-[11px] font-bold uppercase text-primary tracking-[2px]">
-        {{ t('tag') }}
-      </span>
-      <h2 :class="dark ? 'text-white' : 'text-black'" 
-          class="font-display font-extrabold text-[clamp(22px,4vw,28px)]">
-        {{ t('title') }}
-      </h2>
-      <p class="text-muted text-[14px]">{{ t('body') }}</p>
-      <ul class="flex flex-col gap-2.5">
-        <li v-for="item in items" :key="item" 
-            class="flex items-start gap-2.5 text-[13px]
-                   :class="dark ? 'text-white/55' : 'text-sec'">
-          <span class="icon-box w-5 h-5 rounded-full bg-primary/10 
-                       border border-primary/25 flex items-center justify-center text-primary">
-            <Check :size="12" stroke-width="3" />
-          </span>
-          {{ item }}
-        </li>
-      </ul>
-      <Button :label="t('button')" unstyled class="btn-primary" />
-    </div>
-    
-    <!-- Imagem -->
-    <div class="rounded-2xl overflow-hidden aspect-video shadow-[0_28px_72px_rgba(0,0,0,.22)]">
-      <img :src="image" class="w-full h-full object-cover" />
-    </div>
-  </div>
-</section>
-```
-
-#### CTA Section (Final)
-```vue
-<section class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full">
-  <!-- Glow effect -->
-  <div class="absolute -top-48 left-1/2 -translate-x-1/2 
-              w-[320px] h-[320px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] 
-              rounded-full cta-glow" />
-  
-  <!-- Ghost text background -->
-  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-    <span class="cta-ghost font-display font-extrabold">
-      EMMITEC&nbsp;HEALTH
-    </span>
-  </div>
-  
-  <!-- Content -->
-  <div class="w-full max-w-4xl mx-auto px-4 text-center relative z-10">
-    <span class="text-[11px] font-bold uppercase text-primary tracking-[2px]">
-      {{ t('cta.badge') }}
-    </span>
-    <h2 class="font-display font-extrabold text-white text-[clamp(24px,2.5vw,40px)]">
-      {{ t('cta.title') }}
-    </h2>
-    <p class="text-white/45 text-[14px]">{{ t('cta.subtitle') }}</p>
-    <div class="flex gap-4 justify-center">
-      <Button :label="t('cta.primary')" unstyled class="btn-primary" />
-      <Button :label="t('cta.secondary')" unstyled class="btn-ghost" />
-    </div>
-  </div>
-</section>
-```
-
----
-
-## 5. Componentes UI
-
-### 5.1 Botões
-
-As três variantes são **classes globais** em `main.css` — não redeclare em `<style scoped>`,
-senão a view fica fora de sincronia com o resto do site.
-
-| Classe | Onde usar |
-|--------|-----------|
-| `.btn-primary` | Ação principal (gradiente ciano). Funciona em fundo claro e escuro |
-| `.btn-ghost` | Ação secundária **sobre fundo escuro** |
-| `.btn-light` | Ação secundária **sobre fundo claro** |
-
-Todas são `inline-flex` com `gap`, então aceitam ícone + texto direto:
-
-```vue
-<!-- link interno: sempre RouterLink (evita full reload da SPA) -->
-<RouterLink to="/what-is-rpm" class="btn-ghost font-display group">
-  {{ t('hero.button.solutions') }}
-  <ArrowRight :size="16" stroke-width="2.5" aria-hidden="true"
-    class="transition-transform duration-300 group-hover:translate-x-1" />
-</RouterLink>
-
-<!-- link externo -->
-<a :href="calendlyUrl" target="_blank" rel="noopener noreferrer" class="btn-primary font-display">
-  <CalendarClock :size="17" stroke-width="2.3" aria-hidden="true" />
-  {{ t('hero.button.demo') }}
-</a>
-```
-
-> Não use `<Button unstyled>` do PrimeVue para navegação — um link deve ser um `<a>`/`RouterLink`.
-
-### 5.2 Cards
-
-**Card de Serviço/Feature:**
-```vue
-<article class="group relative rounded-2xl border border-gray-200/80 
-                bg-white overflow-hidden transition-all duration-500 
-                hover:-translate-y-1.5 hover:border-primary/30 
-                hover:shadow-[0_24px_60px_-20px_rgba(17,211,211,0.35)]">
-  <!-- Imagem com overlay -->
-  <div class="relative overflow-hidden aspect-16/10">
-    <img :src="image" class="absolute inset-0 w-full h-full object-cover 
-                              transition-transform duration-900 group-hover:scale-[1.06]" />
-    <div class="absolute inset-0 bg-linear-to-t from-[#0a1218]/90 via-[#0a1218]/35 to-transparent" />
-    
-    <!-- Chip de índice -->
-    <span class="absolute top-4 right-4 font-mono text-[10px] tracking-[3px] 
-                 text-white/80 bg-white/5 backdrop-blur-sm border border-white/15 
-                 rounded-full px-2.5 py-1">
-      0{{ index + 1 }} / 0{{ total }}
-    </span>
-    
-    <!-- Label -->
-    <span class="absolute bottom-4 left-4 font-mono text-[10px] text-primary 
-                 tracking-[3px] uppercase font-semibold">
-      {{ label }}
-    </span>
-    
-    <!-- Icon flutuante -->
-    <div class="absolute -bottom-5 right-5 w-12 h-12 rounded-xl bg-primary text-dark 
-                flex items-center justify-center shadow-[0_10px_28px_rgba(17,211,211,0.45)] 
-                transition-all duration-500 group-hover:-translate-y-1 group-hover:rotate-[-4deg]">
-      <component :is="icon" :size="20" stroke-width="2.2" />
-    </div>
-  </div>
-  
-  <!-- Corpo -->
-  <div class="p-6 pt-8 flex flex-col gap-3">
-    <h3 class="font-display font-bold text-gray-900 text-[17px]">{{ title }}</h3>
-    <p class="text-gray-500 text-[13px] leading-[1.7]">{{ description }}</p>
-  </div>
-</article>
-```
-
----
-
-## 6. Animações GSAP
-
-### 6.1 Padrões de Animação
-
-**Reveal on Scroll (elementos aparecendo):**
-```typescript
-gsap.from(elements, {
-  opacity: 0,
-  y: 30,        // ou x para horizontal
-  stagger: 0.12, // delay entre elementos
-  duration: 0.72,
-  ease: 'power3.out',
-  scrollTrigger: { 
-    trigger: container, 
-    start: 'top 80%',  // quando 80% da viewport atinge o topo do elemento
-    once: true 
-  },
-})
-```
-
-**Hero Entrance (sequência):**
-```typescript
-gsap.timeline({ defaults: { ease: 'power3.out' } })
-  .from(heroBadge, { opacity: 0, y: 20, duration: 0.6 })
-  .from(heroTitle, { opacity: 0, y: 34, duration: 0.8 }, '-=0.3')
-  .from(heroSub, { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
-  .from(heroActions, { opacity: 0, y: 20, duration: 0.6 }, '-=0.35')
-```
-
-### 6.2 Stagger Values por Tipo
-
-| Elemento | Stagger | Y offset |
-|----------|---------|----------|
-| Cards | 0.08 - 0.12 | 32-42px |
-| Timeline items | 0.15 | x: -20px |
-| Lista de features | 0.09 | 30px |
-| Stats | 0.08 | 24px |
-
----
-
-## 7. Internacionalização (i18n)
-
-### 7.1 Estrutura de Chaves
-
-```json
-{
-  "sectionName": {
-    "badge": "Label pequeno acima do título",
-    "title": "Título principal",
-    "subtitle": "Descrição",
-    "button": {
-      "primary": "Texto do botão",
-      "secondary": "Texto secundário"
-    }
-  }
-}
-```
-
-### 7.2 Uso no Template
-```vue
-<script setup>
-const { t } = useI18n()
-</script>
-
-<template>
-  <h1>{{ t('sectionName.title') }}</h1>
-  <p>{{ t('sectionName.subtitle') }}</p>
-</template>
-```
-
----
-
-## 8. Checklist para Novas Telas
-
-- [ ] Usar `<script setup lang="ts">` com imports explícitos
-- [ ] Configurar `useI18n()` e adicionar chaves nos 3 arquivos de locale
-- [ ] Usar `.display-1/2/3`, `.lead` e `.eyebrow` em vez de tamanhos ad hoc
-- [ ] Navegação interna com `RouterLink` (nunca `<a href="/rota">`)
-- [ ] Envolver as animações de entrada em um guard de `prefers-reduced-motion`
-- [ ] Registrar `ScrollTrigger` no `gsap.registerPlugin(ScrollTrigger)`
-- [ ] Criar refs para elementos animáveis
-- [ ] Implementar `onMounted` com animações GSAP
-- [ ] Implementar `onUnmounted` com `ScrollTrigger.getAll().forEach(t => t.kill())`
-- [ ] Usar classes de cor padrão (`bg-dark`, `bg-mid`, `bg-white`)
-- [ ] Usar container `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`
-- [ ] Adicionar padding de seção `py-16 sm:py-20`
-- [ ] Incluir CTA Section no final
-- [ ] Replicar padrões de botões (`btn-primary`, `btn-ghost`)
-- [ ] Testar responsividade (mobile: hidden lg:block para imagens)
-- [ ] Adicionar rota no `router/index.ts`
-
----
-
-## 9. Exemplo Completo: Nova View
-
-```vue
-<!-- src/views/NewPageView.vue -->
-<script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Button from 'primevue/button'
-import { SomeIcon } from 'lucide-vue-next'
-
-const { t } = useI18n()
-gsap.registerPlugin(ScrollTrigger)
-
-const heroRef = ref<HTMLElement | null>(null)
-const featuresRef = ref<HTMLElement | null>(null)
-
-onMounted(() => {
-  // Hero animation
-  gsap.from(heroRef.value?.querySelectorAll('.hero-animate') || [], {
-    opacity: 0, y: 30, stagger: 0.12, duration: 0.72,
-    ease: 'power3.out',
-    scrollTrigger: { trigger: heroRef.value, start: 'top 80%', once: true },
-  })
-  
-  // Features animation
-  gsap.from(featuresRef.value?.querySelectorAll('.feature-card') || [], {
-    opacity: 0, y: 32, stagger: 0.1, duration: 0.7,
-    ease: 'power3.out',
-    scrollTrigger: { trigger: featuresRef.value, start: 'top 85%', once: true },
-  })
-})
-
-onUnmounted(() => {
-  ScrollTrigger.getAll().forEach((t) => t.kill())
-})
-</script>
-
-<template>
-  <div class="font-body text-black overflow-x-hidden w-full">
-    <!-- Hero -->
-    <section ref="heroRef" class="min-h-[60vh] bg-dark relative overflow-hidden w-full">
-      <div class="hero-grid absolute inset-0 pointer-events-none" />
-      <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[60vh] w-full">
-        <div class="flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-20 z-10">
-          <span class="hero-animate text-[11px] font-bold uppercase text-primary tracking-[2px]">
-            {{ t('newPage.hero.badge') }}
-          </span>
-          <h1 class="hero-animate font-display font-extrabold text-white text-2xl lg:text-[34px]">
-            {{ t('newPage.hero.title') }}
-          </h1>
-          <p class="hero-animate text-white/50 text-[14px]">
-            {{ t('newPage.hero.subtitle') }}
-          </p>
-          <div class="hero-animate flex gap-4 mt-4">
-            <Button :label="t('newPage.hero.cta')" unstyled class="btn-primary" />
+    <section id="secao" class="em-section">               <!-- alterne com em-section--tint -->
+      <div class="em-wrap">
+        <div class="em-head">
+          <div>
+            <span v-reveal class="em-eyebrow">(01) {{ t('x.badge') }}</span>
+            <EmSplit :text="t('x.title')" :em="t('x.titleEm')" />
           </div>
+          <p v-reveal="150">{{ t('x.subtitle') }}</p>
         </div>
+        …cards em-card…
       </div>
     </section>
 
-    <!-- Features -->
-    <section ref="featuresRef" class="py-16 sm:py-20 bg-white w-full">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <span class="text-[11px] font-bold uppercase text-primary tracking-[2px]">
-            {{ t('newPage.features.badge') }}
-          </span>
-          <h2 class="font-display font-extrabold text-black text-[clamp(26px,3vw,40px)]">
-            {{ t('newPage.features.title') }}
-          </h2>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div v-for="i in 3" :key="i" class="feature-card p-6 rounded-2xl border border-gray-200">
-            <SomeIcon class="text-primary mb-4" />
-            <h3 class="font-display font-bold text-black">Feature {{ i }}</h3>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="bg-dark py-16 sm:py-[80px] relative overflow-hidden w-full">
-      <div class="absolute -top-48 left-1/2 -translate-x-1/2 w-[500px] h-[500px] cta-glow" />
-      <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
-        <h2 class="font-display font-extrabold text-white text-[clamp(24px,2.5vw,40px)]">
-          {{ t('newPage.cta.title') }}
-        </h2>
-        <Button :label="t('newPage.cta.button')" unstyled class="btn-primary mt-6" />
-      </div>
-    </section>
+    <EmCta :badge :title :em :subtitle :primary="{ label, href: calendlyUrl }" :secondary />
   </div>
 </template>
-
-<style scoped>
-.hero-grid {
-  background-image:
-    linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-.cta-glow {
-  background: radial-gradient(circle, rgba(17, 211, 211, 0.08) 0%, transparent 70%);
-}
-</style>
 ```
+
+Regras:
+
+- Seções numeradas no eyebrow: `(01)`, `(02)`… na ordem da página.
+- Todo título tem uma palavra/trecho em serif itálico: chave `titleEm` no i18n,
+  **contida no `title`** (a busca ignora maiúsculas).
+- Seções alternam `em-section` e `em-section--tint`; toda página fecha com `EmCta`
+  (o Blog usa o slot do `EmCta` para o formulário da newsletter e esconde a do rodapé
+  via `meta: { footerNewsletter: false }` na rota).
+- O rodapé já vem dentro de cada página (App.vue) — não inclua nas views.
+
+**Classes de layout mais usadas:** `em-wrap`, `em-head` (+ `em-head__side`), `em-h2`,
+`em-card` (+ `em-card--lift`), `em-chip` (+ `--glass`), `em-pill`, `em-ico` (+ `--brand`),
+`em-feats` (lista com check), `em-def` (texto + painel), `em-posts`/`em-post`,
+`em-devices`, `em-tabs` (filtro com indicador), `em-search`, `em-empty`, `em-prose`
+(texto longo), `em-toc` (sumário), `em-corner` (seta no canto do card).
 
 ---
 
-## 10. Padrões Específicos
+## 5. Componentes (`src/components/em/`)
 
-### Background Grid (Hero)
-```css
-.hero-grid {
-  background-image:
-    linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-```
-
-### Marquee/Scroll infinito
-```vue
-<div ref="marquee" class="marquee bg-dark border-t border-white/10 py-4 overflow-hidden">
-  <div class="marquee-track flex whitespace-nowrap will-change-transform">
-    <!-- Items duplicados 2x para loop -->
-  </div>
-</div>
-```
-
-### Timeline visual
-- Linha vertical: `absolute left-8 top-0 bottom-0 w-px bg-slate-200`
-- Círculos: `w-16 h-16 rounded-full bg-primary/10 border-2 border-primary`
-- Conteúdo alinhado com `flex items-start gap-8`
+| Componente | O que faz |
+| --- | --- |
+| `EmButton` | Pílula com rótulo que rola e seta. `to` → RouterLink, `href` → `<a>` (externo em nova aba), senão `<button>`. `variant: primary \| dark \| ghost`, `size`, `block`. |
+| `EmSplit` | Título palavra a palavra; `em` = trecho em serif. `tag` (h2 padrão), `delay`. |
+| `EmPageHero` | Hero das páginas internas. Slots `actions`, `lead`, `visual` (arte à direita, some < 1100px). Modificadores: `em-hero--article` (título menor), `em-hero--short`, `em-hero--orbit`. |
+| `EmCta` | Card final. `primary`/`secondary` `{ label, to \| href }`, `trust[]`, `note`, `id`; slot padrão substitui os botões. |
+| `EmHeroGradient` / `EmShader` | Gradiente WebGL do hero / gradiente 2D do rodapé e CTA. |
+| `EmStatement` | Manifesto que acende palavra a palavra com a rolagem. |
+| `EmOdometer` | Número em odômetro; gira quando um ancestral ganha `.is-in`. |
+| `EmMarquee` | Faixa contínua (`items`, `dir`, `speed`). |
+| `EmHoverLines` | Lista grande com foto que segue o cursor. |
+| `EmAccordion` | Acordeão (`items { title, body, icon? }`, `faq`). |
+| `EmTimeline` | Linha do tempo horizontal presa na tela. |
+| `EmSteps` | Etapas em scrollytelling com painel preso. |
+| `EmEcgMonitor` / `EmVitalRow` | Monitor com ECG ao vivo / linha de sinal vital com sparkline. |
+| `EmDeviceScreen` / `EmDeviceCard` | "Tela" do dispositivo (leitura + traçado) e o card do catálogo. |
+| `EmLoader` | Tela de entrada (uma vez por sessão). |
 
 ---
 
-Documento mantido por: Dev Team  
-Última atualização: Abril 2026
+## 6. Movimento
+
+Diretivas globais (plugin `EmMotion`):
+
+| Diretiva | Uso |
+| --- | --- |
+| `v-reveal="ms"` | Sobe e aparece quando entra na tela (atraso em ms). `v-reveal:scale` para cards grandes. |
+| `v-in` | Só marca `.is-in` (para animações em CSS dos filhos). |
+| `v-spot` | Brilho que segue o cursor no card. |
+| `v-parallax="0.14"` | Deslocamento com a rolagem (`.fade` também esmaece). |
+| `v-scrub` | Escreve `--p` (0→1) conforme o elemento atravessa a tela. |
+
+- Escalone grades com `v-reveal="(i % 3) * 90"`.
+- Efeitos ligados à rolagem: `addFx((y, dt, vh) => …)` — nunca `scroll` listeners próprios.
+- Rolar até algo: `scrollToEl(el, offset)` / `scrollToY(y)` (respeita a rolagem amortecida).
+- Depois da troca de página: `afterPageEnter(cb)` (ex.: `/blog?category=cases` rola até a grade).
+- Tudo respeita `prefers-reduced-motion` (`RM` em `motion.ts` e blocos `@media` no CSS).
+
+**Troca de página:** a atual sobe, uma cortina clara vem atrás e a nova entra por baixo
+(`pageTransition.ts`, 780ms + 900ms, `--em-ease-in-out`). Os gradientes WebGL continuam
+animando até a página sair do DOM.
+
+---
+
+## 7. i18n
+
+- Chaves por página: `about.*`, `whatIsRpm.*`, `benefitsPage.*`, `appsPage.*`, `blogPage.*`,
+  `equipmentPage.*`, `privacyPage.*`. Sempre nos três arquivos.
+- `titleEm` ao lado de cada `title` que ganha serif.
+- Plural: `"Nenhum dispositivo | 1 dispositivo | {n} dispositivos"` com `t(chave, n)`.
+- Caracteres especiais do vue-i18n precisam de literal: `@` → `{'@'}` (ex.: e-mails),
+  `{` `}` `|` também.
+- Listas (`tm(...)`) chegam como texto cru — use direto no template.
+- JSON salvo com 2 espaços e acentos reais (não rodar o Prettier nos `.json`).
+
+---
+
+## 8. Checklist para uma nova tela
+
+- [ ] Rota em `src/router/index.ts` (lazy import).
+- [ ] `EmPageHero` → seções `(01)…` alternando `--tint` → `EmCta`.
+- [ ] Títulos com `EmSplit` + `titleEm` nos três idiomas.
+- [ ] Cards com `em-card`, `v-reveal` escalonado e `v-spot`.
+- [ ] Links externos (Calendly, lojas) via `EmButton href` / `rel="noopener noreferrer"`.
+- [ ] Conferir em 1440px e 390px, em PT/EN/ES.
+- [ ] `npm run type-check`, `npx eslint src`, `npm run build-only`.

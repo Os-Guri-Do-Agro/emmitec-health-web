@@ -34,6 +34,8 @@ const router = createRouter({
       path: '/blog',
       name: 'blog',
       component: () => import('../views/BlogView.vue'),
+      // a página tem a própria newsletter no fim; o rodapé não repete
+      meta: { footerNewsletter: false },
     },
     {
       path: '/blog/:id',

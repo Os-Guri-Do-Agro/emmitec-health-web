@@ -517,3 +517,173 @@ export function softShader(canvas: HTMLCanvasElement, veil = 0.75): Cleanup {
     })
   }
 }
+
+/* ---------------------------------------------------------------
+   Raios de luz (hero das páginas internas)
+   Um brilho vem de cima e se abre em feixes que ondulam devagar,
+   como luz atravessando água: o ângulo de cada feixe é ruído que
+   anda no tempo, e uma leve ondulação com a distância faz o
+   "reflexo". A origem acompanha o cursor bem de leve.
+   Cores: --rays-bg (fundo), --rays-top (céu do topo),
+   --rays-deep (sombra entre os feixes) e --rays-core (a luz).
+   --------------------------------------------------------------- */
+const RAYS_FRAG = `
+precision highp float;
+uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse; uniform float u_ox;
+uniform vec3 c_bg, c_top, c_deep, c_core;
+float h2(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+float vn(vec2 p){vec2 i=floor(p);vec2 f=fract(p);f=f*f*(3.0-2.0*f);
+ return mix(mix(h2(i),h2(i+vec2(1.0,0.0)),f.x),mix(h2(i+vec2(0.0,1.0)),h2(i+vec2(1.0,1.0)),f.x),f.y);}
+/* feixes largos: ruído no ângulo que também muda no tempo (acendem, apagam e deslizam) */
+float beams(float a,float t){
+ float n=vn(vec2(a*4.2+t*0.16,t*0.55))*0.55;
+ n+=vn(vec2(a*8.0-t*0.22,t*0.75+3.0))*0.30;
+ n+=vn(vec2(a*15.0+t*0.30,t*1.05+7.0))*0.15;
+ return n;
+}
+void main(){
+ vec2 uv=gl_FragCoord.xy/u_res; float asp=u_res.x/u_res.y;
+ vec2 p=vec2((uv.x-0.5)*asp,1.0-uv.y);
+ vec2 o=vec2((u_ox-0.5)*asp+(u_mouse.x-0.5)*0.10,-0.34);
+ vec2 d=p-o; float dist=length(d);
+ float a=atan(d.x,d.y);
+ float t=u_time;
+ /* ondulação de reflexo: os feixes se curvam de leve, variando com a distância */
+ a+=sin(dist*5.0-t*1.3)*0.022+sin(dist*1.8+t*0.6)*0.03;
+ float b=smoothstep(0.26,0.90,beams(a,t));
+ float cone=smoothstep(1.1,0.05,abs(a));
+ float fall=exp(-dist*1.0);
+ float shim=0.78+0.22*sin(t*1.9+a*8.0+dist*3.5);
+ float lit=b*cone*fall*shim;
+ float glow=exp(-dist*1.9)*(0.88+0.12*sin(t*1.4));
+ float top=pow(smoothstep(1.05,0.0,p.y),1.3);
+ vec3 col=mix(c_bg,c_top,top);
+ col=mix(col,c_deep,(1.0-b)*cone*fall*0.40);
+ col=mix(col,c_deep,smoothstep(0.35,1.3,abs(a))*top*0.38);
+ col=mix(col,c_core,clamp(lit*1.05+glow*0.85,0.0,1.0));
+ col=mix(col,c_bg,smoothstep(0.66,1.0,p.y));
+ gl_FragColor=vec4(col,1.0);
+}`
+
+/** Raios de luz vindos de cima. `ox` = posição horizontal da origem (0–1). */
+export function glRays(canvas: HTMLCanvasElement, ox = 0.5): Cleanup | null {
+  const gl = canvas.getContext('webgl', {
+    antialias: false,
+    alpha: false,
+    premultipliedAlpha: false,
+    preserveDrawingBuffer: false,
+    powerPreference: 'low-power',
+  })
+  if (!gl) return null
+  const sh = (type: number, src: string) => {
+    const s = gl.createShader(type)
+    if (!s) return null
+    gl.shaderSource(s, src)
+    gl.compileShader(s)
+    return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null
+  }
+  const vs = sh(gl.VERTEX_SHADER, 'attribute vec2 a;void main(){gl_Position=vec4(a,0.0,1.0);}')
+  const fs = sh(gl.FRAGMENT_SHADER, RAYS_FRAG)
+  if (!vs || !fs) return null
+  const pr = gl.createProgram()
+  if (!pr) return null
+  gl.attachShader(pr, vs)
+  gl.attachShader(pr, fs)
+  gl.linkProgram(pr)
+  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return null
+  gl.useProgram(pr)
+
+  const buf = gl.createBuffer()
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf)
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+    gl.STATIC_DRAW,
+  )
+  const loc = gl.getAttribLocation(pr, 'a')
+  gl.enableVertexAttribArray(loc)
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
+
+  const U = (n: string) => gl.getUniformLocation(pr, n)
+  const uRes = U('u_res')
+  const uTime = U('u_time')
+  const uMouse = U('u_mouse')
+  gl.uniform1f(U('u_ox'), ox)
+  const cs = getComputedStyle(canvas)
+  const set = (n: string, v: string, f: string) => {
+    const c = tokenColor(cs, v, f)
+    gl.uniform3f(U(n), c[0] / 255, c[1] / 255, c[2] / 255)
+  }
+  set('c_bg', '--rays-bg', '#f4f6f7')
+  set('c_top', '--rays-top', '#9ce8ef')
+  set('c_deep', '--rays-deep', '#35cdd6')
+  set('c_core', '--rays-core', '#ffffff')
+
+  const scale = 0.5
+  let raf = 0
+  let visible = true
+  let alive = true
+  let last = 0
+  const t0 = performance.now()
+  let mx = 0.5
+  let tmx = 0.5
+
+  function size() {
+    const r = canvas.getBoundingClientRect()
+    canvas.width = Math.max(2, Math.round(r.width * scale))
+    canvas.height = Math.max(2, Math.round(r.height * scale))
+    gl!.viewport(0, 0, canvas.width, canvas.height)
+    gl!.uniform2f(uRes, canvas.width, canvas.height)
+  }
+  function draw(now: number) {
+    if (!alive) return
+    const dt = Math.min(0.05, (now - (last || now)) / 1000)
+    last = now
+    mx = damp(mx, tmx, 0.9, dt)
+    gl!.uniform1f(uTime, RM ? 20 : (now - t0) / 1000 + 20)
+    gl!.uniform2f(uMouse, mx, 0.5)
+    gl!.drawArrays(gl!.TRIANGLES, 0, 6)
+    if (visible && !RM) raf = requestAnimationFrame(draw)
+    else {
+      raf = 0
+      last = 0
+    }
+  }
+  size()
+  draw(performance.now())
+
+  const offObs = observe(
+    canvas,
+    () => {
+      size()
+      if (!raf) draw(performance.now())
+    },
+    (v) => {
+      visible = v
+      if (v && !raf && !RM) raf = requestAnimationFrame(draw)
+    },
+  )
+  const offPtr = canvas.parentElement
+    ? trackPointer(canvas.parentElement, (x) => {
+        tmx = x
+      })
+    : () => {}
+  const onLost = (e: Event) => {
+    e.preventDefault()
+    visible = false
+  }
+  canvas.addEventListener('webglcontextlost', onLost)
+
+  return () => {
+    offObs()
+    offPtr()
+    visible = true
+    if (!raf && !RM) raf = requestAnimationFrame(draw)
+    whenDetached(canvas, () => {
+      alive = false
+      if (raf) cancelAnimationFrame(raf)
+      canvas.removeEventListener('webglcontextlost', onLost)
+      gl.getExtension('WEBGL_lose_context')?.loseContext()
+    })
+  }
+}

@@ -28,9 +28,26 @@ type ViewEl = HTMLElement & { __emAnim?: Animation }
 const canAnimate = (el: Element): el is ViewEl =>
   !RM && typeof (el as HTMLElement).animate === 'function'
 
+/** Páginas entrando agora (cliques rápidos podem sobrepor trocas). */
+let entering = 0
+
+/* ---------- depois que a página nova assenta ---------- */
+let queued: (() => void)[] = []
+
+/**
+ * Roda `cb` quando a troca de página terminar (ou já, se não houver troca em curso).
+ * Útil para rolar até uma seção logo ao chegar (ex.: /blog?category=cases).
+ */
+export function afterPageEnter(cb: () => void) {
+  // o onMounted da página roda antes do onEnter: espera um quadro para saber se há troca
+  requestAnimationFrame(() => {
+    if (entering > 0) queued.push(cb)
+    else cb()
+  })
+}
+
 /* ---------- cortina clara ---------- */
 let curtainAnim: Animation | null = null
-let entering = 0
 
 function curtainIn() {
   const c = document.querySelector<HTMLElement>('.em-curtain')
@@ -94,6 +111,9 @@ function onEnter(el: Element, done: () => void) {
       pauseFx(false)
       // bibliotecas que medem na montagem (ex.: ScrollTrigger) recalculam sem o deslocamento
       window.dispatchEvent(new Event('resize'))
+      const cbs = queued
+      queued = []
+      cbs.forEach((cb) => cb())
     }
     done()
   }

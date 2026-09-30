@@ -53,6 +53,7 @@ const profiles = computed(() =>
     <!-- ════════ HERO ════════ -->
     <EmPageHero
       :eyebrow="t('whatIsRpm.hero.badge')"
+      :trail="[{ label: t('header.nav.about') }]"
       :title="t('whatIsRpm.hero.title')"
       :em="t('whatIsRpm.hero.titleEm')"
       :subtitle="t('whatIsRpm.hero.subtitle')"

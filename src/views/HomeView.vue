@@ -235,9 +235,12 @@ onBeforeUnmount(() => offStack?.())
     <header id="inicio" class="em-hero">
       <EmHeroGradient />
       <div v-parallax.fade="0.18" class="em-hero__inner">
-        <span v-reveal="100" class="em-chip em-chip--glass"
-          ><span class="em-dot em-dot--live" />{{ t('hero.eyebrow') }}</span
-        >
+        <p v-reveal="100" class="em-kicker">
+          <svg class="em-kicker__ecg" viewBox="0 0 44 16" aria-hidden="true">
+            <path d="M0 8h12l3-6 4 12 4-10 3 4h18" pathLength="1" />
+          </svg>
+          {{ t('hero.eyebrow') }}
+        </p>
         <EmSplit tag="h1" class="em-hero__title" :text="heroTitle" :em="heroEm" :delay="200" />
         <div class="em-hero__meta">
           <div v-reveal="900">

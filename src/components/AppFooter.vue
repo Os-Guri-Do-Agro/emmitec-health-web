@@ -12,6 +12,9 @@ import EmButton from '@/components/em/EmButton.vue'
 import EmSplit from '@/components/em/EmSplit.vue'
 import EmShader from '@/components/em/EmShader.vue'
 
+/** `newsletter: false` esconde o bloco da newsletter (o Blog já tem a própria). */
+withDefaults(defineProps<{ newsletter?: boolean }>(), { newsletter: true })
+
 const { t, tm } = useI18n()
 
 const email = ref('')
@@ -45,10 +48,10 @@ function toTop() {
 </script>
 
 <template>
-  <footer class="em-footer">
+  <footer class="em-footer" :class="{ 'em-footer--bare': !newsletter }">
     <EmShader :veil="0.2" />
     <div class="em-wrap">
-      <div class="em-footer__cta">
+      <div v-if="newsletter" class="em-footer__cta">
         <div class="em-footer__intro">
           <EmSplit
             :text="t('footer.newsletter.title')"

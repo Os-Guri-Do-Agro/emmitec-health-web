@@ -1,6 +1,11 @@
 /* Dados compartilhados do site (links externos, idiomas, redes). */
 import { computed } from 'vue'
 import { Facebook, Instagram, Linkedin, Youtube } from 'lucide-vue-next'
+// só as três bandeiras usadas (o CSS completo do flag-icons embutia ~400 SVGs no bundle)
+import flagBr from 'flag-icons/flags/4x3/br.svg'
+import flagGb from 'flag-icons/flags/4x3/gb.svg'
+// Espanha simplificada: a oficial (com o brasão) pesa ~80 kB para um ícone de 16px
+import flagEs from '@/assets/flags/es.svg'
 
 /** Link do Calendly já aberto no mês atual. */
 export const calendlyUrl = computed(() => {
@@ -11,9 +16,9 @@ export const calendlyUrl = computed(() => {
 })
 
 export const languages = [
-  { code: 'pt', label: 'PT', flagClass: 'fi-br' },
-  { code: 'en', label: 'EN', flagClass: 'fi-gb' },
-  { code: 'es', label: 'ES', flagClass: 'fi-es' },
+  { code: 'pt', label: 'PT', flag: flagBr },
+  { code: 'en', label: 'EN', flag: flagGb },
+  { code: 'es', label: 'ES', flag: flagEs },
 ] as const
 
 export const socialLinks = [

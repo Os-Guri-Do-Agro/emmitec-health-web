@@ -8,7 +8,6 @@
 import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import 'flag-icons/css/flag-icons.min.css'
 import { LOCALE_STORAGE_KEY } from '@/i18n'
 import { addFx } from '@/lib/motion'
 import { calendlyUrl, languages, socialLinks, LOGO_SRC } from '@/lib/site'
@@ -181,7 +180,9 @@ onBeforeUnmount(() => {
                 :aria-pressed="locale === lang.code ? 'true' : 'false'"
                 @click="setLanguage(lang.code)"
               >
-                <span class="fi" :class="lang.flagClass" aria-hidden="true" />{{ lang.label }}
+                <img class="em-lang__flag" :src="lang.flag" alt="" width="16" height="12" />{{
+                  lang.label
+                }}
               </button>
             </div>
           </div>

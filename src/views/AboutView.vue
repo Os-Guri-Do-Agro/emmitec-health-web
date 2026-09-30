@@ -81,6 +81,7 @@ const milestones = computed(() =>
     <!-- ════════ HERO ════════ -->
     <EmPageHero
       :eyebrow="t('about.hero.badge')"
+      :trail="[{ label: t('header.nav.about') }]"
       :title="t('about.hero.title')"
       :em="t('about.hero.titleEm')"
       :subtitle="t('about.hero.subtitle')"

@@ -1,65 +1,105 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+/**
+ * Termos de Privacidade — Design System Emmitec.health, com o texto de sempre (pt/en/es).
+ * Hero mais baixo, sumário lateral que acompanha a leitura e seções numeradas.
+ */
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import HeroLogoMark from '@/components/HeroLogoMark.vue'
+import { CalendarClock, Mail } from 'lucide-vue-next'
+
+import EmPageHero from '@/components/em/EmPageHero.vue'
+import EmButton from '@/components/em/EmButton.vue'
+import { useToc } from '@/lib/useToc'
 
 const { t, tm } = useI18n()
 
-const sections = computed(() => tm('privacyPage.sections') as { title: string; body: string }[])
+const CONTACT = 'contato@emmitec.health'
+
+/** Seções do i18n; o número sai do título e vira o índice da seção. */
+const sections = computed(() =>
+  (tm('privacyPage.sections') as unknown as { title: string; body: string }[]).map((s, i) => ({
+    id: `secao-${i + 1}`,
+    n: String(i + 1).padStart(2, '0'),
+    title: s.title.replace(/^\d+\.\s*/, ''),
+    body: s.body,
+  })),
+)
+
+const content = ref<HTMLElement | null>(null)
+const tocEl = ref<HTMLElement | null>(null)
+const { active, goTo } = useToc(content, tocEl, 'h2[id]')
 </script>
 
 <template>
-  <div class="font-body text-black overflow-x-hidden w-full">
-    <section
-      class="relative flex min-h-[60vh] w-full items-center justify-center overflow-hidden bg-dark sm:min-h-[70vh]"
+  <div class="em-privacy-page">
+    <!-- ════════ HERO ════════ -->
+    <EmPageHero
+      class="em-hero--short"
+      :eyebrow="t('privacyPage.badge')"
+      :title="t('privacyPage.title')"
+      :em="t('privacyPage.titleEm')"
+      :subtitle="t('privacyPage.subtitle')"
     >
-      <div class="page-hero-aurora pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div
-        class="privacy-grid pointer-events-none absolute inset-0 opacity-40"
-        aria-hidden="true"
-      />
-      <HeroLogoMark variant="section" />
-      <div
-        class="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-6 pb-20 pt-32 text-center sm:px-8 lg:pb-24 lg:pt-36"
-      >
-        <span class="eyebrow eyebrow--dark">{{ t('privacyPage.badge') }}</span>
-        <h1 class="display-2 text-white">{{ t('privacyPage.title') }}</h1>
-        <p class="lead max-w-2xl text-white/55">{{ t('privacyPage.subtitle') }}</p>
-        <p class="text-[12px] font-medium text-white/40">{{ t('privacyPage.updated') }}</p>
-      </div>
-    </section>
+      <template #lead>
+        <p class="em-hero__updated">
+          <CalendarClock :stroke-width="1.7" aria-hidden="true" />{{ t('privacyPage.updated') }}
+        </p>
+      </template>
+      <template #actions>
+        <EmButton :href="`mailto:${CONTACT}`" variant="ghost" :label="t('footer.links.contact')" />
+      </template>
+    </EmPageHero>
 
-    <section class="flex w-full items-center justify-center bg-white py-20 sm:py-24 lg:py-28">
-      <div class="mx-auto flex w-full max-w-3xl flex-col gap-12 px-6 sm:px-8">
-        <article v-for="(section, i) in sections" :key="i" class="flex flex-col gap-4">
-          <h2 class="display-3 text-black">{{ section.title }}</h2>
-          <p class="whitespace-pre-line text-[15px] leading-[1.75] text-gray-600">
-            {{ section.body }}
-          </p>
-        </article>
+    <!-- ════════ TEXTO ════════ -->
+    <section class="em-section em-article">
+      <div class="em-wrap em-article__grid">
+        <aside class="em-article__aside">
+          <div class="em-article__sticky">
+            <nav ref="tocEl" v-reveal class="em-toc" :aria-label="t('privacyPage.toc')">
+              <span class="em-eyebrow">{{ t('privacyPage.toc') }}</span>
+              <ol>
+                <li v-for="(s, i) in sections" :key="s.id">
+                  <a
+                    :href="`#${s.id}`"
+                    :class="{ 'is-active': active === i }"
+                    @click.prevent="goTo(s.id)"
+                    ><span>{{ s.n }}</span
+                    >{{ s.title }}</a
+                  >
+                </li>
+              </ol>
+              <i class="em-toc__rail" aria-hidden="true"><i /></i>
+            </nav>
+          </div>
+        </aside>
 
-        <div class="border-t border-gray-200/80 pt-8">
-          <p class="text-[13.5px] leading-relaxed text-gray-500">
-            {{ t('privacyPage.contactNote') }}
-          </p>
+        <div ref="content" class="em-legal">
+          <section
+            v-for="(s, i) in sections"
+            :key="s.id"
+            v-reveal="i < 2 ? i * 90 : 0"
+            class="em-legal__item"
+          >
+            <span class="em-legal__n" aria-hidden="true">{{ s.n }}</span>
+            <div>
+              <h2 :id="s.id">{{ s.title }}</h2>
+              <p>{{ s.body }}</p>
+            </div>
+          </section>
+
+          <div v-reveal class="em-legal__contact em-card">
+            <span class="em-ico em-ico--brand"
+              ><Mail :stroke-width="1.7" aria-hidden="true"
+            /></span>
+            <p>{{ t('privacyPage.contactNote') }}</p>
+            <EmButton
+              :href="`mailto:${CONTACT}`"
+              variant="dark"
+              :label="t('footer.links.contact')"
+            />
+          </div>
         </div>
       </div>
     </section>
   </div>
 </template>
-
-<style scoped>
-/* mesma assinatura de fundo da hero da home */
-.page-hero-aurora {
-  background:
-    radial-gradient(ellipse 70% 55% at 78% 15%, rgba(17, 211, 211, 0.18), transparent 62%),
-    radial-gradient(ellipse 55% 45% at 5% 85%, rgba(74, 168, 255, 0.12), transparent 58%);
-}
-
-.privacy-grid {
-  background-image:
-    linear-gradient(rgba(17, 211, 211, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 211, 211, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
-</style>
