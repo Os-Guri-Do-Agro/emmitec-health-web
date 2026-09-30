@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Equipamentos — Design System Emmitec.health, com o conteúdo de sempre (pt/en/es).
- * Hub conectado no hero, catálogo com filtro por categoria, selos de certificação
+ * Catálogo com filtro por categoria, selos de certificação
  * e o painel de compatibilidade.
  */
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
@@ -10,12 +10,9 @@ import {
   Activity,
   Bluetooth,
   Droplet,
-  Gauge,
   HeartPulse,
   Nfc,
-  Scale,
   ShieldCheck,
-  Thermometer,
   Watch,
   Webhook,
   Wifi,
@@ -39,9 +36,6 @@ function toCatalog() {
   const el = document.getElementById('catalogo')
   if (el) scrollToEl(el, 24)
 }
-
-/* ── hero: dispositivos orbitando o hub ── */
-const orbit = [Gauge, Droplet, Scale, Watch, Thermometer, HeartPulse]
 
 /* ── (01) catálogo ── */
 const CAT_ICONS: Record<DeviceCategory, typeof Activity> = {
@@ -117,7 +111,6 @@ onBeforeUnmount(() => window.removeEventListener('resize', placeIndicator))
   <div class="em-equipment-page">
     <!-- ════════ HERO ════════ -->
     <EmPageHero
-      class="em-hero--orbit"
       :eyebrow="t('equipmentPage.hero.badge')"
       :title="t('equipmentPage.hero.title')"
       :em="t('equipmentPage.hero.titleEm')"
@@ -130,25 +123,6 @@ onBeforeUnmount(() => window.removeEventListener('resize', placeIndicator))
           variant="ghost"
           :label="t('equipmentPage.hero.button.secondary')"
         />
-      </template>
-      <template #visual>
-        <div class="em-orbit">
-          <i class="em-orbit__ring em-orbit__ring--1" />
-          <i class="em-orbit__ring em-orbit__ring--2" />
-          <i class="em-orbit__ring em-orbit__ring--3" />
-          <i v-for="k in 3" :key="k" class="em-orbit__pulse" :style="{ '--k': k }" />
-          <div class="em-orbit__track">
-            <span
-              v-for="(icon, i) in orbit"
-              :key="i"
-              class="em-orbit__node"
-              :style="{ '--a': `${(i * 360) / orbit.length}deg` }"
-            >
-              <span class="em-orbit__face"><component :is="icon" :stroke-width="1.6" /></span>
-            </span>
-          </div>
-          <div class="em-orbit__hub"><Bluetooth :stroke-width="1.6" /></div>
-        </div>
       </template>
     </EmPageHero>
 
