@@ -1,0 +1,74 @@
+/* ============================================================
+   Emmitec.health — tokens do Design System (tokens.json v3)
+   Nomes que colidiriam com o tema do Tailwind (radius-*, ease-*)
+   ganharam o prefixo --em- para não alterar utilities como
+   `rounded-lg` ou `ease-out` nas telas que ainda não migraram.
+   ============================================================ */
+:root {
+  /* Superfícies */
+  --surface-000: #ffffff;
+  --surface-100: #f4f6f7;
+  --surface-200: #eafbfb;
+  --line: #eaecef;
+
+  /* Ciano da marca */
+  --cyan-50: #eafbfb;
+  --cyan-100: #d8f8f8;
+  --cyan-300: #67ddef;
+  --cyan-500: #11d3d3;
+  --cyan-600: #0db7ba;
+  --cyan-700: #08777b;
+  --on-brand: #061014;
+
+  /* Texto e neutros */
+  --ink: #202220;
+  --ink-muted: #4a5565;
+  --night-900: #0e1117;
+
+  /* Pastéis (keycaps e arte das soluções) */
+  --pastel-mint: #d2f4e8;
+  --pastel-blue: #dbe9ff;
+  --pastel-peach: #ffeed4;
+  --pastel-rose: #ffdde5;
+  --pastel-lilac: #eee1fe;
+
+  /* Status */
+  --warn-dot: #f4a38a;
+  --warn: #a8432a;
+
+  /* Espaço */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-20: 80px;
+  --space-32: 128px;
+
+  /* Forma */
+  --em-radius-sm: 10px;
+  --em-radius-md: 18px;
+  --em-radius-lg: 32px;
+  --radius-pill: 999px;
+
+  /* Profundidade */
+  --shadow-soft: 0 1px 2px rgba(14, 17, 23, 0.04), 0 8px 24px rgba(14, 17, 23, 0.06);
+  --shadow-float: 0 2px 4px rgba(14, 17, 23, 0.04), 0 24px 64px rgba(13, 183, 186, 0.18);
+  --shadow-key: 0 6px 0 rgba(14, 17, 23, 0.1), 0 14px 28px rgba(14, 17, 23, 0.1);
+
+  /* Movimento */
+  --dur-fast: 320ms;
+  --dur-base: 640ms;
+  --dur-slow: 1000ms;
+  --dur-enter: 1400ms;
+  --em-ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --em-ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --scroll-damping: 4.2;
+  --scroll-anchor: 1600ms;
+
+  /* Tipografia */
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+}

@@ -29,7 +29,8 @@
       "bp": "Pressão arterial",
       "alert": "Alerta preditivo enviado à equipe clínica"
     },
-    "imageAlt": "Profissional de saúde acompanhando pacientes na plataforma Emmitec Health"
+    "imageAlt": "Profissional de saúde acompanhando pacientes na plataforma Emmitec Health",
+    "scroll": "Role para explorar"
   },
   "marquee": {
     "a": "Monitoramento remoto de pacientes",
@@ -42,13 +43,15 @@
   "intro": {
     "badge": "Por que existimos",
     "title": "Tecnologia que devolve tempo à equipe clínica e tranquilidade à família",
-    "description": "Dispositivos conectados, plataforma própria e IA preditiva trabalhando juntos — para que ninguém precise esperar o agravamento para receber cuidado."
+    "description": "Dispositivos conectados, plataforma própria e IA preditiva trabalhando juntos — para que ninguém precise esperar o agravamento para receber cuidado.",
+    "titleEm": "tranquilidade"
   },
   "homeBlogStrip": {
     "badge": "Blog",
     "title": "Conteúdo para quem decide sobre saúde digital",
     "subtitle": "Tendências, cases reais e regulação — escrito pela equipe Emmitec e por especialistas convidados.",
-    "cta": "Abrir o blog"
+    "cta": "Abrir o blog",
+    "titleEm": "saúde digital"
   },
   "cards": {
     "rpm": {
@@ -83,7 +86,8 @@
       "imageBadges": {
         "rpm": "RPM",
         "ai": "IA"
-      }
+      },
+      "titleEm": "antes"
     },
     "services": {
       "tag": "Serviços",
@@ -96,7 +100,8 @@
         "Aumente o engajamento e a adesão dos pacientes"
       ],
       "button": "Conhecer os apps",
-      "imageAlt": "Paciente em casa com dispositivo"
+      "imageAlt": "Paciente em casa com dispositivo",
+      "titleEm": "cuidar"
     }
   },
   "benefits": {
@@ -120,7 +125,8 @@
         "title": "Parceria, não fornecedor",
         "desc": "Implantação acompanhada, funcionalidades sob demanda e suporte que responde no ritmo da sua rotina clínica."
       }
-    }
+    },
+    "titleEm": "casa"
   },
   "cta": {
     "badge": "Próximo passo",
@@ -132,7 +138,8 @@
       "cases": "Ver cases de sucesso",
       "primary": "Agendar demonstração",
       "secondary": "Ver equipamentos"
-    }
+    },
+    "titleEm": "funcionando"
   },
   "about": {
     "hero": {
@@ -148,7 +155,8 @@
         "contact": "Entre em contato",
         "careers": "Trabalhe conosco",
         "demo": "Solicitar demonstração"
-      }
+      },
+      "titleEm": "Vidas"
     },
     "story": {
       "badge": "Nossa história",
@@ -156,7 +164,9 @@
       "intro": "Emilio Machado fundou a EmmiTec inspirado pela jornada de sua mãe contra o câncer em 2017. Enfrentando desafios como visitas médicas constantes e registros dispersos, ele criou um registro digital para centralizar informações e melhorar os cuidados, mesmo à distância. Essa inovação deu origem à plataforma de monitoramento remoto de pacientes (RPM), que coleta dados em tempo real, auxilia na intervenção precoce e melhora os desfechos clínicos e a qualidade do cuidado ao paciente, transformando o cuidado médico globalmente.",
       "paragraph1": "A jornada da EmmiTec começou em 2006, desenvolvendo tecnologia de ponta para setores como finanças e varejo, em parceria com grandes inovadores como a Apple. Porém, em 2017, nossa história mudou para algo mais pessoal e profundo. Naquele ano, Emilio Machado, nosso fundador, enfrentou a dura batalha de sua mãe contra o câncer.",
       "paragraph2": "Além do impacto emocional, o desafio de gerenciar seu atendimento era imenso: visitas médicas constantes, horários de medicamentos e registros de saúde dispersos. A distância geográfica tornava tudo ainda mais difícil – enquanto sua mãe estava no Brasil, Emilio vivia nos Estados Unidos. Determinado a fazer a diferença, ele desenvolveu uma plataforma de monitoramento remoto que permitia acompanhar os dados de saúde à distância. Essa solução não apenas melhorou a qualidade de vida de sua mãe, mas deu a Emilio a chance de apoiá-la mesmo de longe. Em 2018, a EmmiTec decidiu focar exclusivamente na saúde, vendendo suas outras divisões para transformar o cuidado médico e ajudar mais famílias a enfrentarem desafios semelhantes.",
-      "quote": "A tecnologia mais poderosa é aquela que cuida das pessoas que amamos."
+      "quote": "A tecnologia mais poderosa é aquela que cuida das pessoas que amamos.",
+      "titleEm": "Jornada",
+      "quoteEm": "amamos"
     },
     "mission": {
       "badge": "Nossa missão e visão",
@@ -164,7 +174,9 @@
       "description": "Na EmmiTec, acreditamos que a saúde vai além de um serviço – é um direito essencial, pertencente a todos, independentemente de onde estejam. Sonhamos com um mundo onde distância, circunstâncias ou recursos não definam a qualidade do cuidado recebido. Essa visão nos motiva a desenvolver soluções inovadoras que empoderam as pessoas a assumirem o controle de sua saúde. EmmiTec Health é mais que uma plataforma; é um compromisso de oferecer cuidados integrados, centrados no paciente, que sejam acessíveis e profundamente humanos. Nossa missão é derrubar barreiras no atendimento, garantindo que cada paciente seja valorizado, apoiado e cuidado conforme suas necessidades. Porque, quando se trata de saúde, não há 'outros' ou 'outro momento'. A mudança começa agora, e estamos prontos para liderá-la.",
       "item1": "Democratizar o acesso à saúde de qualidade",
       "item2": "Reduzir barreiras geográficas no atendimento médico",
-      "item3": "Empoderar pacientes com tecnologia inteligente"
+      "item3": "Empoderar pacientes com tecnologia inteligente",
+      "titleEm": "Missão",
+      "leadEm": "direito essencial"
     },
     "vision": {
       "badge": "Reconhecimentos",
@@ -192,7 +204,8 @@
       "card4": {
         "title": "Tratamento do Câncer",
         "description": "Entre uma sessão e outra, o paciente segue acompanhado em casa. Efeitos adversos aparecem cedo, com menos idas ao pronto-socorro."
-      }
+      },
+      "titleEm": "desfecho"
     },
     "timeline": {
       "2006": {
@@ -216,7 +229,8 @@
         "desc": "Integração de IA preditiva para diagnósticos preventivos"
       },
       "badge": "Nossa jornada",
-      "title": "Evolução Emmitec"
+      "title": "Evolução Emmitec",
+      "titleEm": "Evolução"
     },
     "stats": {
       "founded": "Fundação",
@@ -234,7 +248,8 @@
         "learn": "Conhecer soluções",
         "primary": "Solicitar demonstração",
         "secondary": "O que é RPM →"
-      }
+      },
+      "titleEm": "revolução"
     }
   },
   "whatIsRpm": {
@@ -245,14 +260,17 @@
       "button": {
         "primary": "Solicitar demo",
         "secondary": "Falar com especialista"
-      }
+      },
+      "titleEm": "tempo real"
     },
     "definition": {
       "badge": "Definição",
       "title": "Saúde monitorada além das paredes do consultório",
       "paragraph1": "O Monitoramento Remoto de Pacientes (RPM) usa dispositivos médicos conectados para acompanhar sinais vitais e indicadores clínicos diretamente da casa do paciente. Os dados são transmitidos em tempo real para a plataforma, onde algoritmos de IA identificam tendências e alertam a equipe sobre eventos relevantes.",
       "paragraph2": "Com RPM, condições crônicas, pós-operatórios e cuidados preventivos passam a ter acompanhamento contínuo — sem que o paciente precise sair de casa. Mais autonomia, menos visitas desnecessárias e decisões clínicas baseadas em dados reais.",
-      "cardLabel": "Frequência cardíaca em tempo real"
+      "cardLabel": "Frequência cardíaca em tempo real",
+      "titleEm": "além",
+      "rhythm": "Sinusal"
     },
     "process": {
       "badge": "Como funciona",
@@ -273,7 +291,8 @@
       "step4": {
         "title": "Alerta e ação",
         "desc": "Equipe clínica recebe notificações priorizadas e age antes que a situação se agrave."
-      }
+      },
+      "titleEm": "conectado"
     },
     "components": {
       "badge": "Componentes",
@@ -306,7 +325,8 @@
       "item1desc": "Hipertensão, insuficiência cardíaca e arritmias exigem leitura frequente de pressão e ritmo — dados que a consulta trimestral não captura.",
       "item2desc": "Nas semanas seguintes à alta, a maior parte das complicações aparece em casa, longe da equipe que operou.",
       "item3desc": "O controle glicêmico depende de ajuste contínuo. Com as leituras chegando sozinhas, a conduta muda em dias, não em meses.",
-      "item4desc": "Múltiplas comorbidades e medicações, somadas à dificuldade de deslocamento, fazem do acompanhamento remoto a via mais segura."
+      "item4desc": "Múltiplas comorbidades e medicações, somadas à dificuldade de deslocamento, fazem do acompanhamento remoto a via mais segura.",
+      "titleEm": "beneficia"
     },
     "cta": {
       "badge": "Próximo passo",
@@ -315,7 +335,8 @@
       "button": {
         "primary": "Solicitar demonstração",
         "secondary": "Ver benefícios →"
-      }
+      },
+      "titleEm": "implantar"
     }
   },
   "benefitsPage": {
@@ -568,7 +589,8 @@
       "button": {
         "primary": "Ver catálogo completo",
         "secondary": "Falar com especialista"
-      }
+      },
+      "titleEm": "conectados"
     },
     "categories": {
       "badge": "Categorias",
@@ -677,7 +699,10 @@
       "language": "Idioma"
     },
     "cta": "Agendar demo",
-    "menu": "Abrir menu"
+    "menu": "Abrir menu",
+    "menuLabel": "Menu",
+    "close": "Fechar",
+    "menuTitle": "Navegação"
   },
   "footer": {
     "tagline": "Transformando vidas com tecnologia em saúde. Monitoramento remoto inteligente para um cuidado mais humano e eficiente.",
@@ -705,14 +730,16 @@
       "highlight": "Inovações em Monitoramento Remoto de Pacientes",
       "placeholder": "Digitar Email",
       "submit": "Enviar",
-      "privacy": "Seus dados estão seguros. Não enviamos spam."
+      "privacy": "Seus dados estão seguros. Não enviamos spam.",
+      "titleEm": "Newsletter"
     },
     "addresses": [
       "Rua Primeiro de Maio, 442, Pinhais",
       "PR 83323-020, Brazil"
     ],
     "backToTop": "Voltar ao topo",
-    "copyright": "Todos os direitos reservados."
+    "copyright": "Todos os direitos reservados.",
+    "addressTitle": "Endereço"
   },
   "privacyPage": {
     "badge": "Legal",
@@ -754,5 +781,31 @@
         "body": "Podemos atualizar estes Termos de Privacidade periodicamente. A data de revisão será indicada nesta página. O uso continuado do site após alterações implica ciência da versão vigente."
       }
     ]
+  },
+  "loader": {
+    "places": "Brasil · EUA · Reino Unido",
+    "preparing": "Preparando o cuidado contínuo"
+  },
+  "home": {
+    "solutions": "Soluções",
+    "status": {
+      "normal": "Normal",
+      "attention": "Atenção"
+    },
+    "stats": {
+      "accuracy": {
+        "tag": "IA preditiva",
+        "foot": "Alertas com contexto"
+      },
+      "clinics": {
+        "tag": "Parceiros",
+        "foot": "Rede em crescimento"
+      },
+      "support": {
+        "tag": "Monitoramento",
+        "foot": "Sem pausas"
+      }
+    },
+    "days": "DSTQQSS"
   }
 }

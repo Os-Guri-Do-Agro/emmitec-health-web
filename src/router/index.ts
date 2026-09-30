@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { scrollToEl, stopSmoothScroll } from '../lib/motion'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,12 +56,23 @@ const router = createRouter({
       component: () => import('../views/PrivacyView.vue'),
     },
   ],
-  // Toda navegação começa no topo (exceto voltar/avançar, que restaura a posição)
+  // Toda navegação começa no topo (exceto voltar/avançar, que restaura a posição).
+  // Âncoras (#id) usam a rolagem suave do Design System.
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
-    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    if (to.hash) {
+      if (to.path !== from.path) return { el: to.hash, top: 12 }
+      const el = document.querySelector(to.hash)
+      if (el) scrollToEl(el)
+      return false
+    }
     return { top: 0 }
   },
+})
+
+// Interrompe a rolagem amortecida em curso para não brigar com a troca de página
+router.beforeEach(() => {
+  stopSmoothScroll()
 })
 
 export default router

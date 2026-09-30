@@ -800,7 +800,7 @@ onUnmounted(() => {
 
 /* NÃO usar display aqui: CSS scoped fica fora de layer e venceria o md:hidden */
 .comparison-tag {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Instrument Sans', sans-serif;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -904,7 +904,7 @@ onUnmounted(() => {
 
 /* Números da seção escura */
 .benefit-stat-num {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Instrument Sans', sans-serif;
   font-size: clamp(2rem, 3.4vw, 2.8rem);
   font-weight: 800;
   line-height: 1;

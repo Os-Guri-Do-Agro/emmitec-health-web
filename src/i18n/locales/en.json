@@ -29,7 +29,8 @@
       "bp": "Blood pressure",
       "alert": "Predictive alert sent to the clinical team"
     },
-    "imageAlt": "Healthcare professional following patients on the Emmitec Health platform"
+    "imageAlt": "Healthcare professional following patients on the Emmitec Health platform",
+    "scroll": "Scroll to explore"
   },
   "marquee": {
     "a": "Remote patient monitoring",
@@ -42,13 +43,15 @@
   "intro": {
     "badge": "Why we exist",
     "title": "Technology that gives time back to the clinical team and peace of mind to the family",
-    "description": "Connected devices, our own platform, and predictive AI working together — so no one has to wait for a case to worsen before receiving care."
+    "description": "Connected devices, our own platform, and predictive AI working together — so no one has to wait for a case to worsen before receiving care.",
+    "titleEm": "peace of mind"
   },
   "homeBlogStrip": {
     "badge": "Blog",
     "title": "Content for the people deciding on digital health",
     "subtitle": "Trends, real cases, and regulation — written by the Emmitec team and invited specialists.",
-    "cta": "Open the blog"
+    "cta": "Open the blog",
+    "titleEm": "digital health"
   },
   "cards": {
     "rpm": {
@@ -83,7 +86,8 @@
       "imageBadges": {
         "rpm": "RPM",
         "ai": "AI"
-      }
+      },
+      "titleEm": "before"
     },
     "services": {
       "tag": "Services",
@@ -96,7 +100,8 @@
         "Increase patient engagement and adherence"
       ],
       "button": "Discover our apps",
-      "imageAlt": "Patient at home with device"
+      "imageAlt": "Patient at home with device",
+      "titleEm": "hands"
     }
   },
   "benefits": {
@@ -120,7 +125,8 @@
         "title": "A partner, not a vendor",
         "desc": "Guided rollout, features built on demand, and support that answers at the pace of your clinical routine."
       }
-    }
+    },
+    "titleEm": "living room"
   },
   "cta": {
     "badge": "Next step",
@@ -132,7 +138,8 @@
       "cases": "See success stories",
       "primary": "Schedule a demo",
       "secondary": "View equipment"
-    }
+    },
+    "titleEm": "running"
   },
   "about": {
     "hero": {
@@ -148,7 +155,8 @@
         "contact": "Get in touch",
         "careers": "Join our team",
         "demo": "Request demo"
-      }
+      },
+      "titleEm": "Lives"
     },
     "story": {
       "badge": "Our story",
@@ -156,7 +164,9 @@
       "intro": "Emilio Machado founded EmmiTec inspired by his mother's journey against cancer in 2017. Facing challenges such as constant medical visits and scattered records, he created a digital registry to centralize information and improve care, even from a distance. This innovation gave rise to the Remote Patient Monitoring (RPM) platform, which collects real-time data, aids early intervention, and improves clinical outcomes and quality of patient care, transforming healthcare globally.",
       "paragraph1": "EmmiTec's journey began in 2006, developing cutting-edge technology for sectors like finance and retail, in partnership with major innovators like Apple. However, in 2017, our story shifted to something more personal and profound. That year, Emilio Machado, our founder, faced his mother's difficult battle against cancer.",
       "paragraph2": "Beyond the emotional impact, managing her care was an immense challenge: constant medical visits, medication schedules, and scattered health records. The geographical distance made everything even harder—while his mother was in Brazil, Emilio lived in the United States. Determined to make a difference, he developed a remote monitoring platform that allowed tracking health data from afar. This solution not only improved his mother's quality of life but gave Emilio the chance to support her even from a distance. In 2018, EmmiTec decided to focus exclusively on healthcare, selling its other divisions to transform medical care and help more families face similar challenges.",
-      "quote": "The most powerful technology is that which cares for the people we love."
+      "quote": "The most powerful technology is that which cares for the people we love.",
+      "titleEm": "Journey",
+      "quoteEm": "love"
     },
     "mission": {
       "badge": "Our mission & vision",
@@ -164,7 +174,9 @@
       "description": "At EmmiTec, we believe that health goes beyond a service—it is an essential right, belonging to everyone, regardless of where they are. We dream of a world where distance, circumstances, or resources do not define the quality of care received. This vision drives us to develop innovative solutions that empower people to take control of their health. EmmiTec Health is more than a platform; it is a commitment to delivering integrated, patient-centered care that is accessible and deeply human. Our mission is to break down barriers in healthcare, ensuring that every patient is valued, supported, and cared for according to their needs. Because when it comes to health, there are no 'others' or 'another time'. Change starts now, and we are ready to lead it.",
       "item1": "Democratize access to quality healthcare",
       "item2": "Reduce geographical barriers in medical care",
-      "item3": "Empower patients with intelligent technology"
+      "item3": "Empower patients with intelligent technology",
+      "titleEm": "Mission",
+      "leadEm": "essential right"
     },
     "vision": {
       "badge": "Awards",
@@ -192,7 +204,8 @@
       "card4": {
         "title": "Cancer Treatment",
         "description": "Between one session and the next, the patient stays monitored at home. Adverse effects surface early, with fewer emergency-room trips."
-      }
+      },
+      "titleEm": "outcome"
     },
     "timeline": {
       "2006": {
@@ -216,7 +229,8 @@
         "desc": "Integration of predictive AI for preventive diagnostics"
       },
       "badge": "Our journey",
-      "title": "Emmitec Evolution"
+      "title": "Emmitec Evolution",
+      "titleEm": "Evolution"
     },
     "stats": {
       "founded": "Founded",
@@ -234,7 +248,8 @@
         "learn": "Explore solutions",
         "primary": "Request demo",
         "secondary": "What is RPM →"
-      }
+      },
+      "titleEm": "revolution"
     }
   },
   "whatIsRpm": {
@@ -245,14 +260,17 @@
       "button": {
         "primary": "Request demo",
         "secondary": "Talk to a specialist"
-      }
+      },
+      "titleEm": "Real-time"
     },
     "definition": {
       "badge": "Definition",
       "title": "Health monitored beyond the clinic walls",
       "paragraph1": "Remote Patient Monitoring (RPM) uses connected medical devices to track vital signs and clinical indicators directly from the patient's home. Data is transmitted in real time to the platform, where AI algorithms identify trends and alert the team about relevant events.",
       "paragraph2": "With RPM, chronic conditions, post-op care, and preventive health gain continuous follow-up — without the patient having to leave home. More autonomy, fewer unnecessary visits, and clinical decisions based on real data.",
-      "cardLabel": "Real-time heart rate"
+      "cardLabel": "Real-time heart rate",
+      "titleEm": "beyond",
+      "rhythm": "Sinus"
     },
     "process": {
       "badge": "How it works",
@@ -273,7 +291,8 @@
       "step4": {
         "title": "Alert and act",
         "desc": "Clinical teams receive prioritized notifications and act before situations escalate."
-      }
+      },
+      "titleEm": "connected"
     },
     "components": {
       "badge": "Components",
@@ -306,7 +325,8 @@
       "item1desc": "Hypertension, heart failure, and arrhythmias need frequent pressure and rhythm readings — data a quarterly appointment never captures.",
       "item2desc": "In the weeks after discharge, most complications show up at home, far from the team that performed the surgery.",
       "item3desc": "Glycemic control depends on continuous adjustment. With readings arriving on their own, treatment changes in days, not months.",
-      "item4desc": "Multiple comorbidities and medications, combined with limited mobility, make remote follow-up the safest route."
+      "item4desc": "Multiple comorbidities and medications, combined with limited mobility, make remote follow-up the safest route.",
+      "titleEm": "benefits"
     },
     "cta": {
       "badge": "Next step",
@@ -315,7 +335,8 @@
       "button": {
         "primary": "Request demo",
         "secondary": "View benefits →"
-      }
+      },
+      "titleEm": "deploy"
     }
   },
   "benefitsPage": {
@@ -568,7 +589,8 @@
       "button": {
         "primary": "View full catalog",
         "secondary": "Talk to a specialist"
-      }
+      },
+      "titleEm": "connected"
     },
     "categories": {
       "badge": "Categories",
@@ -677,7 +699,10 @@
       "language": "Language"
     },
     "cta": "Book a demo",
-    "menu": "Open menu"
+    "menu": "Open menu",
+    "menuLabel": "Menu",
+    "close": "Close",
+    "menuTitle": "Navigation"
   },
   "footer": {
     "tagline": "Transforming lives with health technology. Intelligent remote monitoring for more humane and efficient care.",
@@ -705,14 +730,16 @@
       "highlight": "Innovations in Remote Patient Monitoring",
       "placeholder": "Enter email",
       "submit": "Send",
-      "privacy": "Your data is secure. We don't send spam."
+      "privacy": "Your data is secure. We don't send spam.",
+      "titleEm": "Newsletter"
     },
     "addresses": [
       "USA - 105 Boniface Drive, Rochester, NY 14620",
       "UK - Innovation Centre, Gallows Hill Warwick CV34 6UW"
     ],
     "backToTop": "Back to top",
-    "copyright": "All rights reserved."
+    "copyright": "All rights reserved.",
+    "addressTitle": "Addresses"
   },
   "privacyPage": {
     "badge": "Legal",
@@ -754,5 +781,31 @@
         "body": "We may update these Privacy Terms periodically. The revision date will appear on this page. Continued use of the site after changes means you acknowledge the current version."
       }
     ]
+  },
+  "loader": {
+    "places": "Brazil · USA · United Kingdom",
+    "preparing": "Preparing continuous care"
+  },
+  "home": {
+    "solutions": "Solutions",
+    "status": {
+      "normal": "Normal",
+      "attention": "Attention"
+    },
+    "stats": {
+      "accuracy": {
+        "tag": "Predictive AI",
+        "foot": "Alerts with context"
+      },
+      "clinics": {
+        "tag": "Partners",
+        "foot": "Growing network"
+      },
+      "support": {
+        "tag": "Monitoring",
+        "foot": "No breaks"
+      }
+    },
+    "days": "SMTWTFS"
   }
 }

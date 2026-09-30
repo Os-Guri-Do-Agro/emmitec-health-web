@@ -23,23 +23,19 @@
   font-weight: normal;
 }
 
+/* A rolagem suave é feita em JS (src/lib/motion.ts), com amortecimento por tempo.
+   `smooth` aqui faria cada quadro virar uma animação própria e travaria o scroll. */
 html {
-  scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  scroll-behavior: auto;
 }
 
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
+  background: #f4f6f7;
   line-height: 1.6;
   font-family:
-    'Plus Jakarta Sans',
+    'Instrument Sans',
     Inter,
     -apple-system,
     BlinkMacSystemFont,
