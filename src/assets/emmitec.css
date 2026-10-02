@@ -2695,8 +2695,13 @@
 .em-footer .em-social a:hover {
   background: var(--night-900);
 }
+/* a palavra gigante escala pela largura útil do wrap (cqi), não da viewport */
+.em-footer > .em-wrap {
+  container-type: inline-size;
+}
 .em-footer__word {
-  font-size: clamp(48px, 10vw, 164px);
+  font-size: clamp(32px, 10vw, 164px);
+  font-size: min(164px, 13cqi);
   line-height: 0.85;
   letter-spacing: -0.06em;
   font-weight: 500;
