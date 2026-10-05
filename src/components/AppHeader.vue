@@ -78,6 +78,9 @@ function setLanguage(code: string) {
   }
 }
 
+/** Idioma ativo — a bandeira aparece no botão do menu para sinalizar onde trocar. */
+const currentLang = computed(() => languages.find((l) => l.code === locale.value) ?? languages[0])
+
 /** Um item está ativo quando a rota atual é ele ou uma de suas filhas. */
 function isActive(path: string) {
   if (path === '/') return route.path === '/'
@@ -159,6 +162,7 @@ onBeforeUnmount(() => {
         aria-controls="em-menu"
         @click="onBurger"
       >
+        <img class="em-burger__flag" :src="currentLang.flag" alt="" width="20" height="15" />
         <span class="em-burger__label">
           <span>{{ t('header.menuLabel') }}</span>
           <span aria-hidden="true">{{ t('header.close') }}</span>

@@ -569,6 +569,15 @@
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
 }
+.em-burger__flag {
+  display: block;
+  width: 20px;
+  height: 15px;
+  margin-right: -4px;
+  border-radius: 3px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(14, 17, 23, 0.08);
+}
 .em-burger__label {
   display: inline-grid;
   overflow: hidden;
