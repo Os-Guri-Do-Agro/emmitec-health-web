@@ -21,6 +21,13 @@ export const languages = [
   { code: 'es', label: 'ES', flag: flagEs },
 ] as const
 
+/** Escritórios — os mesmos em todos os idiomas; só o nome do país é traduzido (`footer.countries`). */
+export const addresses = [
+  { country: 'br', text: 'Rua Primeiro de Maio, 442, Pinhais, PR 83323-020' },
+  { country: 'us', text: '105 Boniface Drive, Rochester, NY 14620' },
+  { country: 'uk', text: 'Innovation Centre, Gallows Hill, Warwick CV34 6UW' },
+] as const
+
 export const socialLinks = [
   { name: 'Facebook', href: 'https://www.facebook.com/emmitechealth', icon: Facebook },
   { name: 'Instagram', href: 'https://www.instagram.com/emmitec.health/', icon: Instagram },

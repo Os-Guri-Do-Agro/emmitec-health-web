@@ -767,12 +767,14 @@
       "privacy": "Tus datos están seguros. No enviamos spam.",
       "titleEm": "Newsletter"
     },
-    "addresses": [
-      "USA - 105 Boniface Drive, Rochester, NY 14620"
-    ],
+    "countries": {
+      "br": "Brasil",
+      "us": "Estados Unidos",
+      "uk": "Reino Unido"
+    },
     "backToTop": "Volver arriba",
     "copyright": "Todos los derechos reservados.",
-    "addressTitle": "Dirección"
+    "addressTitle": "Direcciones"
   },
   "privacyPage": {
     "badge": "Legal",

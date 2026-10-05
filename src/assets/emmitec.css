@@ -2690,9 +2690,16 @@
   opacity: 1;
   transform: none;
 }
-.em-footer__line {
-  display: block;
+.em-footer__addr {
   padding: 5px 0;
+  font-style: normal;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+.em-footer__addr strong {
+  display: block;
+  font-weight: 500;
+  color: var(--ink);
 }
 .em-footer .em-social {
   margin-top: 18px;

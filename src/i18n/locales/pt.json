@@ -767,13 +767,14 @@
       "privacy": "Seus dados estão seguros. Não enviamos spam.",
       "titleEm": "Newsletter"
     },
-    "addresses": [
-      "Rua Primeiro de Maio, 442, Pinhais",
-      "PR 83323-020, Brazil"
-    ],
+    "countries": {
+      "br": "Brasil",
+      "us": "Estados Unidos",
+      "uk": "Reino Unido"
+    },
     "backToTop": "Voltar ao topo",
     "copyright": "Todos os direitos reservados.",
-    "addressTitle": "Endereço"
+    "addressTitle": "Endereços"
   },
   "privacyPage": {
     "badge": "Legal",

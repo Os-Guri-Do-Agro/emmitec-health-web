@@ -7,7 +7,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ArrowUp } from 'lucide-vue-next'
 import { scrollToY } from '@/lib/motion'
-import { calendlyUrl, socialLinks, LOGO_SRC } from '@/lib/site'
+import { addresses, calendlyUrl, socialLinks, LOGO_SRC } from '@/lib/site'
 import EmButton from '@/components/em/EmButton.vue'
 import EmSplit from '@/components/em/EmSplit.vue'
 import EmShader from '@/components/em/EmShader.vue'
@@ -15,7 +15,7 @@ import EmShader from '@/components/em/EmShader.vue'
 /** `newsletter: false` esconde o bloco da newsletter (o Blog já tem a própria). */
 withDefaults(defineProps<{ newsletter?: boolean }>(), { newsletter: true })
 
-const { t, tm } = useI18n()
+const { t } = useI18n()
 
 const email = ref('')
 
@@ -35,8 +35,6 @@ const blogCol = computed(() => [
   { text: t('blogPage.categories.cases'), to: '/blog?category=cases' },
   { text: t('blogPage.categories.laws'), to: '/blog?category=laws' },
 ])
-
-const addresses = computed(() => tm('footer.addresses') as unknown as string[])
 
 function subscribe() {
   // TODO: integrar com o serviço de newsletter (o formulário original ainda não enviava).
@@ -156,7 +154,10 @@ function toTop() {
 
         <div>
           <h5>{{ t('footer.addressTitle') }}</h5>
-          <span v-for="a in addresses" :key="a" class="em-footer__line">{{ a }}</span>
+          <address v-for="a in addresses" :key="a.country" class="em-footer__addr">
+            <strong>{{ t(`footer.countries.${a.country}`) }}</strong>
+            {{ a.text }}
+          </address>
         </div>
       </div>
 
