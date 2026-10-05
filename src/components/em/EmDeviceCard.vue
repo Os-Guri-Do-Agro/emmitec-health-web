@@ -4,14 +4,14 @@ import { Bluetooth, Nfc, Wifi } from 'lucide-vue-next'
 import type { Device } from '@/lib/equipment'
 import EmDeviceScreen from './EmDeviceScreen.vue'
 
-defineProps<{ device: Device; n?: number }>()
+defineProps<{ device: Device }>()
 
 const connIcon = (c: string) => (c === 'Wi-Fi' ? Wifi : c === 'NFC' ? Nfc : Bluetooth)
 </script>
 
 <template>
   <RouterLink :to="`/equipment/${device.id}`" class="em-device em-card em-card--lift">
-    <EmDeviceScreen :device="device" :n="n" />
+    <EmDeviceScreen :device="device" />
     <div class="em-device__body">
       <small class="em-device__cat">{{ device.catLabel }}</small>
       <h3>{{ device.name }}</h3>

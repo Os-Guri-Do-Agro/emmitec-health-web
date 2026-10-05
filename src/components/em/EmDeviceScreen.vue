@@ -8,8 +8,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Device } from '@/lib/equipment'
 
-const props = withDefaults(defineProps<{ device: Device; n?: number; size?: 'md' | 'lg' }>(), {
-  n: 0,
+const props = withDefaults(defineProps<{ device: Device; size?: 'md' | 'lg' }>(), {
   size: 'md',
 })
 
@@ -78,7 +77,6 @@ const trace = computed(() => {
       <span class="em-screen__ico"
         ><component :is="device.icon" :stroke-width="1.6" aria-hidden="true"
       /></span>
-      <span v-if="n" class="em-screen__n">({{ String(n).padStart(2, '0') }})</span>
     </div>
     <div class="em-screen__read">
       <b

@@ -226,7 +226,6 @@ async function share() {
             v-reveal="i * 80"
             v-spot
             :device="d"
-            :n="d.id"
           />
         </div>
         <div v-else class="em-empty em-card">

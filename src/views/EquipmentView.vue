@@ -51,7 +51,6 @@ const categories = computed(() =>
     id,
     icon: CAT_ICONS[id],
     label: t(`equipmentPage.categories.${id}`),
-    count: id === 'all' ? devices.value.length : devices.value.filter((d) => d.cat === id).length,
   })),
 )
 const filtered = computed(() =>
@@ -162,13 +161,9 @@ onBeforeUnmount(() => window.removeEventListener('resize', placeIndicator))
               :aria-pressed="activeCategory === c.id ? 'true' : 'false'"
               @click="activeCategory = c.id"
             >
-              <component :is="c.icon" :stroke-width="1.8" aria-hidden="true" />{{ c.label
-              }}<small>{{ c.count }}</small>
+              <component :is="c.icon" :stroke-width="1.8" aria-hidden="true" />{{ c.label }}
             </button>
           </div>
-          <span class="em-filterbar__count" aria-live="polite">{{
-            t('equipmentPage.categories.count', filtered.length)
-          }}</span>
         </div>
 
         <!-- trocar de categoria refaz a grade, e os cards entram de novo em sequência -->
@@ -179,7 +174,6 @@ onBeforeUnmount(() => window.removeEventListener('resize', placeIndicator))
             v-reveal="(i % 4) * 80"
             v-spot
             :device="d"
-            :n="d.id"
           />
         </div>
       </div>

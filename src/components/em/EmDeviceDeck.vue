@@ -100,7 +100,7 @@ onBeforeUnmount(() => {
       class="em-deck__card em-card"
       :class="[`is-s${c.slot}`, { 'is-still': c.still }]"
     >
-      <EmDeviceScreen :device="c.device" :n="c.device.id" />
+      <EmDeviceScreen :device="c.device" />
       <div class="em-deck__meta">
         <b>{{ c.device.name }}</b>
         <span>{{ c.device.catLabel }}</span>

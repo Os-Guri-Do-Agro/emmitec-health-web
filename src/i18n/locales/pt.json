@@ -625,8 +625,7 @@
       "metabolic": "Metabólico",
       "respiratory": "Respiratório",
       "wearables": "Wearables",
-      "titleEm": "necessidade clínica",
-      "count": "Nenhum dispositivo | 1 dispositivo | {n} dispositivos"
+      "titleEm": "necessidade clínica"
     },
     "devices": {
       "d1": {

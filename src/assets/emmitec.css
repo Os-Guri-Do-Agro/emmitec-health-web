@@ -7615,11 +7615,6 @@ p.em-compare__rpm {
 .em-card:hover .em-screen__ico {
   transform: rotate(-8deg) scale(1.08);
 }
-.em-screen__n {
-  font-size: 12px;
-  color: var(--ink-muted);
-  font-variant-numeric: tabular-nums;
-}
 .em-screen__read {
   display: flex;
   align-items: baseline;
