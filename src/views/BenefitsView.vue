@@ -80,7 +80,7 @@ const comparison = computed(() =>
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(01) {{ t('benefitsPage.patient.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('benefitsPage.patient.badge') }}</span>
             <EmSplit
               :text="t('benefitsPage.patient.title')"
               :em="t('benefitsPage.patient.titleEm')"
@@ -139,7 +139,7 @@ const comparison = computed(() =>
     <section id="instituicao" class="em-section em-section--tint">
       <div class="em-wrap em-def">
         <div class="em-def__txt">
-          <span v-reveal class="em-eyebrow">(02) {{ t('benefitsPage.clinic.badge') }}</span>
+          <span v-reveal class="em-eyebrow">{{ t('benefitsPage.clinic.badge') }}</span>
           <EmSplit
             class="em-h2"
             :text="t('benefitsPage.clinic.title')"
@@ -162,7 +162,7 @@ const comparison = computed(() =>
     <!-- ════════ (03) NÚMEROS ════════ -->
     <section id="impacto" class="em-section">
       <div class="em-wrap">
-        <span v-reveal class="em-eyebrow">(03) {{ t('benefitsPage.stats.badge') }}</span>
+        <span v-reveal class="em-eyebrow">{{ t('benefitsPage.stats.badge') }}</span>
         <EmSplit
           class="em-h2"
           :text="t('benefitsPage.stats.title')"
@@ -185,7 +185,7 @@ const comparison = computed(() =>
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(04) {{ t('benefitsPage.comparison.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('benefitsPage.comparison.badge') }}</span>
             <EmSplit
               :text="t('benefitsPage.comparison.title')"
               :em="t('benefitsPage.comparison.titleEm')"

@@ -124,7 +124,7 @@ const features = computed(() =>
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(01) {{ t('appsPage.suite.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('appsPage.suite.badge') }}</span>
             <EmSplit :text="t('appsPage.suite.title')" :em="t('appsPage.suite.titleEm')" />
           </div>
           <p v-reveal="150">{{ t('appsPage.suite.subtitle') }}</p>
@@ -186,7 +186,7 @@ const features = computed(() =>
             <span class="em-ico em-ico--brand"
               ><component :is="b.icon" :stroke-width="1.7" aria-hidden="true"
             /></span>
-            <span class="em-eyebrow">({{ pad(i + 2) }}) {{ b.badge }}</span>
+            <span class="em-eyebrow">{{ b.badge }}</span>
           </div>
           <EmSplit tag="h2" class="em-std__title" :text="b.title" :em="b.em" />
           <p class="em-std__desc">{{ b.description }}</p>
@@ -213,7 +213,7 @@ const features = computed(() =>
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(04) {{ t('appsPage.features.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('appsPage.features.badge') }}</span>
             <EmSplit :text="t('appsPage.features.title')" :em="t('appsPage.features.titleEm')" />
           </div>
           <p v-reveal="150">{{ t('appsPage.features.subtitle') }}</p>

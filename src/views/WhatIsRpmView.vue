@@ -73,7 +73,7 @@ const profiles = computed(() =>
       <div class="em-wrap">
         <div class="em-def">
           <div class="em-def__txt">
-            <span v-reveal class="em-eyebrow">(01) {{ t('whatIsRpm.definition.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('whatIsRpm.definition.badge') }}</span>
             <EmSplit
               class="em-h2"
               :text="t('whatIsRpm.definition.title')"
@@ -98,7 +98,7 @@ const profiles = computed(() =>
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(02) {{ t('whatIsRpm.process.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('whatIsRpm.process.badge') }}</span>
             <EmSplit :text="t('whatIsRpm.process.title')" :em="t('whatIsRpm.process.titleEm')" />
           </div>
           <p v-reveal="150">{{ t('whatIsRpm.process.subtitle') }}</p>
@@ -112,7 +112,7 @@ const profiles = computed(() =>
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(03) {{ t('whatIsRpm.who.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('whatIsRpm.who.badge') }}</span>
             <EmSplit :text="t('whatIsRpm.who.title')" :em="t('whatIsRpm.who.titleEm')" />
           </div>
           <p v-reveal="150">{{ t('whatIsRpm.who.subtitle') }}</p>

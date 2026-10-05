@@ -258,7 +258,7 @@ onBeforeUnmount(() => offStack?.())
     <!-- ════════ (01) POR QUE EXISTIMOS ════════ -->
     <section id="sobre" class="em-section">
       <div class="em-wrap">
-        <span v-reveal class="em-eyebrow">(01) {{ t('intro.badge') }}</span>
+        <span v-reveal class="em-eyebrow">{{ t('intro.badge') }}</span>
         <div class="em-about em-about--home">
           <div>
             <EmStatement :text="t('intro.title')" :em="t('intro.titleEm')" />
@@ -393,7 +393,7 @@ onBeforeUnmount(() => offStack?.())
     <!-- ════════ (02) SOLUÇÕES ════════ -->
     <section id="solucoes" class="em-section em-section--stack">
       <div class="em-wrap">
-        <span v-reveal class="em-eyebrow">(02) {{ t('home.solutions') }}</span>
+        <span v-reveal class="em-eyebrow">{{ t('home.solutions') }}</span>
         <div ref="stackEl" class="em-stack">
           <article
             v-for="(c, i) in cards"
@@ -600,7 +600,7 @@ onBeforeUnmount(() => offStack?.())
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(03) {{ t('equipmentPage.hero.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('equipmentPage.hero.badge') }}</span>
             <EmSplit :text="t('equipmentPage.hero.title')" :em="t('equipmentPage.hero.titleEm')" />
           </div>
           <div v-reveal="150" class="em-head__side">
@@ -620,7 +620,7 @@ onBeforeUnmount(() => offStack?.())
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(04) {{ t('features.monitoring.tag') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('features.monitoring.tag') }}</span>
             <EmSplit
               :text="t('features.monitoring.title')"
               :em="t('features.monitoring.titleEm')"
@@ -681,7 +681,7 @@ onBeforeUnmount(() => offStack?.())
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(05) {{ t('features.services.tag') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('features.services.tag') }}</span>
             <EmSplit :text="t('features.services.title')" :em="t('features.services.titleEm')" />
           </div>
           <div v-reveal="150" class="em-head__side">
@@ -698,7 +698,7 @@ onBeforeUnmount(() => offStack?.())
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(06) {{ t('benefits.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('benefits.badge') }}</span>
             <EmSplit :text="t('benefits.title')" :em="t('benefits.titleEm')" />
           </div>
           <p v-reveal="150">{{ t('benefits.subtitle') }}</p>
@@ -742,7 +742,7 @@ onBeforeUnmount(() => offStack?.())
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(07) {{ t('homeBlogStrip.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('homeBlogStrip.badge') }}</span>
             <EmSplit :text="t('homeBlogStrip.title')" :em="t('homeBlogStrip.titleEm')" />
           </div>
           <div v-reveal="150" class="em-head__side">

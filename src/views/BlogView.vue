@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
     <section id="destaque" class="em-section">
       <div class="em-wrap">
         <div class="em-feat__head">
-          <span v-reveal class="em-eyebrow">(01) {{ t('blogPage.featured.badge') }}</span>
+          <span v-reveal class="em-eyebrow">{{ t('blogPage.featured.badge') }}</span>
           <div v-reveal="120" class="em-feat__ctrl">
             <span class="em-feat__count" aria-hidden="true"
               ><b>{{ pad(cur + 1) }}</b> / {{ pad(featured.length) }}</span
@@ -321,7 +321,7 @@ onBeforeUnmount(() => {
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(02) {{ t('blogPage.preview.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('blogPage.preview.badge') }}</span>
             <EmSplit :text="t('blogPage.preview.title')" :em="t('blogPage.preview.titleEm')" />
           </div>
           <div v-reveal="150" class="em-head__side">
@@ -380,7 +380,7 @@ onBeforeUnmount(() => {
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(03) {{ t('blogPage.articles.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('blogPage.articles.badge') }}</span>
             <EmSplit :text="t('blogPage.articles.title')" :em="t('blogPage.articles.titleEm')" />
           </div>
           <div v-reveal="150" class="em-head__side em-head__side--wide">

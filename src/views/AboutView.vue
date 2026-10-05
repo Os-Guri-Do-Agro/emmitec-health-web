@@ -95,7 +95,7 @@ const milestones = computed(() =>
     <!-- ════════ (01) NOSSA HISTÓRIA ════════ -->
     <section id="historia" class="em-section">
       <div class="em-wrap">
-        <span v-reveal class="em-eyebrow">(01) {{ t('about.story.badge') }}</span>
+        <span v-reveal class="em-eyebrow">{{ t('about.story.badge') }}</span>
         <EmSplit class="em-h2" :text="t('about.story.title')" :em="t('about.story.titleEm')" />
 
         <div class="em-journey">
@@ -159,7 +159,7 @@ const milestones = computed(() =>
     <!-- ════════ (02) MISSÃO E VISÃO ════════ -->
     <section id="missao" class="em-section em-section--tint">
       <div class="em-wrap">
-        <span v-reveal class="em-eyebrow">(02) {{ t('about.mission.badge') }}</span>
+        <span v-reveal class="em-eyebrow">{{ t('about.mission.badge') }}</span>
         <EmSplit class="em-h2" :text="t('about.mission.title')" :em="t('about.mission.titleEm')" />
         <EmStatement
           class="em-mission__lead"
@@ -204,7 +204,7 @@ const milestones = computed(() =>
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(03) {{ t('about.values.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('about.values.badge') }}</span>
             <EmSplit :text="t('about.values.title')" :em="t('about.values.titleEm')" />
           </div>
           <p v-reveal="150">{{ t('about.values.subtitle') }}</p>
@@ -218,7 +218,7 @@ const milestones = computed(() =>
     <!-- ════════ (04) LINHA DO TEMPO ════════ -->
     <EmTimeline id="jornada" class="em-section--tint" :items="milestones">
       <template #head>
-        <span v-reveal class="em-eyebrow">(04) {{ t('about.timeline.badge') }}</span>
+        <span v-reveal class="em-eyebrow">{{ t('about.timeline.badge') }}</span>
         <EmSplit
           class="em-h2"
           :text="t('about.timeline.title')"

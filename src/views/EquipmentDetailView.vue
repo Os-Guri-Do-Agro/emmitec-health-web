@@ -111,7 +111,7 @@ async function share() {
     <section class="em-section em-product">
       <div class="em-wrap em-product__grid">
         <div class="em-product__main">
-          <span v-reveal class="em-eyebrow">(01) {{ t('equipmentPage.detail.features') }}</span>
+          <span v-reveal class="em-eyebrow">{{ t('equipmentPage.detail.features') }}</span>
           <ul class="em-product__feats">
             <li v-for="(f, i) in device.features" :key="f" v-reveal="i * 80" v-spot class="em-card">
               <span class="em-ico em-ico--brand"
@@ -123,9 +123,7 @@ async function share() {
           </ul>
 
           <div class="em-product__about">
-            <span v-reveal class="em-eyebrow"
-              >(02) {{ t('equipmentPage.detail.allFeatures') }}</span
-            >
+            <span v-reveal class="em-eyebrow">{{ t('equipmentPage.detail.allFeatures') }}</span>
             <EmSplit
               class="em-h2"
               :text="t('equipmentPage.detail.about')"

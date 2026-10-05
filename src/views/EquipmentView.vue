@@ -131,7 +131,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', placeIndicator))
       <div class="em-wrap">
         <div class="em-head">
           <div>
-            <span v-reveal class="em-eyebrow">(01) {{ t('equipmentPage.categories.badge') }}</span>
+            <span v-reveal class="em-eyebrow">{{ t('equipmentPage.categories.badge') }}</span>
             <EmSplit
               :text="t('equipmentPage.categories.title')"
               :em="t('equipmentPage.categories.titleEm')"
@@ -188,7 +188,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', placeIndicator))
     <!-- ════════ (02) CERTIFICAÇÕES ════════ -->
     <section id="certificacoes" class="em-section em-section--tint">
       <div class="em-wrap">
-        <span v-reveal class="em-eyebrow">(02) {{ t('equipmentPage.cert.badge') }}</span>
+        <span v-reveal class="em-eyebrow">{{ t('equipmentPage.cert.badge') }}</span>
         <EmSplit
           class="em-h2"
           :text="t('equipmentPage.cert.title')"
@@ -229,7 +229,7 @@ onBeforeUnmount(() => window.removeEventListener('resize', placeIndicator))
     <section id="compatibilidade" class="em-section">
       <div class="em-wrap em-def">
         <div class="em-def__txt">
-          <span v-reveal class="em-eyebrow">(03) {{ t('equipmentPage.compatibility.badge') }}</span>
+          <span v-reveal class="em-eyebrow">{{ t('equipmentPage.compatibility.badge') }}</span>
           <EmSplit
             class="em-h2"
             :text="t('equipmentPage.compatibility.title')"
