@@ -96,6 +96,17 @@ export interface PublicEquipmentCategory {
   order: number
 }
 
+/** Fabricante (marca) com dispositivos integrados. */
+export interface PublicManufacturer {
+  slug: string
+  name: string
+  /** URL absoluta do logo (https://assets.emmitec.health/manufacturers/...) */
+  logo?: string
+  website?: string
+  deviceCount: number
+  order: number
+}
+
 /* ---------------------------------------------------------------
    Transporte
    --------------------------------------------------------------- */
@@ -165,6 +176,8 @@ export const publicApi = {
     get<PublicEquipment>(`/public/equipment/${seg(slug)}`, lang, force),
   equipmentCategories: (lang: Lang, force?: boolean) =>
     get<PublicEquipmentCategory[]>('/public/equipment/categories', lang, force),
+  manufacturers: (lang: Lang, force?: boolean) =>
+    get<PublicManufacturer[]>('/public/manufacturers', lang, force),
 }
 
 /* ---------------------------------------------------------------
